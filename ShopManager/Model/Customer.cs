@@ -21,12 +21,18 @@ namespace ShopManager.Model
             Surname = surname;
             Address = address;
 
-            customers.Add(this);
+            Customers.Add(this);
         }
 
+        public static List<Customer> Customers { get => customers; set => customers = value; }
         public int Id { get => id; set => id = value; }
         public string Firstname { get => firstname; set => firstname = value; }
         public string Surname { get => surname; set => surname = value; }
         public Address Address { get => address; set => address = value; }
+
+        public override string ToString()
+        {
+            return Id + ", " + Firstname + ", " + Surname + ", " + Address.ToString();
+        }
     }
 }

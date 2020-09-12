@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ShopManager.Model;
 
 namespace ShopManager
 {
@@ -23,6 +24,13 @@ namespace ShopManager
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void btnCreateNewCustomer_Click(object sender, RoutedEventArgs e)
+        {
+            Address newAddress = new Address(street.Text, housenumber.Text, int.Parse(postalCode.Text), city.Text);
+            Customer newCustomer = new Customer(Customer.Customers.Count, firstName.Text, surName.Text, newAddress);
+            listBox.Items.Add(newCustomer);
         }
     }
 }
