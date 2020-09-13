@@ -7,7 +7,7 @@ namespace ShopManagerTests
     public class CustomerAddressTests
     {
         private Address address;
-        private Customer customer;
+        public Customer customer;
 
         [TestMethod]
         public void NewAddress()
