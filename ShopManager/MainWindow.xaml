@@ -3,22 +3,42 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:ShopManager"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Stock and Orders" Height="450" Width="800">
     <Grid>
-        <Label x:Name="newCustomer" Content="New Customer" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-        
-        <TextBox x:Name="firstName" HorizontalAlignment="Left" Height="23" Margin="10,41,0,0" TextWrapping="Wrap" Text="Firstname" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="surName" HorizontalAlignment="Left" Height="23" Margin="135,41,0,0" TextWrapping="Wrap" Text="Surname" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="street" HorizontalAlignment="Left" Height="23" Margin="260,41,0,0" TextWrapping="Wrap" Text="Street" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="housenumber" HorizontalAlignment="Left" Height="23" Margin="385,41,0,0" TextWrapping="Wrap" Text="Housenumber" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="postalCode" HorizontalAlignment="Left" Height="23" Margin="510,41,0,0" TextWrapping="Wrap" Text="Postal Code" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="city" HorizontalAlignment="Left" Height="23" Margin="635,41,0,0" TextWrapping="Wrap" Text="City" VerticalAlignment="Top" Width="120"/>
-        
-        <Button x:Name="btnCreateNewCustomer" Content="Create" HorizontalAlignment="Left" Margin="680,69,0,0" VerticalAlignment="Top" Width="75" Click="btnCreateNewCustomer_Click"/>
-        
-        <ListBox x:Name="listBox" HorizontalAlignment="Left" Height="315" Margin="10,94,0,0" VerticalAlignment="Top" Width="745"/>
+        <TabControl>
+            <TabItem Header="Customer">
+                <Grid>
+                    <Label x:Name="newCustomer" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top">
+                        <Grid Background="#FFE5E5E5"/>
 
+                    </Label>
+                    <xctk:WatermarkTextBox x:Name="firstName" HorizontalAlignment="Left" Height="23" Margin="10,41,0,0" TextWrapping="Wrap" Text="{Binding CurrentCustomer.Firstname}" Watermark="Firstname" VerticalAlignment="Top" Width="120"/>
+                    <xctk:WatermarkTextBox x:Name="surName" HorizontalAlignment="Left" Height="23" Margin="135,41,0,0" TextWrapping="Wrap" Text="{Binding CurrentCustomer.Surname}" Watermark="Lastname" VerticalAlignment="Top" Width="120"/>
+                    <xctk:WatermarkTextBox x:Name="street" HorizontalAlignment="Left" Height="23" Margin="260,41,0,0" TextWrapping="Wrap" Text="{Binding CurrentCustomer.Address.Street}" Watermark="Street" VerticalAlignment="Top" Width="120"/>
+                    <xctk:WatermarkTextBox x:Name="housenumber" HorizontalAlignment="Left" Height="23" Margin="385,41,0,0" TextWrapping="Wrap" Text="{Binding CurrentCustomer.Address.Housenumber}" Watermark="Housenumber" VerticalAlignment="Top" Width="120"/>
+                    <xctk:WatermarkTextBox x:Name="postalCode" HorizontalAlignment="Left" Height="23" Margin="510,41,0,0" TextWrapping="Wrap" Text="{Binding CurrentCustomer.Address.PostalCode, Mode=OneWayToSource}" Watermark="Postal Code" VerticalAlignment="Top" Width="120"/>
+                    <xctk:WatermarkTextBox x:Name="city" HorizontalAlignment="Left" Height="23" Margin="635,41,0,0" TextWrapping="Wrap" Text="{Binding CurrentCustomer.Address.City}" Watermark="City" VerticalAlignment="Top" Width="120"/>
+
+                    <Button x:Name="btnCreateNewCustomer" Content="Create" HorizontalAlignment="Left" Margin="680,69,0,0" VerticalAlignment="Top" Width="75" Command="{Binding SaveCustomerCommand}" Click="btnCreateNewCustomer_Click"/>
+
+                    <ListBox x:Name="lbCustomer" HorizontalAlignment="Left" Height="287" Margin="10,94,0,0" VerticalAlignment="Top" Width="745"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Items">
+                <Grid>
+                    <ListBox x:Name="lbItems" HorizontalAlignment="Left" Height="287" Margin="10,94,0,0" VerticalAlignment="Top" Width="745"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Orders"></TabItem>
+            <TabItem Header="About">
+                <StackPanel>
+                    <TextBlock TextWrapping="Wrap" Text="Stock and Orders (c) by Luzius Kölling, 2020" Margin="10"/>
+                    <TextBlock TextWrapping="Wrap" Text="The term 'Etsy' is a trademark of Etsy, Inc. This application uses the Etsy API but is not endorsed or certified by Etsy, Inc." Margin="10"/>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>

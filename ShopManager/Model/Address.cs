@@ -8,10 +8,18 @@ namespace ShopManager.Model
 {
     public class Address
     {
+        #region Fields
         private int postalCode;
         private string housenumber;
         private string street;
         private string city;
+        #endregion
+
+        #region Constructors
+        public Address()
+        {
+
+        }
 
         public Address(string street, string housenumber, int postalCode, string city)
         {
@@ -20,11 +28,14 @@ namespace ShopManager.Model
             Street = street;
             City = city;
         }
+        #endregion
 
+        #region Properties
         public int PostalCode { get => postalCode; set => postalCode = value; }
         public string Housenumber { get => housenumber; set => housenumber = value; }
         public string Street { get => street; set => street = value; }
         public string City { get => city; set => city = value; }
+        #endregion
 
         public override string ToString()
         {

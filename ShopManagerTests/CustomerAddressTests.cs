@@ -19,7 +19,25 @@ namespace ShopManagerTests
         }
 
         [TestMethod]
-        public void NewCustomer()
+        public void TestBaseConstructor()
+        {
+            int idShouldBe = 0;
+            Customer customer = new Customer();
+            
+            Assert.AreEqual(idShouldBe, customer.Id);
+        }
+
+        [TestMethod]
+        public void TestSmallConstructor()
+        {
+            int idShouldBe = 2;
+            Customer customer = new Customer("Peter", "Ahrnt", address);
+
+            Assert.AreEqual(idShouldBe, customer.Id);
+        }
+
+        [TestMethod]
+        public void TestFullConstructor()
         {
             customer = new Customer(123, "John", "Doe", address);
             customer.Id = 321;

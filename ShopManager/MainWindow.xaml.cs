@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ShopManager.Model;
+using ShopManager.Validator;
+using ShopManager.ViewModel;
 
 namespace ShopManager
 {
@@ -21,16 +23,56 @@ namespace ShopManager
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Customer inputCustomer;
+        private CustomerViewModel customerViewModel;
+
         public MainWindow()
         {
             InitializeComponent();
+            //inputCustomer = CreateBlankCustomerWithAddress();
+
+            customerViewModel = new CustomerViewModel();
+            this.DataContext = customerViewModel;
+            customerViewModel.CurrentCustomer = CreateBlankCustomerWithAddress();
         }
 
         private void btnCreateNewCustomer_Click(object sender, RoutedEventArgs e)
         {
-            Address newAddress = new Address(street.Text, housenumber.Text, int.Parse(postalCode.Text), city.Text);
-            Customer newCustomer = new Customer(Customer.Customers.Count, firstName.Text, surName.Text, newAddress);
-            listBox.Items.Add(newCustomer);
+            if(int.TryParse(postalCode.Text, out int intPostalCode))
+            {
+                var validationResult = ValidateCustomerData(customerViewModel.CurrentCustomer);
+
+                if (validationResult.IsValid)
+                {
+                    StoreNewCustomer();
+                    ResetInputForm();
+                }
+            }
+        }
+
+        private Customer CreateBlankCustomerWithAddress()
+        {
+            Customer newCustomer = new Customer();
+            newCustomer.Address = new Address();
+            return newCustomer;
+        }
+
+        private void StoreNewCustomer()
+        {
+            lbCustomer.Items.Add(customerViewModel.CurrentCustomer);
+        }
+
+        private void ResetInputForm()
+        {
+            customerViewModel.CurrentCustomer = CreateBlankCustomerWithAddress();
+            this.DataContext = customerViewModel;
+            postalCode.Clear();
+        }
+
+        private FluentValidation.Results.ValidationResult ValidateCustomerData(Customer data)
+        {
+            CustomerValidator validator = new CustomerValidator();
+            return validator.Validate(data);
         }
     }
 }

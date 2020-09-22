@@ -14,14 +14,25 @@ namespace ShopManager.Model
         private string surname;
         private Address address;
 
-        public Customer(int id, string firstname, string surname, Address address)
+        public Customer()
         {
-            Id = id;
+            Id = Customers.Count;
+            Customers.Add(this);
+        }
+
+        public Customer(string firstname, string surname, Address address)
+        {
             Firstname = firstname;
             Surname = surname;
             Address = address;
-
+            
+            Id = Customers.Count;
             Customers.Add(this);
+        }
+
+        public Customer(int id, string firstname, string surname, Address address) : this(firstname, surname, address)
+        {
+            Id = id;
         }
 
         public static List<Customer> Customers { get => customers; set => customers = value; }
