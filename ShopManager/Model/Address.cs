@@ -9,7 +9,7 @@ namespace ShopManager.Model
     public class Address
     {
         #region Fields
-        private int postalCode;
+        private string postalCode;
         private string housenumber;
         private string street;
         private string city;
@@ -21,7 +21,7 @@ namespace ShopManager.Model
 
         }
 
-        public Address(string street, string housenumber, int postalCode, string city)
+        public Address(string street, string housenumber, string postalCode, string city)
         {
             PostalCode = postalCode;
             Housenumber = housenumber;
@@ -31,7 +31,7 @@ namespace ShopManager.Model
         #endregion
 
         #region Properties
-        public int PostalCode { get => postalCode; set => postalCode = value; }
+        public string PostalCode { get => postalCode; set => postalCode = value; }
         public string Housenumber { get => housenumber; set => housenumber = value; }
         public string Street { get => street; set => street = value; }
         public string City { get => city; set => city = value; }

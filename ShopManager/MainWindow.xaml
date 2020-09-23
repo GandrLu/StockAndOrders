@@ -19,13 +19,34 @@
                     <xctk:WatermarkTextBox x:Name="surName" HorizontalAlignment="Left" Height="23" Margin="135,41,0,0" TextWrapping="Wrap" Text="{Binding CurrentCustomer.Surname}" Watermark="Lastname" VerticalAlignment="Top" Width="120"/>
                     <xctk:WatermarkTextBox x:Name="street" HorizontalAlignment="Left" Height="23" Margin="260,41,0,0" TextWrapping="Wrap" Text="{Binding CurrentCustomer.Address.Street}" Watermark="Street" VerticalAlignment="Top" Width="120"/>
                     <xctk:WatermarkTextBox x:Name="housenumber" HorizontalAlignment="Left" Height="23" Margin="385,41,0,0" TextWrapping="Wrap" Text="{Binding CurrentCustomer.Address.Housenumber}" Watermark="Housenumber" VerticalAlignment="Top" Width="120"/>
-                    <xctk:WatermarkTextBox x:Name="postalCode" HorizontalAlignment="Left" Height="23" Margin="510,41,0,0" TextWrapping="Wrap" Text="{Binding CurrentCustomer.Address.PostalCode, Mode=OneWayToSource}" Watermark="Postal Code" VerticalAlignment="Top" Width="120"/>
+                    <xctk:WatermarkTextBox x:Name="postalCode" HorizontalAlignment="Left" Height="23" Margin="510,41,0,0" TextWrapping="Wrap" Text="{Binding CurrentCustomer.Address.PostalCode}" Watermark="Postal Code" VerticalAlignment="Top" Width="120"/>
                     <xctk:WatermarkTextBox x:Name="city" HorizontalAlignment="Left" Height="23" Margin="635,41,0,0" TextWrapping="Wrap" Text="{Binding CurrentCustomer.Address.City}" Watermark="City" VerticalAlignment="Top" Width="120"/>
 
-                    <Button x:Name="btnCreateNewCustomer" Content="Create" HorizontalAlignment="Left" Margin="680,69,0,0" VerticalAlignment="Top" Width="75" Command="{Binding SaveCustomerCommand}" Click="btnCreateNewCustomer_Click"/>
+                    <Button x:Name="btnCreateNewCustomer" Content="Create" HorizontalAlignment="Left" Margin="680,69,0,0" VerticalAlignment="Top" Width="75" Command="{Binding SaveCustomerCommand}"/>
 
-                    <ListBox x:Name="lbCustomer" HorizontalAlignment="Left" Height="287" Margin="10,94,0,0" VerticalAlignment="Top" Width="745"/>
-                </Grid>
+					<ListBox x:Name="lbCustomers" HorizontalAlignment="Left" Height="287" Margin="10,94,0,0" VerticalAlignment="Top" Width="745">
+						<ListBox.ItemTemplate>
+							<DataTemplate>
+								<StackPanel Orientation="Horizontal">
+									<TextBlock Text="{Binding Id}"/>
+									<TextBlock Text=", "/>
+									<TextBlock Text="{Binding Firstname}"/>
+									<TextBlock Text=" "/>
+									<TextBlock Text="{Binding Surname}"/>
+									<TextBlock Text=", "/>
+									<TextBlock Text="{Binding Address.Street}"/>
+									<TextBlock Text=" "/>
+									<TextBlock Text="{Binding Address.Housenumber}"/>
+									<TextBlock Text=", "/>
+									<TextBlock Text="{Binding Address.PostalCode}"/>
+									<TextBlock Text=" "/>
+									<TextBlock Text="{Binding Address.City}"/>
+								</StackPanel>
+							</DataTemplate>
+						</ListBox.ItemTemplate>
+					</ListBox>
+
+				</Grid>
             </TabItem>
             <TabItem Header="Items">
                 <Grid>

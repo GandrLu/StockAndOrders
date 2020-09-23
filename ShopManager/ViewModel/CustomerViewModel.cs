@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using ShopManager.Helper;
 using ShopManager.Model;
+using ShopManager.Validator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,8 @@ namespace ShopManager.ViewModel
 
         public CustomerViewModel()
         {
-            loadedCustomers = new List<Customer>();
+            LoadedCustomers = new List<Customer>();
+            CurrentCustomer = CreateBlankCustomerWithAddress();
         }
 
         public Customer CurrentCustomer
@@ -34,7 +36,18 @@ namespace ShopManager.ViewModel
             }
         }
 
-        public List<Customer> LoadedCustomers { get; set; }
+        public List<Customer> LoadedCustomers
+        {
+            get { return loadedCustomers; }
+            set
+            {
+                if (value != loadedCustomers)
+                {
+                    loadedCustomers = value;
+                    OnPropertyChanged("LoadedCustomers");
+                }
+            }
+        }
 
         public ICommand SaveCustomerCommand
         {
@@ -51,14 +64,37 @@ namespace ShopManager.ViewModel
             }
         }
 
+        private FluentValidation.Results.ValidationResult ValidateCustomerData(Customer data)
+        {
+            CustomerValidator validator = new CustomerValidator();
+            return validator.Validate(data);
+        }
+
+        public Customer CreateBlankCustomerWithAddress()
+        {
+            Customer newCustomer = new Customer();
+            newCustomer.Address = new Address();
+            return newCustomer;
+        }
+
         private void SaveCustomer()
         {
-            Console.WriteLine("SAVE CUSTOMER");
+			if(int.TryParse(CurrentCustomer.Address.PostalCode, out int intPostalCode))
+            {
+                var validationResult = ValidateCustomerData(CurrentCustomer);
+
+                if (validationResult.IsValid)
+                {
+                    StoreNewCustomer();
+                    CurrentCustomer = CreateBlankCustomerWithAddress();
+                }
+            }
         }
 
         private void StoreNewCustomer()
         {
-            
+            Console.WriteLine("SAVE CUSTOMER");
+			LoadedCustomers.Add(CurrentCustomer);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,56 +24,28 @@ namespace ShopManager
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Customer inputCustomer;
         private CustomerViewModel customerViewModel;
-
+        
         public MainWindow()
         {
             InitializeComponent();
-            //inputCustomer = CreateBlankCustomerWithAddress();
-
             customerViewModel = new CustomerViewModel();
             this.DataContext = customerViewModel;
-            customerViewModel.CurrentCustomer = CreateBlankCustomerWithAddress();
-        }
-
-        private void btnCreateNewCustomer_Click(object sender, RoutedEventArgs e)
-        {
-            if(int.TryParse(postalCode.Text, out int intPostalCode))
-            {
-                var validationResult = ValidateCustomerData(customerViewModel.CurrentCustomer);
-
-                if (validationResult.IsValid)
-                {
-                    StoreNewCustomer();
-                    ResetInputForm();
-                }
-            }
-        }
-
-        private Customer CreateBlankCustomerWithAddress()
-        {
-            Customer newCustomer = new Customer();
-            newCustomer.Address = new Address();
-            return newCustomer;
-        }
-
-        private void StoreNewCustomer()
-        {
-            lbCustomer.Items.Add(customerViewModel.CurrentCustomer);
+			lbCustomers.ItemsSource = customerViewModel.LoadedCustomers;
+            customerViewModel.PropertyChanged += updateLBCustomers;
         }
 
         private void ResetInputForm()
         {
-            customerViewModel.CurrentCustomer = CreateBlankCustomerWithAddress();
+            customerViewModel.CurrentCustomer = customerViewModel.CreateBlankCustomerWithAddress();
             this.DataContext = customerViewModel;
             postalCode.Clear();
         }
 
-        private FluentValidation.Results.ValidationResult ValidateCustomerData(Customer data)
+        void updateLBCustomers(object sender, EventArgs e)
         {
-            CustomerValidator validator = new CustomerValidator();
-            return validator.Validate(data);
+            lbCustomers.ItemsSource = null;
+            lbCustomers.ItemsSource = customerViewModel.LoadedCustomers;
         }
     }
 }

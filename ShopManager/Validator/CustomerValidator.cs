@@ -15,7 +15,7 @@ namespace ShopManager.Validator
             RuleFor(customer => customer.Firstname).NotEmpty().Length(2, 100);
             RuleFor(customer => customer.Surname).NotEmpty().Length(2, 100);
             RuleFor(customer => customer.Address.Street).NotEmpty().Length(2, 100);
-            RuleFor(customer => customer.Address.Housenumber).NotEmpty().Length(2, 50);
+            RuleFor(customer => customer.Address.Housenumber).NotEmpty().Length(1, 50);
             RuleFor(customer => customer.Address.City).NotEmpty().Length(2, 50);
         }
 
