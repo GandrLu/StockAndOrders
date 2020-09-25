@@ -9,7 +9,7 @@
         Title="Stock and Orders" Height="450" Width="800">
     <Grid>
         <TabControl>
-            <TabItem Header="Customer">
+            <TabItem Header="Customers">
                 <Grid>
                     <Label x:Name="newCustomer" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top">
                         <Grid Background="#FFE5E5E5"/>
@@ -50,6 +50,15 @@
             </TabItem>
             <TabItem Header="Items">
                 <Grid>
+                    <xctk:WatermarkTextBox x:Name="quantity" HorizontalAlignment="Left" Height="23" Margin="10,41,0,0" TextWrapping="Wrap" Text="{Binding CurrentCustomer.Firstname}" Watermark="Quantity" VerticalAlignment="Top" Width="120"/>
+                    <xctk:WatermarkTextBox x:Name="name" HorizontalAlignment="Left" Height="23" Margin="135,41,0,0" TextWrapping="Wrap" Text="{Binding CurrentCustomer.Surname}" Watermark="Name" VerticalAlignment="Top" Width="120"/>
+                    <xctk:WatermarkTextBox x:Name="category" HorizontalAlignment="Left" Height="23" Margin="260,41,0,0" TextWrapping="Wrap" Text="{Binding CurrentCustomer.Address.Street}" Watermark="Category" VerticalAlignment="Top" Width="120"/>
+                    <xctk:WatermarkTextBox x:Name="description" HorizontalAlignment="Left" Height="23" Margin="385,41,0,0" TextWrapping="Wrap" Text="{Binding CurrentCustomer.Address.Housenumber}" Watermark="Description" VerticalAlignment="Top" Width="120"/>
+                    <xctk:WatermarkTextBox x:Name="color" HorizontalAlignment="Left" Height="23" Margin="510,41,0,0" TextWrapping="Wrap" Text="{Binding CurrentCustomer.Address.PostalCode}" Watermark="Color" VerticalAlignment="Top" Width="120"/>
+                    <xctk:WatermarkTextBox x:Name="price" HorizontalAlignment="Left" Height="23" Margin="635,41,0,0" TextWrapping="Wrap" Text="{Binding CurrentCustomer.Address.City}" Watermark="Price" VerticalAlignment="Top" Width="120"/>
+
+                    <Button x:Name="btnCreateNewItem" Content="Create" HorizontalAlignment="Left" Margin="680,69,0,0" VerticalAlignment="Top" Width="75" Command="{Binding SaveCustomerCommand}"/>
+
                     <ListBox x:Name="lbItems" HorizontalAlignment="Left" Height="287" Margin="10,94,0,0" VerticalAlignment="Top" Width="745"/>
                 </Grid>
             </TabItem>

@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ShopManager.Helper;
 using ShopManager.Model;
 using ShopManager.Validator;
 using ShopManager.ViewModel;
@@ -31,8 +32,11 @@ namespace ShopManager
             InitializeComponent();
             customerViewModel = new CustomerViewModel();
             this.DataContext = customerViewModel;
-			lbCustomers.ItemsSource = customerViewModel.LoadedCustomers;
             customerViewModel.PropertyChanged += updateLBCustomers;
+            DataBaseConnection dbConnection = new DataBaseConnection();
+            List<Customer> customers = dbConnection.SelectAllCustomers();
+            customerViewModel.LoadedCustomers = dbConnection.SelectAllCustomers();
+			lbCustomers.ItemsSource = customerViewModel.LoadedCustomers;
         }
 
         private void ResetInputForm()

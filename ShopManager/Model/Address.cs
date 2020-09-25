@@ -9,6 +9,7 @@ namespace ShopManager.Model
     public class Address
     {
         #region Fields
+        private int id;
         private string postalCode;
         private string housenumber;
         private string street;
@@ -28,9 +29,15 @@ namespace ShopManager.Model
             Street = street;
             City = city;
         }
+
+        public Address(int id, string street, string housenumber, string postalCode, string city) : this(street, housenumber, postalCode, city)
+        {
+            ID = id;
+        }
         #endregion
 
         #region Properties
+        public int ID { get => id; set => id = value; }
         public string PostalCode { get => postalCode; set => postalCode = value; }
         public string Housenumber { get => housenumber; set => housenumber = value; }
         public string Street { get => street; set => street = value; }
