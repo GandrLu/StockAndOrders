@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ShopManager.Helper;
 using ShopManager.Model;
+using ShopManager.Properties;
 using ShopManager.Validator;
 using ShopManager.ViewModel;
 
@@ -26,6 +27,7 @@ namespace ShopManager
     public partial class MainWindow : Window
     {
         private CustomerViewModel customerViewModel;
+        private SettingsViewModel settingsViewModel;
         
         public MainWindow()
         {
@@ -37,6 +39,14 @@ namespace ShopManager
             List<Customer> customers = dbConnection.SelectAllCustomers();
             customerViewModel.LoadedCustomers = dbConnection.SelectAllCustomers();
 			lbCustomers.ItemsSource = customerViewModel.LoadedCustomers;
+            new EtsyApiConnector();
+            settingsViewModel = new SettingsViewModel();
+            tbDatabaseServer.Text = settingsViewModel.DatabaseServer;
+            tbDatabaseName.Text = settingsViewModel.DatabaseName;
+            tbDatabaseUser.Text = settingsViewModel.DatabaseUserId;
+            pbDatabaseSecret.Password = settingsViewModel.DatabaseSecret;
+            tbEtsyUser.Text = settingsViewModel.EtsyUserId;
+            pbEtsyPassword.Password = settingsViewModel.EtsyPassword;
         }
 
         private void ResetInputForm()
@@ -46,10 +56,16 @@ namespace ShopManager
             postalCode.Clear();
         }
 
-        void updateLBCustomers(object sender, EventArgs e)
+        private void updateLBCustomers(object sender, EventArgs e)
         {
             lbCustomers.ItemsSource = null;
             lbCustomers.ItemsSource = customerViewModel.LoadedCustomers;
+        }
+
+        private void OnSaveSettingsButton_Click(Object sender, RoutedEventArgs e)
+        {
+            settingsViewModel.SaveSettings(tbDatabaseServer.Text, tbDatabaseName.Text, 
+                tbDatabaseUser.Text, pbDatabaseSecret.Password, tbEtsyUser.Text, pbEtsyPassword.Password);
         }
     }
 }

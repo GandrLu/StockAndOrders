@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using ShopManager.Model;
+using ShopManager.Properties;
 
 namespace ShopManager.Helper
 {
@@ -12,20 +13,24 @@ namespace ShopManager.Helper
     {
         private MySqlConnection connection;
         private string connectionString;
-        private string server = "localhost";
-        private string userId = "root";
-        private string password = "";
-        private string dataBaseName = "stockandorders";
+        private string server;
+        private string userId;
+        private string secret;
+        private string databaseName;
 
         public DataBaseConnection()
         {
+            server = (string)Settings.Default["DatabaseServer"];
+            userId = (string)Settings.Default["DatabaseUserId"];
+            secret = (string)Settings.Default["DatabaseSecret"];
+            databaseName = (string)Settings.Default["DatabaseName"];
             connectionString = string.Format(@"server={0};userid={1};password={2};database={3}", 
-                server, userId, password, dataBaseName);
+                server, userId, secret, databaseName);
         }
 
         public List<Customer> SelectAllCustomers()
         {
-            string sql = "SELECT * FROM customer";
+            string sql = "SELECT * FROM customers";
             List<Customer> customersFromDB = new List<Customer>();
 
             using (connection = new MySqlConnection(connectionString))
@@ -41,8 +46,8 @@ namespace ShopManager.Helper
                             Dictionary<int, Address> addressesDict = SelectAllAddresses();
                             while (rdr.Read())
                             {
-                                Address address = addressesDict[rdr.GetInt32(3)];
-                                customersFromDB.Add(new Customer(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2), address));
+                                Address address = addressesDict[rdr.GetInt32("address")];
+                                customersFromDB.Add(new Customer(rdr.GetInt32("id"), rdr.GetString("firstname"), rdr.GetString("surname"), address));
                             }
                         }
                     }
@@ -57,7 +62,7 @@ namespace ShopManager.Helper
 
         public Dictionary<int, Address> SelectAllAddresses()
         {
-            string sql = "SELECT * FROM address";
+            string sql = "SELECT * FROM addresses";
             Dictionary<int, Address> addressesFromDB = new Dictionary<int, Address>();
 
             using (connection = new MySqlConnection(connectionString))
@@ -72,9 +77,9 @@ namespace ShopManager.Helper
                         {
                             while (rdr.Read())
                             {
-                                addressesFromDB.Add(rdr.GetInt32(0), 
-                                    new Address(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2), 
-                                    rdr.GetString(3), rdr.GetString(4)));
+                                addressesFromDB.Add(rdr.GetInt32("id"), 
+                                    new Address(rdr.GetInt32("id"), rdr.GetString("street"), rdr.GetString("housenumber"), 
+                                    rdr.GetString("postalcode"), rdr.GetString("city")));
                             }
                         }
                     }

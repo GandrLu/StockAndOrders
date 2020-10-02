@@ -4,17 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        xmlns:local="clr-namespace:ShopManager"
         mc:Ignorable="d"
         Title="Stock and Orders" Height="450" Width="800">
     <Grid>
         <TabControl>
             <TabItem Header="Customers">
                 <Grid>
-                    <Label x:Name="newCustomer" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top">
-                        <Grid Background="#FFE5E5E5"/>
-
-                    </Label>
                     <xctk:WatermarkTextBox x:Name="firstName" HorizontalAlignment="Left" Height="23" Margin="10,41,0,0" TextWrapping="Wrap" Text="{Binding CurrentCustomer.Firstname}" Watermark="Firstname" VerticalAlignment="Top" Width="120"/>
                     <xctk:WatermarkTextBox x:Name="surName" HorizontalAlignment="Left" Height="23" Margin="135,41,0,0" TextWrapping="Wrap" Text="{Binding CurrentCustomer.Surname}" Watermark="Lastname" VerticalAlignment="Top" Width="120"/>
                     <xctk:WatermarkTextBox x:Name="street" HorizontalAlignment="Left" Height="23" Margin="260,41,0,0" TextWrapping="Wrap" Text="{Binding CurrentCustomer.Address.Street}" Watermark="Street" VerticalAlignment="Top" Width="120"/>
@@ -24,29 +19,29 @@
 
                     <Button x:Name="btnCreateNewCustomer" Content="Create" HorizontalAlignment="Left" Margin="680,69,0,0" VerticalAlignment="Top" Width="75" Command="{Binding SaveCustomerCommand}"/>
 
-					<ListBox x:Name="lbCustomers" HorizontalAlignment="Left" Height="287" Margin="10,94,0,0" VerticalAlignment="Top" Width="745">
-						<ListBox.ItemTemplate>
-							<DataTemplate>
-								<StackPanel Orientation="Horizontal">
-									<TextBlock Text="{Binding Id}"/>
-									<TextBlock Text=", "/>
-									<TextBlock Text="{Binding Firstname}"/>
-									<TextBlock Text=" "/>
-									<TextBlock Text="{Binding Surname}"/>
-									<TextBlock Text=", "/>
-									<TextBlock Text="{Binding Address.Street}"/>
-									<TextBlock Text=" "/>
-									<TextBlock Text="{Binding Address.Housenumber}"/>
-									<TextBlock Text=", "/>
-									<TextBlock Text="{Binding Address.PostalCode}"/>
-									<TextBlock Text=" "/>
-									<TextBlock Text="{Binding Address.City}"/>
-								</StackPanel>
-							</DataTemplate>
-						</ListBox.ItemTemplate>
-					</ListBox>
+                    <ListBox x:Name="lbCustomers" HorizontalAlignment="Left" Height="287" Margin="10,94,0,0" VerticalAlignment="Top" Width="745">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Id}"/>
+                                    <TextBlock Text=", "/>
+                                    <TextBlock Text="{Binding Firstname}"/>
+                                    <TextBlock Text=" "/>
+                                    <TextBlock Text="{Binding Surname}"/>
+                                    <TextBlock Text=", "/>
+                                    <TextBlock Text="{Binding Address.Street}"/>
+                                    <TextBlock Text=" "/>
+                                    <TextBlock Text="{Binding Address.Housenumber}"/>
+                                    <TextBlock Text=", "/>
+                                    <TextBlock Text="{Binding Address.PostalCode}"/>
+                                    <TextBlock Text=" "/>
+                                    <TextBlock Text="{Binding Address.City}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
 
-				</Grid>
+                </Grid>
             </TabItem>
             <TabItem Header="Items">
                 <Grid>
@@ -62,7 +57,42 @@
                     <ListBox x:Name="lbItems" HorizontalAlignment="Left" Height="287" Margin="10,94,0,0" VerticalAlignment="Top" Width="745"/>
                 </Grid>
             </TabItem>
+
             <TabItem Header="Orders"></TabItem>
+
+            <TabItem Header="Settings">
+                <Grid Margin="2">
+                        
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                    <Label Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center">Database Server</Label>
+                    <TextBox x:Name="tbDatabaseServer" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"/>
+                    <Label Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center">Database Name</Label>
+                    <TextBox x:Name="tbDatabaseName" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"/>
+                    <Label Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center">Database User</Label>
+                    <TextBox x:Name="tbDatabaseUser" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"/>
+                    <Label Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Center">Database Secret</Label>
+                    <PasswordBox x:Name="pbDatabaseSecret" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"/>
+                    <Label Grid.Column="0" Grid.Row="4" HorizontalAlignment="Right" VerticalAlignment="Center">Etsy User</Label>
+                    <TextBox x:Name="tbEtsyUser" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"/>
+                    <Label Grid.Column="0" Grid.Row="5" HorizontalAlignment="Right" VerticalAlignment="Center">Etsy Password</Label>
+                    <PasswordBox x:Name="pbEtsyPassword" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"/>
+
+                    <Button x:Name="btnSaveSettings" Grid.Column="1" Grid.Row="6" HorizontalAlignment="Right" Width="100" Height="40" Click="OnSaveSettingsButton_Click">Save</Button>
+                </Grid>
+            </TabItem>
+
             <TabItem Header="About">
                 <StackPanel>
                     <TextBlock TextWrapping="Wrap" Text="Stock and Orders (c) by Luzius Kölling, 2020" Margin="10"/>

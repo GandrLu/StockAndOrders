@@ -15,7 +15,7 @@ namespace ShopManager.ViewModel
     {
         private Customer currentCustomer;
         private List<Customer> loadedCustomers;
-        private ICommand saveProductCommand;
+        private ICommand saveCustomerCommand;
 
         public CustomerViewModel()
         {
@@ -53,14 +53,14 @@ namespace ShopManager.ViewModel
         {
             get
             {
-                if (saveProductCommand == null)
+                if (saveCustomerCommand == null)
                 {
-                    saveProductCommand = new RelayCommand(
+                    saveCustomerCommand = new RelayCommand(
                         () => SaveCustomer(),
                         () => (CurrentCustomer != null)
                         );
                 }
-                return saveProductCommand;
+                return saveCustomerCommand;
             }
         }
 
