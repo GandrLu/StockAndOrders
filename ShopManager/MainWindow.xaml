@@ -84,10 +84,9 @@
                     <TextBox x:Name="tbDatabaseUser" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"/>
                     <Label Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Center">Database Secret</Label>
                     <PasswordBox x:Name="pbDatabaseSecret" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"/>
-                    <Label Grid.Column="0" Grid.Row="4" HorizontalAlignment="Right" VerticalAlignment="Center">Etsy User</Label>
-                    <TextBox x:Name="tbEtsyUser" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"/>
-                    <Label Grid.Column="0" Grid.Row="5" HorizontalAlignment="Right" VerticalAlignment="Center">Etsy Password</Label>
-                    <PasswordBox x:Name="pbEtsyPassword" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"/>
+                    <Label Grid.Column="0" Grid.Row="4" HorizontalAlignment="Right" VerticalAlignment="Center">Etsy Verification Code</Label>
+                    <TextBox x:Name="tbEtsyVerificationCode" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"/>
+                    <Button x:Name="btnEtsyVerificationRequest" IsEnabled="False" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Left" VerticalAlignment="Center">Request Verification Code</Button>
 
                     <Button x:Name="btnSaveSettings" Grid.Column="1" Grid.Row="6" HorizontalAlignment="Right" Width="100" Height="40" Click="OnSaveSettingsButton_Click">Save</Button>
                 </Grid>

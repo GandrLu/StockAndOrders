@@ -2,7 +2,7 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ShopManager.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="AppConfigured" Type="System.Boolean" Scope="User">
+    <Setting Name="IsAppConfigured" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="DatabaseServer" Type="System.String" Scope="User">
@@ -17,10 +17,13 @@
     <Setting Name="DatabaseSecret" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="EtsyUserId" Type="System.String" Scope="User">
+    <Setting Name="EtsyVerificationCode" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="EtsyPassword" Type="System.String" Scope="User">
+    <Setting Name="EtsyConsumerKey" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="EtsyConsumerSecret" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

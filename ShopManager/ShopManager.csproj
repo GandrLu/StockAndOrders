@@ -187,6 +187,9 @@
     <Compile Include="Validator\CustomerValidator.cs" />
     <Compile Include="ViewModel\CustomerViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
+    <Compile Include="View\VerificationCodeDialogView.xaml.cs">
+      <DependentUpon>VerificationCodeDialogView.xaml</DependentUpon>
+    </Compile>
     <Page Include="View\AuthLoginBrowserView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -209,6 +212,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\VerificationCodeDialogView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\Order.cs" />

@@ -17,6 +17,7 @@ using ShopManager.Helper;
 using ShopManager.Model;
 using ShopManager.Properties;
 using ShopManager.Validator;
+using ShopManager.View;
 using ShopManager.ViewModel;
 
 namespace ShopManager
@@ -39,14 +40,16 @@ namespace ShopManager
             List<Customer> customers = dbConnection.SelectAllCustomers();
             customerViewModel.LoadedCustomers = dbConnection.SelectAllCustomers();
 			lbCustomers.ItemsSource = customerViewModel.LoadedCustomers;
-            new EtsyApiConnector();
             settingsViewModel = new SettingsViewModel();
+
+            if (!SettingsViewModel.IsAppConfigured)
+                ShowVerificationCodeDialog();
+
             tbDatabaseServer.Text = settingsViewModel.DatabaseServer;
             tbDatabaseName.Text = settingsViewModel.DatabaseName;
             tbDatabaseUser.Text = settingsViewModel.DatabaseUserId;
             pbDatabaseSecret.Password = settingsViewModel.DatabaseSecret;
-            tbEtsyUser.Text = settingsViewModel.EtsyUserId;
-            pbEtsyPassword.Password = settingsViewModel.EtsyPassword;
+            tbEtsyVerificationCode.Text = settingsViewModel.EtsyVerificationCode;
         }
 
         private void ResetInputForm()
@@ -65,7 +68,14 @@ namespace ShopManager
         private void OnSaveSettingsButton_Click(Object sender, RoutedEventArgs e)
         {
             settingsViewModel.SaveSettings(tbDatabaseServer.Text, tbDatabaseName.Text, 
-                tbDatabaseUser.Text, pbDatabaseSecret.Password, tbEtsyUser.Text, pbEtsyPassword.Password);
+                tbDatabaseUser.Text, pbDatabaseSecret.Password);
+        }
+
+        private void ShowVerificationCodeDialog()
+        {
+            VerificationCodeDialogView verificationCodeDialog = new VerificationCodeDialogView();
+
+            verificationCodeDialog.ShowDialog();
         }
     }
 }

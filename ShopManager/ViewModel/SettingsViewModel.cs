@@ -12,25 +12,30 @@ namespace ShopManager.ViewModel
 {
     class SettingsViewModel
     {
-        private string databaseServer;
-        private string databaseUserId;
-        private string databaseSecret;
-        private string databaseName;
-        private string etsyUserId;
-        private string etsyPassword;
+        private static bool isAppConfigured;
+        private static string databaseServer;
+        private static string databaseUserId;
+        private static string databaseSecret;
+        private static string databaseName;
+        private static string etsyVerificationCode;
         private ICommand saveSettingsCommand;
-
+        private ICommand saveVerificationCodeCommand;
 
         public SettingsViewModel()
         {
             try
             {
+                IsAppConfigured = (bool)Settings.Default["IsAppConfigured"];
                 DatabaseServer = (string)Settings.Default["DatabaseServer"];
                 DatabaseName = (string)Settings.Default["DatabaseName"];
                 DatabaseUserId = (string)Settings.Default["DatabaseUserId"];
                 DatabaseSecret = (string)Settings.Default["DatabaseSecret"];
-                EtsyUserId = (string)Settings.Default["EtsyUserId"];
-                EtsyPassword = (string)Settings.Default["EtsyPassword"];
+                EtsyVerificationCode = (string)Settings.Default["EtsyVerificationCode"];
+
+                if (EtsyVerificationCode != string.Empty)
+                {
+                    IsAppConfigured = true;
+                }
             }
             catch (SettingsPropertyNotFoundException e)
             {
@@ -38,12 +43,13 @@ namespace ShopManager.ViewModel
             }
         }
 
+        public static bool IsAppConfigured { get => isAppConfigured; 
+            set { isAppConfigured = value; Settings.Default ["IsAppConfigured"] = value; Settings.Default.Save(); } }
         public string DatabaseServer { get => databaseServer; set => databaseServer = value; }
         public string DatabaseUserId { get => databaseUserId; set => databaseUserId = value; }
         public string DatabaseSecret { get => databaseSecret; set => databaseSecret = value; }
         public string DatabaseName { get => databaseName; set => databaseName = value; }
-        public string EtsyUserId { get => etsyUserId; set => etsyUserId = value; }
-        public string EtsyPassword { get => etsyPassword; set => etsyPassword = value; }
+        public string EtsyVerificationCode { get => etsyVerificationCode; set => etsyVerificationCode = value; }
 
         public ICommand SaveSettingsCommand
         {
@@ -60,27 +66,38 @@ namespace ShopManager.ViewModel
             }
         }
 
+        public ICommand SaveVerificationCodeCommand
+        {
+            get
+            {
+                if (saveVerificationCodeCommand == null)
+                {
+                    saveVerificationCodeCommand = new RelayCommand(
+                        () => SaveVerificationCode(),
+                        () => (EtsyVerificationCode != null)
+                        );
+                }
+                return saveVerificationCodeCommand;
+            }
+        }
+
         public void SaveSettings()
         {
             Settings.Default["DatabaseServer"] = DatabaseServer;
             Settings.Default["DatabaseName"] = DatabaseName;
             Settings.Default["DatabaseUserId"] = DatabaseUserId;
             Settings.Default["DatabaseSecret"] = DatabaseSecret;
-            Settings.Default["EtsyUserId"] = EtsyUserId;
-            Settings.Default["EtsyPassword"] = EtsyPassword;
-            Properties.Settings.Default.Save();
+            Settings.Default.Save();
         }
 
         public void SaveSettings(string databaseServer, string databaseName, 
-            string databaseUserId, string databaseSecret, string etsyUserId, string etsyPassword)
+            string databaseUserId, string databaseSecret)
         {
             Settings.Default["DatabaseServer"] = databaseServer;
             Settings.Default["DatabaseName"] = databaseName;
             Settings.Default["DatabaseUserId"] = databaseUserId;
             Settings.Default["DatabaseSecret"] = databaseSecret;
-            Settings.Default["EtsyUserId"] = etsyUserId;
-            Settings.Default["EtsyPassword"] = etsyPassword;
-            Properties.Settings.Default.Save();
+            Settings.Default.Save();
         }
 
         public void ReceiveSettings()
@@ -90,10 +107,14 @@ namespace ShopManager.ViewModel
             settings += (string)Settings.Default["DatabaseName"];
             settings += (string)Settings.Default["DatabaseUserId"];
             settings += (string)Settings.Default["DatabaseSecret"];
-            settings += (string)Settings.Default["EtsyUserId"];
-            settings += (string)Settings.Default["EtsyPassword"];
 
             Console.WriteLine(settings);
+        }
+
+        public void SaveVerificationCode()
+        {
+            Settings.Default["EtsyVerificationCode"] = EtsyVerificationCode;
+            Settings.Default.Save();
         }
     }
 }

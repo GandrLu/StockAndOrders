@@ -12,7 +12,7 @@ namespace ShopManager.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.9.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.7.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -26,12 +26,12 @@ namespace ShopManager.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool AppConfigured {
+        public bool IsAppConfigured {
             get {
-                return ((bool)(this["AppConfigured"]));
+                return ((bool)(this["IsAppConfigured"]));
             }
             set {
-                this["AppConfigured"] = value;
+                this["IsAppConfigured"] = value;
             }
         }
         
@@ -86,24 +86,36 @@ namespace ShopManager.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string EtsyUserId {
+        public string EtsyVerificationCode {
             get {
-                return ((string)(this["EtsyUserId"]));
+                return ((string)(this["EtsyVerificationCode"]));
             }
             set {
-                this["EtsyUserId"] = value;
+                this["EtsyVerificationCode"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string EtsyPassword {
+        public string EtsyConsumerKey {
             get {
-                return ((string)(this["EtsyPassword"]));
+                return ((string)(this["EtsyConsumerKey"]));
             }
             set {
-                this["EtsyPassword"] = value;
+                this["EtsyConsumerKey"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string EtsyConsumerSecret {
+            get {
+                return ((string)(this["EtsyConsumerSecret"]));
+            }
+            set {
+                this["EtsyConsumerSecret"] = value;
             }
         }
     }

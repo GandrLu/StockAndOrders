@@ -17,14 +17,25 @@ namespace ShopManager.Helper
 
         public EtsyApiConnector()
         {
+            
+        }
+
+        public static bool AcquireRequestToken()
+        {
             var oAuth = new OAuth.Manager();
             string requestUrl = "https://openapi.etsy.com/v2/oauth/request_token?scope=email_r";
             oAuth["consumer_key"] = CONSUMER_KEY;
             oAuth["consumer_secret"] = CONSUMER_SECRET;
             OAuthResponse tokenResponse = oAuth.AcquireRequestToken(requestUrl, "GET");
+
             string unescapedAuthUrl = Uri.UnescapeDataString(tokenResponse.AllText);
             unescapedAuthUrl = unescapedAuthUrl.Remove(0, "login_url=".Length);
             System.Diagnostics.Process.Start(unescapedAuthUrl);
+            
+            if (tokenResponse != null)
+                return true;
+            else
+                return false;
         }
     }
 }
