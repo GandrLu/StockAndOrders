@@ -1,18 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using ShopManager.Helper;
 using ShopManager.Model;
 using ShopManager.Properties;
@@ -23,35 +12,64 @@ using ShopManager.ViewModel;
 namespace ShopManager
 {
     /// <summary>
-    /// Interaktionslogik für MainWindow.xaml
+    /// View for all tabs.
     /// </summary>
     public partial class MainWindow : Window
     {
+        #region Fields
         private CustomerViewModel customerViewModel;
         private SettingsViewModel settingsViewModel;
-        
+        #endregion
+
+        #region Constructor
         public MainWindow()
         {
             InitializeComponent();
+            SetupCustomerViewModel();
+            SetupDatabase();
+            SetupSettings();
+        }
+        #endregion
+
+        #region Setup Methods
+        private void SetupCustomerViewModel()
+        {
             customerViewModel = new CustomerViewModel();
-            this.DataContext = customerViewModel;
+            tiCustomers.DataContext = customerViewModel;
             customerViewModel.PropertyChanged += updateLBCustomers;
+        }
+
+        private void SetupDatabase()
+        {
             DataBaseConnection dbConnection = new DataBaseConnection();
             List<Customer> customers = dbConnection.SelectAllCustomers();
             customerViewModel.LoadedCustomers = dbConnection.SelectAllCustomers();
-			lbCustomers.ItemsSource = customerViewModel.LoadedCustomers;
-            settingsViewModel = new SettingsViewModel();
-
-            if (!SettingsViewModel.IsAppConfigured)
-                ShowVerificationCodeDialog();
-
-            tbDatabaseServer.Text = settingsViewModel.DatabaseServer;
-            tbDatabaseName.Text = settingsViewModel.DatabaseName;
-            tbDatabaseUser.Text = settingsViewModel.DatabaseUserId;
-            pbDatabaseSecret.Password = settingsViewModel.DatabaseSecret;
-            tbEtsyVerificationCode.Text = settingsViewModel.EtsyVerificationCode;
+            lbCustomers.ItemsSource = customerViewModel.LoadedCustomers;
         }
 
+        private void SetupSettings()
+        {
+            settingsViewModel = new SettingsViewModel();
+            if (!SettingsViewModel.IsAppConfigured)
+                ShowVerificationCodeDialog();
+            FillInSettings();
+        }
+        #endregion
+
+        #region Button Click Handler
+        private void OnSaveSettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            settingsViewModel.SaveSettings(tbDatabaseServer.Text, tbDatabaseName.Text, 
+                tbDatabaseUser.Text, pbDatabaseSecret.Password, tbEtsyVerificationCode.Text);
+        }
+
+        private void OnEtsyVerificationButton_Click(object sender, RoutedEventArgs e)
+        {
+            EtsyApiConnector.AcquireRequestToken();
+        }
+        #endregion
+
+        #region Helper Methods
         private void ResetInputForm()
         {
             customerViewModel.CurrentCustomer = customerViewModel.CreateBlankCustomerWithAddress();
@@ -65,17 +83,21 @@ namespace ShopManager
             lbCustomers.ItemsSource = customerViewModel.LoadedCustomers;
         }
 
-        private void OnSaveSettingsButton_Click(Object sender, RoutedEventArgs e)
-        {
-            settingsViewModel.SaveSettings(tbDatabaseServer.Text, tbDatabaseName.Text, 
-                tbDatabaseUser.Text, pbDatabaseSecret.Password);
-        }
-
         private void ShowVerificationCodeDialog()
         {
             VerificationCodeDialogView verificationCodeDialog = new VerificationCodeDialogView();
 
             verificationCodeDialog.ShowDialog();
         }
+
+        private void FillInSettings()
+        {
+            tbDatabaseServer.Text = settingsViewModel.DatabaseServer;
+            tbDatabaseName.Text = settingsViewModel.DatabaseName;
+            tbDatabaseUser.Text = settingsViewModel.DatabaseUserId;
+            pbDatabaseSecret.Password = settingsViewModel.DatabaseSecret;
+            tbEtsyVerificationCode.Text = settingsViewModel.EtsyVerificationCode;
+        }
+        #endregion
     }
 }

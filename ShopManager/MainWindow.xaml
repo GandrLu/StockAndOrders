@@ -8,7 +8,7 @@
         Title="Stock and Orders" Height="450" Width="800">
     <Grid>
         <TabControl>
-            <TabItem Header="Customers">
+            <TabItem x:Name="tiCustomers" Header="Customers">
                 <Grid>
                     <xctk:WatermarkTextBox x:Name="firstName" HorizontalAlignment="Left" Height="23" Margin="10,41,0,0" TextWrapping="Wrap" Text="{Binding CurrentCustomer.Firstname}" Watermark="Firstname" VerticalAlignment="Top" Width="120"/>
                     <xctk:WatermarkTextBox x:Name="surName" HorizontalAlignment="Left" Height="23" Margin="135,41,0,0" TextWrapping="Wrap" Text="{Binding CurrentCustomer.Surname}" Watermark="Lastname" VerticalAlignment="Top" Width="120"/>
@@ -86,7 +86,7 @@
                     <PasswordBox x:Name="pbDatabaseSecret" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"/>
                     <Label Grid.Column="0" Grid.Row="4" HorizontalAlignment="Right" VerticalAlignment="Center">Etsy Verification Code</Label>
                     <TextBox x:Name="tbEtsyVerificationCode" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"/>
-                    <Button x:Name="btnEtsyVerificationRequest" IsEnabled="False" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Left" VerticalAlignment="Center">Request Verification Code</Button>
+                    <Button x:Name="btnEtsyVerification" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Left" VerticalAlignment="Center" Click="OnEtsyVerificationButton_Click">Request Verification Code</Button>
 
                     <Button x:Name="btnSaveSettings" Grid.Column="1" Grid.Row="6" HorizontalAlignment="Right" Width="100" Height="40" Click="OnSaveSettingsButton_Click">Save</Button>
                 </Grid>

@@ -87,34 +87,36 @@ namespace ShopManager.ViewModel
             Settings.Default["DatabaseName"] = DatabaseName;
             Settings.Default["DatabaseUserId"] = DatabaseUserId;
             Settings.Default["DatabaseSecret"] = DatabaseSecret;
+            Settings.Default["EtsyVerificationCode"] = EtsyVerificationCode;
             Settings.Default.Save();
         }
 
         public void SaveSettings(string databaseServer, string databaseName, 
-            string databaseUserId, string databaseSecret)
+            string databaseUserId, string databaseSecret, string etsyVerificationCode)
         {
             Settings.Default["DatabaseServer"] = databaseServer;
             Settings.Default["DatabaseName"] = databaseName;
             Settings.Default["DatabaseUserId"] = databaseUserId;
             Settings.Default["DatabaseSecret"] = databaseSecret;
+            Settings.Default["EtsyVerificationCode"] = etsyVerificationCode;
             Settings.Default.Save();
-        }
-
-        public void ReceiveSettings()
-        {
-            string settings = "Settings: ";
-            settings += (string)Settings.Default["DatabaseServer"];
-            settings += (string)Settings.Default["DatabaseName"];
-            settings += (string)Settings.Default["DatabaseUserId"];
-            settings += (string)Settings.Default["DatabaseSecret"];
-
-            Console.WriteLine(settings);
         }
 
         public void SaveVerificationCode()
         {
             Settings.Default["EtsyVerificationCode"] = EtsyVerificationCode;
             Settings.Default.Save();
+        }
+
+        public override string ToString()
+        {
+            string settings = "Settings: ";
+            settings += (string)Settings.Default["DatabaseServer"];
+            settings += (string)Settings.Default["DatabaseName"];
+            settings += (string)Settings.Default["DatabaseUserId"];
+            settings += (string)Settings.Default["DatabaseSecret"];
+            settings += (string)Settings.Default["EtsyVerificationCode"];
+            return settings;
         }
     }
 }
