@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Command;
+using ShopManager.Helper;
 using ShopManager.Properties;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,8 @@ namespace ShopManager.ViewModel
         private static string databaseSecret;
         private static string databaseName;
         private static string etsyVerificationCode;
+        private static string etsyAccessToken;
+        private static string etsyAccessTokenSecret;
         private ICommand saveSettingsCommand;
         private ICommand saveVerificationCodeCommand;
 
@@ -43,8 +46,39 @@ namespace ShopManager.ViewModel
             }
         }
 
-        public static bool IsAppConfigured { get => isAppConfigured; 
-            set { isAppConfigured = value; Settings.Default ["IsAppConfigured"] = value; Settings.Default.Save(); } }
+        public static bool IsAppConfigured
+        {
+            get => isAppConfigured;
+            set
+            {
+                isAppConfigured = value;
+                Settings.Default ["IsAppConfigured"] = value;
+                Settings.Default.Save();
+            }
+        }
+
+        public static string EtsyAccessToken
+        {
+            get => etsyAccessToken;
+            set
+            {
+                etsyAccessToken = value;
+                Settings.Default["EtsyAccessToken"] = value;
+                Settings.Default.Save();
+            }
+        }
+
+        public static string EtsyAccessTokenSecret
+        {
+            get => etsyAccessTokenSecret;
+            set
+            {
+                etsyAccessTokenSecret = value;
+                Settings.Default["EtsyAccessTokenSecret"] = value;
+                Settings.Default.Save();
+            }
+        }
+
         public string DatabaseServer { get => databaseServer; set => databaseServer = value; }
         public string DatabaseUserId { get => databaseUserId; set => databaseUserId = value; }
         public string DatabaseSecret { get => databaseSecret; set => databaseSecret = value; }
@@ -106,6 +140,7 @@ namespace ShopManager.ViewModel
         {
             Settings.Default["EtsyVerificationCode"] = EtsyVerificationCode;
             Settings.Default.Save();
+            EtsyApiConnector.AcquireAccessToken();
         }
 
         public override string ToString()

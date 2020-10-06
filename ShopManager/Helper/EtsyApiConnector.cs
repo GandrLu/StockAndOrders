@@ -1,5 +1,7 @@
 ﻿using OAuth;
+using ShopManager.Properties;
 using ShopManager.View;
+using ShopManager.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,17 +17,16 @@ namespace ShopManager.Helper
         private const string CONSUMER_KEY = "fill in key";
         private const string CONSUMER_SECRET = "fill in secret";
 
-        public EtsyApiConnector()
+        static EtsyApiConnector()
         {
-            
+            oAuth = new OAuth.Manager();
+            oAuth["consumer_key"] = CONSUMER_KEY;
+            oAuth["consumer_secret"] = CONSUMER_SECRET;
         }
 
         public static bool AcquireRequestToken()
         {
-            var oAuth = new OAuth.Manager();
-            string requestUrl = "https://openapi.etsy.com/v2/oauth/request_token?scope=email_r";
-            oAuth["consumer_key"] = CONSUMER_KEY;
-            oAuth["consumer_secret"] = CONSUMER_SECRET;
+            string requestUrl = "https://openapi.etsy.com/v2/oauth/request_token?scope=transactions_r";
             OAuthResponse tokenResponse = oAuth.AcquireRequestToken(requestUrl, "GET");
 
             string unescapedAuthUrl = Uri.UnescapeDataString(tokenResponse.AllText);
@@ -36,6 +37,15 @@ namespace ShopManager.Helper
                 return true;
             else
                 return false;
+        }
+
+        public static void AcquireAccessToken()
+        {
+            string uri = "https://openapi.etsy.com/v2/oauth/access_token";
+            string code = (string)Settings.Default["EtsyVerificationCode"];
+            var response = oAuth.AcquireAccessToken(uri, "GET", code);
+            SettingsViewModel.EtsyAccessToken = response["oauth_token"];
+            SettingsViewModel.EtsyAccessTokenSecret = response["oauth_token_secret"];
         }
     }
 }

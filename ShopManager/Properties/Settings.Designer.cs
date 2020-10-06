@@ -118,5 +118,29 @@ namespace ShopManager.Properties {
                 this["EtsyConsumerSecret"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string EtsyAccessToken {
+            get {
+                return ((string)(this["EtsyAccessToken"]));
+            }
+            set {
+                this["EtsyAccessToken"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string EtsyAccessTokenSecret {
+            get {
+                return ((string)(this["EtsyAccessTokenSecret"]));
+            }
+            set {
+                this["EtsyAccessTokenSecret"] = value;
+            }
+        }
     }
 }
