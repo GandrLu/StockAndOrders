@@ -59,6 +59,7 @@ namespace ShopManager
         private async void FetchEtsyData()
         {
             await EtsyApiConnector.GetTransactions();
+            await EtsyApiConnector.GetItems();
         }
         #endregion
 
