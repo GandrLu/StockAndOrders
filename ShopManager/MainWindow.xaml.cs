@@ -28,6 +28,7 @@ namespace ShopManager
             SetupCustomerViewModel();
             SetupDatabase();
             SetupSettings();
+            FetchEtsyData();
         }
         #endregion
 
@@ -53,6 +54,11 @@ namespace ShopManager
             if (!SettingsViewModel.IsAppConfigured)
                 ShowVerificationCodeDialog();
             FillInSettings();
+        }
+
+        private async void FetchEtsyData()
+        {
+            await EtsyApiConnector.GetTransactions();
         }
         #endregion
 

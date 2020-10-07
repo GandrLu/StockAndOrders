@@ -34,6 +34,8 @@ namespace ShopManager.ViewModel
                 DatabaseUserId = (string)Settings.Default["DatabaseUserId"];
                 DatabaseSecret = (string)Settings.Default["DatabaseSecret"];
                 EtsyVerificationCode = (string)Settings.Default["EtsyVerificationCode"];
+                EtsyAccessToken = (string)Settings.Default["EtsyAccessToken"];
+                EtsyAccessTokenSecret = (string)Settings.Default["EtsyAccessTokenSecret"];
 
                 if (EtsyVerificationCode != string.Empty)
                 {

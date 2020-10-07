@@ -3,11 +3,7 @@ using ShopManager.Properties;
 using ShopManager.View;
 using ShopManager.ViewModel;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ShopManager.Helper
@@ -17,35 +13,54 @@ namespace ShopManager.Helper
         private const string CONSUMER_KEY = "fill in key";
         private const string CONSUMER_SECRET = "fill in secret";
 
+        private const string REQUEST_TOKEN_URI = "https://openapi.etsy.com/v2/oauth/request_token?scope=transactions_r";
+        private const string ACCESS_TOKEN_URI = "https://openapi.etsy.com/v2/oauth/access_token";
+        private const string GET_TRANSACTIONS_URI = "https://openapi.etsy.com/v2/shops/dixKeramikwerkstatt/transactions";
+        
+        private static OAuth.Manager oAuth = new OAuth.Manager();
+        private static HttpClient client = new HttpClient();
+
         static EtsyApiConnector()
         {
-            oAuth = new OAuth.Manager();
             oAuth["consumer_key"] = CONSUMER_KEY;
             oAuth["consumer_secret"] = CONSUMER_SECRET;
+            oAuth["token"] = SettingsViewModel.EtsyAccessToken;
+            oAuth["token_secret"] = SettingsViewModel.EtsyAccessTokenSecret;
         }
 
         public static bool AcquireRequestToken()
         {
-            string requestUrl = "https://openapi.etsy.com/v2/oauth/request_token?scope=transactions_r";
-            OAuthResponse tokenResponse = oAuth.AcquireRequestToken(requestUrl, "GET");
-
-            string unescapedAuthUrl = Uri.UnescapeDataString(tokenResponse.AllText);
-            unescapedAuthUrl = unescapedAuthUrl.Remove(0, "login_url=".Length);
-            System.Diagnostics.Process.Start(unescapedAuthUrl);
+            OAuthResponse tokenResponse = oAuth.AcquireRequestToken(REQUEST_TOKEN_URI, "GET");
             
             if (tokenResponse != null)
+            {
+                System.Diagnostics.Process.Start(UnescapeAndExtractUri(tokenResponse.AllText));
                 return true;
+            }
             else
                 return false;
         }
 
         public static void AcquireAccessToken()
         {
-            string uri = "https://openapi.etsy.com/v2/oauth/access_token";
             string code = (string)Settings.Default["EtsyVerificationCode"];
-            var response = oAuth.AcquireAccessToken(uri, "GET", code);
+            var response = oAuth.AcquireAccessToken(ACCESS_TOKEN_URI, "GET", code);
             SettingsViewModel.EtsyAccessToken = response["oauth_token"];
             SettingsViewModel.EtsyAccessTokenSecret = response["oauth_token_secret"];
+        }
+
+        public static async Task GetTransactions()
+        {
+            string header = oAuth.GenerateAuthzHeader(GET_TRANSACTIONS_URI, "GET");
+            client.DefaultRequestHeaders.Add("Authorization", header);
+            var response = await client.GetStringAsync(GET_TRANSACTIONS_URI);
+            Console.WriteLine(response);
+        }
+
+        private static string UnescapeAndExtractUri(string uri)
+        {
+            string unescapedUrl = Uri.UnescapeDataString(uri);
+            return unescapedUrl.Remove(0, "login_url=".Length);
         }
     }
 }
