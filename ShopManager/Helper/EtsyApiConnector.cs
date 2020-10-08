@@ -1,11 +1,15 @@
 ﻿using OAuth;
+using ShopManager.Model;
 using ShopManager.Properties;
 using ShopManager.View;
 using ShopManager.ViewModel;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Documents;
+using System.Text.Json;
 
 namespace ShopManager.Helper
 {
@@ -62,14 +66,17 @@ namespace ShopManager.Helper
             Console.WriteLine(response);
         }
 
-        public static async Task GetItems()
+        public static async Task<JsonResult<Listing>> GetItems()
         {
             string header = oAuth.GenerateAuthzHeader(GET_ACTIVELISTINGS_URI, "GET");
             client.DefaultRequestHeaders.Remove("Authorization");
             client.DefaultRequestHeaders.Add("Authorization", header);
-            
+
             var response = await client.GetStringAsync(GET_ACTIVELISTINGS_URI);
             Console.WriteLine(response);
+
+            JsonResult<Listing> items = JsonSerializer.Deserialize<JsonResult<Listing>>(response);
+            return items;
         }
 
         #region Helper

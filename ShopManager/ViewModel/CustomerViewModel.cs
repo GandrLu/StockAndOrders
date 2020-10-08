@@ -14,12 +14,11 @@ namespace ShopManager.ViewModel
     class CustomerViewModel : ObservableObject
     {
         private Customer currentCustomer;
-        private List<Customer> loadedCustomers;
+        private List<Customer> loadedCustomers = new List<Customer>();
         private ICommand saveCustomerCommand;
 
         public CustomerViewModel()
         {
-            LoadedCustomers = new List<Customer>();
             CurrentCustomer = CreateBlankCustomerWithAddress();
         }
 

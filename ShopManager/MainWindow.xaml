@@ -43,7 +43,7 @@
 
                 </Grid>
             </TabItem>
-            <TabItem Header="Items">
+            <TabItem x:Name="tiListings" Header="Listings">
                 <Grid>
                     <xctk:WatermarkTextBox x:Name="quantity" HorizontalAlignment="Left" Height="23" Margin="10,41,0,0" TextWrapping="Wrap" Text="{Binding CurrentCustomer.Firstname}" Watermark="Quantity" VerticalAlignment="Top" Width="120"/>
                     <xctk:WatermarkTextBox x:Name="name" HorizontalAlignment="Left" Height="23" Margin="135,41,0,0" TextWrapping="Wrap" Text="{Binding CurrentCustomer.Surname}" Watermark="Name" VerticalAlignment="Top" Width="120"/>
@@ -54,7 +54,26 @@
 
                     <Button x:Name="btnCreateNewItem" Content="Create" HorizontalAlignment="Left" Margin="680,69,0,0" VerticalAlignment="Top" Width="75" Command="{Binding SaveCustomerCommand}"/>
 
-                    <ListBox x:Name="lbItems" HorizontalAlignment="Left" Height="287" Margin="10,94,0,0" VerticalAlignment="Top" Width="745"/>
+                    <ListBox x:Name="lbListings" HorizontalAlignment="Left" Height="287" Margin="10,94,0,0" VerticalAlignment="Top" Width="745">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding listing_id}"/>
+                                    <TextBlock Text=", "/>
+                                    <TextBlock Text="{Binding title}"/>
+                                    <TextBlock Text=", "/>
+                                    <TextBlock Text="{Binding description}" Height="20" TextWrapping="NoWrap" TextTrimming="WordEllipsis"/>
+                                    <TextBlock Text=", "/>
+                                    <TextBlock Text="{Binding price}"/>
+                                    <TextBlock Text=" "/>
+                                    <TextBlock Text="{Binding currency_code}"/>
+                                    <TextBlock Text=", "/>
+                                    <TextBlock Text="{Binding quantity}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
                 </Grid>
             </TabItem>
 

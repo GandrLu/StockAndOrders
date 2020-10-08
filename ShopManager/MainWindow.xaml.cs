@@ -18,6 +18,7 @@ namespace ShopManager
     {
         #region Fields
         private CustomerViewModel customerViewModel;
+        private ListingViewModel listingViewModel;
         private SettingsViewModel settingsViewModel;
         #endregion
 
@@ -26,6 +27,7 @@ namespace ShopManager
         {
             InitializeComponent();
             SetupCustomerViewModel();
+            SetupListingViewModel();
             SetupDatabase();
             SetupSettings();
             FetchEtsyData();
@@ -38,6 +40,13 @@ namespace ShopManager
             customerViewModel = new CustomerViewModel();
             tiCustomers.DataContext = customerViewModel;
             customerViewModel.PropertyChanged += updateLBCustomers;
+        }
+
+        private void SetupListingViewModel()
+        {
+            listingViewModel = new ListingViewModel();
+            tiListings.DataContext = listingViewModel;
+            listingViewModel.PropertyChanged += updateLBListings;
         }
 
         private void SetupDatabase()
@@ -59,7 +68,8 @@ namespace ShopManager
         private async void FetchEtsyData()
         {
             await EtsyApiConnector.GetTransactions();
-            await EtsyApiConnector.GetItems();
+            //await EtsyApiConnector.GetItems();
+            listingViewModel.FetchListingsFromEtsy();
         }
         #endregion
 
@@ -88,6 +98,12 @@ namespace ShopManager
         {
             lbCustomers.ItemsSource = null;
             lbCustomers.ItemsSource = customerViewModel.LoadedCustomers;
+        }
+
+        private void updateLBListings(object sender, EventArgs e)
+        {
+            lbListings.ItemsSource = null;
+            lbListings.ItemsSource = listingViewModel.LoadedListings;
         }
 
         private void ShowVerificationCodeDialog()

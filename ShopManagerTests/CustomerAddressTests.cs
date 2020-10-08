@@ -12,7 +12,7 @@ namespace ShopManagerTests
         [TestMethod]
         public void NewAddress()
         {
-            address = new Address("Main Street", "1", 12345, "Maine");
+            address = new Address("Main Street", "1", "12345", "Maine");
 
             Assert.IsNotNull(address);
             Assert.AreEqual(address.City, "Maine", address.City + " should be Maine");
