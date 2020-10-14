@@ -58,7 +58,7 @@
                     <Button x:Name="btnSaveChanges" Grid.Row="2" Content="Save" HorizontalAlignment="Right" Margin="2, 2.5, 2, 2.5" Width="75" Command="{Binding SaveCustomerCommand}"/>
 
                     <DataGrid x:Name="dgListings" Grid.Row="3" Margin="2" SelectionUnit="FullRow" GridLinesVisibility="Horizontal"
-                              CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False"
+                              CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False" HeadersVisibility="Column"
                               ItemsSource="{Binding LoadedListings}" HorizontalGridLinesBrush="{StaticResource GrayGridLine}" 
                               CellStyle="{StaticResource DataGridStandard}">
                         <DataGrid.Columns>
