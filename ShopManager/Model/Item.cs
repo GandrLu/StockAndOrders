@@ -144,4 +144,8 @@ namespace ShopManager.Model
         public Pagination pagination { get; set; }
     }
 
+    public enum CurrencyCode
+    {
+        EUR,
+    }
 }

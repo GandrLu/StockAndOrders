@@ -26,10 +26,10 @@ namespace ShopManager
         public MainWindow()
         {
             InitializeComponent();
+            SetupSettings();
             SetupCustomerViewModel();
             SetupListingViewModel();
             SetupDatabase();
-            SetupSettings();
             FetchEtsyData();
         }
         #endregion
@@ -38,8 +38,7 @@ namespace ShopManager
         private void SetupCustomerViewModel()
         {
             customerViewModel = new CustomerViewModel();
-            tiCustomers.DataContext = customerViewModel;
-            customerViewModel.PropertyChanged += updateLBCustomers;
+            dgCustomer.DataContext = customerViewModel;
         }
 
         private void SetupListingViewModel()
@@ -52,9 +51,7 @@ namespace ShopManager
         private void SetupDatabase()
         {
             DataBaseConnection dbConnection = new DataBaseConnection();
-            List<Customer> customers = dbConnection.SelectAllCustomers();
             customerViewModel.LoadedCustomers = dbConnection.SelectAllCustomers();
-            lbCustomers.ItemsSource = customerViewModel.LoadedCustomers;
         }
 
         private void SetupSettings()
@@ -68,7 +65,6 @@ namespace ShopManager
         private async void FetchEtsyData()
         {
             await EtsyApiConnector.GetTransactions();
-            //await EtsyApiConnector.GetItems();
             listingViewModel.FetchListingsFromEtsy();
         }
         #endregion
@@ -87,23 +83,10 @@ namespace ShopManager
         #endregion
 
         #region Helper Methods
-        private void ResetInputForm()
-        {
-            customerViewModel.CurrentCustomer = customerViewModel.CreateBlankCustomerWithAddress();
-            this.DataContext = customerViewModel;
-            postalCode.Clear();
-        }
-
-        private void updateLBCustomers(object sender, EventArgs e)
-        {
-            lbCustomers.ItemsSource = null;
-            lbCustomers.ItemsSource = customerViewModel.LoadedCustomers;
-        }
-
         private void updateLBListings(object sender, EventArgs e)
         {
-            lbListings.ItemsSource = null;
-            lbListings.ItemsSource = listingViewModel.LoadedListings;
+            dgListings.ItemsSource = null;
+            dgListings.ItemsSource = listingViewModel.LoadedListings;
         }
 
         private void ShowVerificationCodeDialog()
