@@ -147,5 +147,6 @@ namespace ShopManager.Model
     public enum CurrencyCode
     {
         EUR,
+        USD,
     }
 }

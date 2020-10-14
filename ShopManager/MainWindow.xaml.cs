@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
 using ShopManager.Helper;
 using ShopManager.Model;
 using ShopManager.Properties;
@@ -46,6 +47,7 @@ namespace ShopManager
             listingViewModel = new ListingViewModel();
             tiListings.DataContext = listingViewModel;
             listingViewModel.PropertyChanged += updateLBListings;
+            dgListings.SelectedCellsChanged += updateListingDetails;
         }
 
         private void SetupDatabase()
@@ -87,6 +89,12 @@ namespace ShopManager
         {
             dgListings.ItemsSource = null;
             dgListings.ItemsSource = listingViewModel.LoadedListings;
+        }
+
+        private void updateListingDetails(object sender, SelectedCellsChangedEventArgs e)
+        {
+            IList<DataGridCellInfo> selectedCells = e.AddedCells;
+            dpListingDetail.DataContext = selectedCells[0].Item;
         }
 
         private void ShowVerificationCodeDialog()
