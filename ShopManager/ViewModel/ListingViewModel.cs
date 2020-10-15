@@ -2,7 +2,10 @@
 using ShopManager.Model;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,6 +23,10 @@ namespace ShopManager.ViewModel
                 if (loadedListings != value)
                 {
                     loadedListings = value;
+                    foreach (var listing in LoadedListings)
+                    {
+                        listing.PropertyChanged += SaveListingsToEtsy;
+                    }
                     OnPropertyChanged("LoadedListings");
                 }
             }
@@ -27,9 +34,14 @@ namespace ShopManager.ViewModel
 
         public async void FetchListingsFromEtsy()
         {
-            var listingsResponse = await EtsyApiConnector.GetItems();
+            var listingsResponse = await EtsyApiConnector.GetListings();
             List<Listing> listings = new List<Listing>(listingsResponse.results);
             LoadedListings = listings;
+        }
+
+        public async void SaveListingsToEtsy(object sender, PropertyChangedEventArgs e)
+        {
+            Debug.WriteLine("Store");
         }
     }
 }

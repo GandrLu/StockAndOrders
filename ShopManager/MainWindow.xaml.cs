@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using ShopManager.Helper;
@@ -20,6 +21,7 @@ namespace ShopManager
         #region Fields
         private CustomerViewModel customerViewModel;
         private ListingViewModel listingViewModel;
+        private ReceiptViewModel receiptViewModel;
         private SettingsViewModel settingsViewModel;
         #endregion
 
@@ -28,20 +30,14 @@ namespace ShopManager
         {
             InitializeComponent();
             SetupSettings();
-            SetupCustomerViewModel();
             SetupListingViewModel();
+            SetupReceiptsViewModel();
             SetupDatabase();
             FetchEtsyData();
         }
         #endregion
 
         #region Setup Methods
-        private void SetupCustomerViewModel()
-        {
-            customerViewModel = new CustomerViewModel();
-            dgCustomer.DataContext = customerViewModel;
-        }
-
         private void SetupListingViewModel()
         {
             listingViewModel = new ListingViewModel();
@@ -50,10 +46,16 @@ namespace ShopManager
             dgListings.SelectedCellsChanged += updateListingDetails;
         }
 
+        private void SetupReceiptsViewModel()
+        {
+            receiptViewModel = new ReceiptViewModel();
+            tiOrders.DataContext = receiptViewModel;
+            receiptViewModel.PropertyChanged += updateDGReceipts;
+        }
+
         private void SetupDatabase()
         {
             DataBaseConnection dbConnection = new DataBaseConnection();
-            customerViewModel.LoadedCustomers = dbConnection.SelectAllCustomers();
         }
 
         private void SetupSettings()
@@ -66,8 +68,8 @@ namespace ShopManager
 
         private async void FetchEtsyData()
         {
-            await EtsyApiConnector.GetTransactions();
             listingViewModel.FetchListingsFromEtsy();
+            receiptViewModel.FetchReceiptsFromEtsy();
         }
         #endregion
 
@@ -85,10 +87,16 @@ namespace ShopManager
         #endregion
 
         #region Helper Methods
-        private void updateDGListings(object sender, EventArgs e)
+        private void updateDGListings(object sender, PropertyChangedEventArgs e)
         {
             dgListings.ItemsSource = null;
             dgListings.ItemsSource = listingViewModel.LoadedListings;
+        }
+
+        private void updateDGReceipts(object sender, PropertyChangedEventArgs e)
+        {
+            dgReceipts.ItemsSource = null;
+            dgReceipts.ItemsSource = receiptViewModel.LoadedReceipts;
         }
 
         private void updateListingDetails(object sender, SelectedCellsChangedEventArgs e)

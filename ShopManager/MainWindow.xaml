@@ -68,11 +68,47 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Header="Orders">
-                <DataGrid x:Name="dgCustomer" ItemsSource="{Binding LoadedCustomers}" CanUserAddRows="False" CanUserDeleteRows="False" 
-                          ColumnWidth="*" SelectionUnit="FullRow" Margin="2,10,2,2" GridLinesVisibility="Horizontal" 
+            <TabItem x:Name="tiOrders" Header="Orders">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Vertical">
+                        <DockPanel HorizontalAlignment="Stretch">
+                            <Label Content="Listings:"/>
+                            <ListBox/>
+                        </DockPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Address:"/>
+                            <TextBlock Text="Example Text" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Message:" />
+                            <TextBlock Text="Example Text" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </StackPanel>
+
+
+                    <DataGrid x:Name="dgReceipts" Grid.Row="1" ItemsSource="{Binding LoadedReceipts}" CanUserAddRows="False" CanUserDeleteRows="False" 
+                          ColumnWidth="*" SelectionUnit="FullRow" Margin="2,10,2,2" GridLinesVisibility="Horizontal" AutoGenerateColumns="False"
                           HorizontalGridLinesBrush="{StaticResource GrayGridLine}" CellStyle="{StaticResource DataGridStandard}">
-                </DataGrid>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Receipt_id}"/>
+                            <DataGridTextColumn Header="Creation" Binding="{Binding Creation_tsz}"/>
+                            <DataGridTextColumn Header="Address" Binding="{Binding Formatted_address}"/>
+                            <DataGridTextColumn Header="Paid" Binding="{Binding Was_paid}"/>
+                            <DataGridTextColumn Header="Total Price" Binding="{Binding Total_price}"/>
+                            <DataGridTextColumn Header="Grandtotal" Binding="{Binding Grandtotal}"/>
+                            <DataGridTextColumn Header="Currency" Binding="{Binding Currency_code}"/>
+                            <DataGridTextColumn Header="Shipped" Binding="{Binding Was_shipped}"/>
+                            <DataGridTextColumn Header="Overdue" Binding="{Binding Is_overdue}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
             </TabItem>
 
             <TabItem Header="Settings">

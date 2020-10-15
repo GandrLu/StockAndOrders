@@ -199,9 +199,13 @@
     <Compile Include="Helper\EtsyApiConnector.cs" />
     <Compile Include="Helper\OAuth.cs" />
     <Compile Include="Helper\ObservableObject.cs" />
+    <Compile Include="Model\JsonResult.cs" />
+    <Compile Include="Model\Pagination.cs" />
+    <Compile Include="Model\Params.cs" />
     <Compile Include="Validator\CustomerValidator.cs" />
     <Compile Include="ViewModel\CustomerViewModel.cs" />
     <Compile Include="ViewModel\ListingViewModel.cs" />
+    <Compile Include="ViewModel\ReceiptViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="View\VerificationCodeDialogView.xaml.cs">
       <DependentUpon>VerificationCodeDialogView.xaml</DependentUpon>

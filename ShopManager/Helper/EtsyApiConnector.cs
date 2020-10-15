@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Documents;
 using System.Text.Json;
+using System.Windows.Controls;
 
 namespace ShopManager.Helper
 {
@@ -22,6 +23,7 @@ namespace ShopManager.Helper
         private const string ACCESS_TOKEN_URI = "https://openapi.etsy.com/v2/oauth/access_token";
         private const string GET_TRANSACTIONS_URI = "https://openapi.etsy.com/v2/shops/dixKeramikwerkstatt/transactions";
         private const string GET_ACTIVELISTINGS_URI = "https://openapi.etsy.com/v2/shops/dixKeramikwerkstatt/listings/draft";
+        private const string GET_RECEIPTS_URI = "https://openapi.etsy.com/v2/shops/dixKeramikwerkstatt/receipts";
 
 
         private static OAuth.Manager oAuth = new OAuth.Manager();
@@ -69,17 +71,28 @@ namespace ShopManager.Helper
             Console.WriteLine(response);
         }
 
-        public static async Task<JsonResult<Listing>> GetItems()
+        public static async Task<JsonResult<Listing>> GetListings()
         {
             string header = oAuth.GenerateAuthzHeader(GET_ACTIVELISTINGS_URI, "GET");
             client.DefaultRequestHeaders.Remove("Authorization");
             client.DefaultRequestHeaders.Add("Authorization", header);
 
             var response = await client.GetStringAsync(GET_ACTIVELISTINGS_URI);
-            Console.WriteLine(response);
 
             JsonResult<Listing> items = JsonSerializer.Deserialize<JsonResult<Listing>>(response, jsonSerializerOptions);
             return items;
+        }
+
+        public static async Task<JsonResult<Receipt>> GetReceipts()
+        {
+            string header = oAuth.GenerateAuthzHeader(GET_RECEIPTS_URI, "GET");
+            client.DefaultRequestHeaders.Remove("Authorization");
+            client.DefaultRequestHeaders.Add("Authorization", header);
+
+            var response = await client.GetStringAsync(GET_RECEIPTS_URI);
+
+            JsonResult<Receipt> receipts = JsonSerializer.Deserialize<JsonResult<Receipt>>(response, jsonSerializerOptions);
+            return receipts;
         }
 
         #region Helper
