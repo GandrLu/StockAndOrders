@@ -26,6 +26,7 @@ namespace ShopManager.Helper
 
         private static OAuth.Manager oAuth = new OAuth.Manager();
         private static HttpClient client = new HttpClient();
+        private static JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions();
 
         static EtsyApiConnector()
         {
@@ -33,6 +34,8 @@ namespace ShopManager.Helper
             oAuth["consumer_secret"] = CONSUMER_SECRET;
             oAuth["token"] = SettingsViewModel.EtsyAccessToken;
             oAuth["token_secret"] = SettingsViewModel.EtsyAccessTokenSecret;
+
+            jsonSerializerOptions.PropertyNameCaseInsensitive = true;
         }
 
         public static bool AcquireRequestToken()
@@ -75,7 +78,7 @@ namespace ShopManager.Helper
             var response = await client.GetStringAsync(GET_ACTIVELISTINGS_URI);
             Console.WriteLine(response);
 
-            JsonResult<Listing> items = JsonSerializer.Deserialize<JsonResult<Listing>>(response);
+            JsonResult<Listing> items = JsonSerializer.Deserialize<JsonResult<Listing>>(response, jsonSerializerOptions);
             return items;
         }
 

@@ -46,7 +46,7 @@ namespace ShopManager
         {
             listingViewModel = new ListingViewModel();
             tiListings.DataContext = listingViewModel;
-            listingViewModel.PropertyChanged += updateLBListings;
+            listingViewModel.PropertyChanged += updateDGListings;
             dgListings.SelectedCellsChanged += updateListingDetails;
         }
 
@@ -85,7 +85,7 @@ namespace ShopManager
         #endregion
 
         #region Helper Methods
-        private void updateLBListings(object sender, EventArgs e)
+        private void updateDGListings(object sender, EventArgs e)
         {
             dgListings.ItemsSource = null;
             dgListings.ItemsSource = listingViewModel.LoadedListings;
