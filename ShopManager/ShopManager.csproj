@@ -202,6 +202,7 @@
     <Compile Include="Model\JsonResult.cs" />
     <Compile Include="Model\Pagination.cs" />
     <Compile Include="Model\Params.cs" />
+    <Compile Include="Model\Transaction.cs" />
     <Compile Include="Validator\CustomerValidator.cs" />
     <Compile Include="ViewModel\CustomerViewModel.cs" />
     <Compile Include="ViewModel\ListingViewModel.cs" />
