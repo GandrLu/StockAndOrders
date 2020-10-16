@@ -56,7 +56,7 @@
                     <DataGrid x:Name="dgListings" Grid.Row="3" Margin="2" SelectionUnit="FullRow" GridLinesVisibility="Horizontal"
                               CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False" HeadersVisibility="Column"
                               ItemsSource="{Binding LoadedListings}" HorizontalGridLinesBrush="{StaticResource GrayGridLine}" 
-                              CellStyle="{StaticResource DataGridStandard}">
+                              CellStyle="{StaticResource DataGridStandard}" SelectionMode="Single">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="ID"         Width="*"   IsReadOnly="True" Binding="{Binding Listing_id}"/>
                             <DataGridTextColumn Header="Quantity"   Width=".5*" IsReadOnly="True" Binding="{Binding Quantity}"/>
@@ -76,36 +76,57 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <StackPanel Grid.Row="0" Orientation="Vertical">
-                        <DockPanel HorizontalAlignment="Stretch">
-                            <Label Content="Listings:"/>
-                            <ListBox/>
-                        </DockPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Label Content="Address:"/>
-                            <TextBlock Text="Example Text" VerticalAlignment="Center"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Label Content="Message:" />
-                            <TextBlock Text="Example Text" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </StackPanel>
 
+                    <Grid Grid.Row="0" Margin="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
 
-                    <DataGrid x:Name="dgReceipts" Grid.Row="1" ItemsSource="{Binding LoadedReceipts}" CanUserAddRows="False" CanUserDeleteRows="False" 
-                          ColumnWidth="*" SelectionUnit="FullRow" Margin="2,10,2,2" GridLinesVisibility="Horizontal" AutoGenerateColumns="False"
-                          HorizontalGridLinesBrush="{StaticResource GrayGridLine}" CellStyle="{StaticResource DataGridStandard}">
+                        <Label Grid.Row="0" Grid.Column="0" Content="Address:"/>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,0" Text="{Binding Formatted_address}" HorizontalAlignment="Center" Height="65"/>
+                        <Label Grid.Row="0" Grid.Column="1" Content="Listings:"/>
+                        <ListBox Grid.Row="1" Grid.Column="1" x:Name="lbReceiptTransactions" Height="65" ScrollViewer.VerticalScrollBarVisibility="Auto" SelectionMode="Single">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Quantity}"/>
+                                        <TextBlock Text=" x "/>
+                                        <TextBlock Text="{Binding Title}"/>
+                                        <TextBlock Text=" "/>
+                                        <TextBlock Text="{Binding Price}"/>
+                                        <TextBlock Text="{Binding Currency_code}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        <Label Grid.Row="2" Content="Message:" />
+                        <ScrollViewer Grid.Row="3" Height="45" Margin="10, 0">
+                            <TextBlock Text="{Binding Message_from_buyer}" VerticalAlignment="Center" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+                        </ScrollViewer>
+                    </Grid>
+
+                    <DataGrid x:Name="dgReceipts" Grid.Row="2" ItemsSource="{Binding LoadedReceipts}" CanUserAddRows="False" 
+                              CanUserDeleteRows="False" ColumnWidth="*" SelectionUnit="FullRow" SelectionMode="Single" Margin="2,10,2,2" 
+                              GridLinesVisibility="Horizontal" AutoGenerateColumns="False" HeadersVisibility="Column"
+                              HorizontalGridLinesBrush="{StaticResource GrayGridLine}" CellStyle="{StaticResource DataGridStandard}"
+                              >
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="ID" Binding="{Binding Receipt_id}"/>
                             <DataGridTextColumn Header="Creation" Binding="{Binding Creation_tsz}"/>
-                            <DataGridTextColumn Header="Address" Binding="{Binding Formatted_address}"/>
+                            <DataGridTextColumn Header="Buyer" Binding="{Binding Name}"/>
                             <DataGridTextColumn Header="Paid" Binding="{Binding Was_paid}"/>
-                            <DataGridTextColumn Header="Total Price" Binding="{Binding Total_price}"/>
-                            <DataGridTextColumn Header="Grandtotal" Binding="{Binding Grandtotal}"/>
-                            <DataGridTextColumn Header="Currency" Binding="{Binding Currency_code}"/>
                             <DataGridTextColumn Header="Shipped" Binding="{Binding Was_shipped}"/>
                             <DataGridTextColumn Header="Overdue" Binding="{Binding Is_overdue}"/>
+                            <DataGridTextColumn Header="Remaining Days" Binding="{Binding Days_from_due_date}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>

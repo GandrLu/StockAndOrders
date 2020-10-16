@@ -28,6 +28,8 @@ namespace ShopManager.Model
         private Address billingAddress;
         private Address shippingAddress;
         private List<Item> orderedItems;
+        private Receipt receipt;
+        private List<Transaction> transactions;
 
         public Order(int id, Customer customer, Address billingAddress, Address shippingAddress, List<Item> orderedItems)
         {
@@ -43,6 +45,8 @@ namespace ShopManager.Model
         public Address BillingAddress { get => billingAddress; set => billingAddress = value; }
         public Address ShippingAddress { get => shippingAddress; set => shippingAddress = value; }
         public List<Item> OrderedItems { get => orderedItems; set => orderedItems = value; }
+        public Receipt Receipt { get => receipt; set => receipt = value; }
+        public List<Transaction> Transactions { get => transactions; set => transactions = value; }
     }
 
     public class Shipment
@@ -87,7 +91,7 @@ namespace ShopManager.Model
         public int Creation_tsz { get; set; }
         //public bool can_refund { get; set; }
         //public int last_modified_tsz { get; set; }
-        //public string name { get; set; }
+        public string Name { get; set; }
         //public string first_line { get; set; }
         //public string second_line { get; set; }
         //public string city { get; set; }

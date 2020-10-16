@@ -51,6 +51,7 @@ namespace ShopManager
             receiptViewModel = new ReceiptViewModel();
             tiOrders.DataContext = receiptViewModel;
             receiptViewModel.PropertyChanged += updateDGReceipts;
+            dgReceipts.SelectedCellsChanged += updateReceiptsDetails;
         }
 
         private void SetupDatabase()
@@ -101,8 +102,26 @@ namespace ShopManager
 
         private void updateListingDetails(object sender, SelectedCellsChangedEventArgs e)
         {
+            if (e.AddedCells.Count <= 0)
+                return;
             IList<DataGridCellInfo> selectedCells = e.AddedCells;
             dpListingDetail.DataContext = selectedCells[0].Item;
+        }
+
+        private async void updateReceiptsDetails(object sender, SelectedCellsChangedEventArgs e)
+        {
+            if (e.AddedCells.Count <= 0)
+                return;
+            IList<DataGridCellInfo> selectedCells = e.AddedCells;
+            tiOrders.DataContext = (Receipt)selectedCells[0].Item;
+            string id = ((Receipt)selectedCells[0].Item).Receipt_id.ToString();
+            var result = await EtsyApiConnector.GetTransactionsByReceipt(id);
+            List<Transaction> transactionslist = new List<Transaction>();
+            for (int i = 0; i < 5; i++)
+            {
+                transactionslist.Add(result.results[0]);
+            }
+            lbReceiptTransactions.ItemsSource = transactionslist;
         }
 
         private void ShowVerificationCodeDialog()

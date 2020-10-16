@@ -24,6 +24,7 @@ namespace ShopManager.Helper
         private const string GET_TRANSACTIONS_URI = "https://openapi.etsy.com/v2/shops/dixKeramikwerkstatt/transactions";
         private const string GET_ACTIVELISTINGS_URI = "https://openapi.etsy.com/v2/shops/dixKeramikwerkstatt/listings/draft";
         private const string GET_RECEIPTS_URI = "https://openapi.etsy.com/v2/shops/dixKeramikwerkstatt/receipts";
+        private const string GET_TRANSACTIONBYRECEIPT_URI = "https://openapi.etsy.com/v2/receipts/:receiptId/transactions";
 
 
         private static OAuth.Manager oAuth = new OAuth.Manager();
@@ -65,18 +66,14 @@ namespace ShopManager.Helper
 
         public static async Task GetTransactions()
         {
-            string header = oAuth.GenerateAuthzHeader(GET_TRANSACTIONS_URI, "GET");
-            client.DefaultRequestHeaders.Add("Authorization", header);
+            SetHeader(GET_TRANSACTIONS_URI);
             var response = await client.GetStringAsync(GET_TRANSACTIONS_URI);
             Console.WriteLine(response);
         }
 
         public static async Task<JsonResult<Listing>> GetListings()
         {
-            string header = oAuth.GenerateAuthzHeader(GET_ACTIVELISTINGS_URI, "GET");
-            client.DefaultRequestHeaders.Remove("Authorization");
-            client.DefaultRequestHeaders.Add("Authorization", header);
-
+            SetHeader(GET_ACTIVELISTINGS_URI);
             var response = await client.GetStringAsync(GET_ACTIVELISTINGS_URI);
 
             JsonResult<Listing> items = JsonSerializer.Deserialize<JsonResult<Listing>>(response, jsonSerializerOptions);
@@ -85,14 +82,21 @@ namespace ShopManager.Helper
 
         public static async Task<JsonResult<Receipt>> GetReceipts()
         {
-            string header = oAuth.GenerateAuthzHeader(GET_RECEIPTS_URI, "GET");
-            client.DefaultRequestHeaders.Remove("Authorization");
-            client.DefaultRequestHeaders.Add("Authorization", header);
-
+            SetHeader(GET_RECEIPTS_URI);
             var response = await client.GetStringAsync(GET_RECEIPTS_URI);
 
             JsonResult<Receipt> receipts = JsonSerializer.Deserialize<JsonResult<Receipt>>(response, jsonSerializerOptions);
             return receipts;
+        }
+
+        public static async Task<JsonResult<Transaction>> GetTransactionsByReceipt(string receiptId)
+        {
+            string requestUri = GET_TRANSACTIONBYRECEIPT_URI.Replace(":receiptId", receiptId);
+            SetHeader(requestUri);
+            var response = await client.GetStringAsync(requestUri);
+
+            JsonResult<Transaction> transactions = JsonSerializer.Deserialize<JsonResult<Transaction>>(response, jsonSerializerOptions);
+            return transactions;
         }
 
         #region Helper
@@ -100,6 +104,13 @@ namespace ShopManager.Helper
         {
             string unescapedUrl = Uri.UnescapeDataString(uri);
             return unescapedUrl.Remove(0, "login_url=".Length);
+        }
+
+        private static void SetHeader(string uri, string method = "GET")
+        {
+            string header = oAuth.GenerateAuthzHeader(uri, "GET");
+            client.DefaultRequestHeaders.Remove("Authorization");
+            client.DefaultRequestHeaders.Add("Authorization", header);
         }
         #endregion
     }
