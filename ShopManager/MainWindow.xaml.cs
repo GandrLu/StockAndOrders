@@ -67,7 +67,7 @@ namespace ShopManager
             FillInSettings();
         }
 
-        private async void FetchEtsyData()
+        private void FetchEtsyData()
         {
             listingViewModel.FetchListingsFromEtsy();
             receiptViewModel.FetchReceiptsFromEtsy();
@@ -97,7 +97,7 @@ namespace ShopManager
         private void updateDGReceipts(object sender, PropertyChangedEventArgs e)
         {
             dgReceipts.ItemsSource = null;
-            dgReceipts.ItemsSource = receiptViewModel.LoadedReceipts;
+            dgReceipts.ItemsSource = receiptViewModel.LoadedOrders;
         }
 
         private void updateListingDetails(object sender, SelectedCellsChangedEventArgs e)
@@ -113,15 +113,7 @@ namespace ShopManager
             if (e.AddedCells.Count <= 0)
                 return;
             IList<DataGridCellInfo> selectedCells = e.AddedCells;
-            tiOrders.DataContext = (Receipt)selectedCells[0].Item;
-            string id = ((Receipt)selectedCells[0].Item).Receipt_id.ToString();
-            var result = await EtsyApiConnector.GetTransactionsByReceipt(id);
-            List<Transaction> transactionslist = new List<Transaction>();
-            for (int i = 0; i < 5; i++)
-            {
-                transactionslist.Add(result.results[0]);
-            }
-            lbReceiptTransactions.ItemsSource = transactionslist;
+            tiOrders.DataContext = (Order)selectedCells[0].Item;
         }
 
         private void ShowVerificationCodeDialog()

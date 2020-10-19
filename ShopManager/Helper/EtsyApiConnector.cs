@@ -91,12 +91,21 @@ namespace ShopManager.Helper
 
         public static async Task<JsonResult<Transaction>> GetTransactionsByReceipt(string receiptId)
         {
-            string requestUri = GET_TRANSACTIONBYRECEIPT_URI.Replace(":receiptId", receiptId);
-            SetHeader(requestUri);
-            var response = await client.GetStringAsync(requestUri);
+            try
+            {
+                string requestUri = GET_TRANSACTIONBYRECEIPT_URI.Replace(":receiptId", receiptId);
+                SetHeader(requestUri);
+                var response = await client.GetStringAsync(requestUri);
 
-            JsonResult<Transaction> transactions = JsonSerializer.Deserialize<JsonResult<Transaction>>(response, jsonSerializerOptions);
-            return transactions;
+                JsonResult<Transaction> transactions = JsonSerializer.Deserialize<JsonResult<Transaction>>(response, jsonSerializerOptions);
+                return transactions;
+
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine(e + " Header: " + client.DefaultRequestHeaders.GetValues("Authorization"));
+                throw;
+            }
         }
 
         #region Helper

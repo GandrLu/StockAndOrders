@@ -92,9 +92,9 @@
                         </Grid.RowDefinitions>
 
                         <Label Grid.Row="0" Grid.Column="0" Content="Address:"/>
-                        <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,0" Text="{Binding Formatted_address}" HorizontalAlignment="Center" Height="65"/>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,0" Text="{Binding Receipt.Formatted_address}" HorizontalAlignment="Center" Height="65"/>
                         <Label Grid.Row="0" Grid.Column="1" Content="Listings:"/>
-                        <ListBox Grid.Row="1" Grid.Column="1" x:Name="lbReceiptTransactions" Height="65" ScrollViewer.VerticalScrollBarVisibility="Auto" SelectionMode="Single">
+                        <ListBox Grid.Row="1" Grid.Column="1" x:Name="lbReceiptTransactions" Height="65" ItemsSource="{Binding Transactions}" ScrollViewer.VerticalScrollBarVisibility="Auto" SelectionMode="Single">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
@@ -110,23 +110,23 @@
                         </ListBox>
                         <Label Grid.Row="2" Content="Message:" />
                         <ScrollViewer Grid.Row="3" Height="45" Margin="10, 0">
-                            <TextBlock Text="{Binding Message_from_buyer}" VerticalAlignment="Center" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+                            <TextBlock Text="{Binding Receipt.Message_from_buyer}" VerticalAlignment="Center" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
                         </ScrollViewer>
                     </Grid>
 
-                    <DataGrid x:Name="dgReceipts" Grid.Row="2" ItemsSource="{Binding LoadedReceipts}" CanUserAddRows="False" 
+                    <DataGrid x:Name="dgReceipts" Grid.Row="2"  CanUserAddRows="False" 
                               CanUserDeleteRows="False" ColumnWidth="*" SelectionUnit="FullRow" SelectionMode="Single" Margin="2,10,2,2" 
                               GridLinesVisibility="Horizontal" AutoGenerateColumns="False" HeadersVisibility="Column"
                               HorizontalGridLinesBrush="{StaticResource GrayGridLine}" CellStyle="{StaticResource DataGridStandard}"
                               >
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="ID" Binding="{Binding Receipt_id}"/>
-                            <DataGridTextColumn Header="Creation" Binding="{Binding Creation_tsz}"/>
-                            <DataGridTextColumn Header="Buyer" Binding="{Binding Name}"/>
-                            <DataGridTextColumn Header="Paid" Binding="{Binding Was_paid}"/>
-                            <DataGridTextColumn Header="Shipped" Binding="{Binding Was_shipped}"/>
-                            <DataGridTextColumn Header="Overdue" Binding="{Binding Is_overdue}"/>
-                            <DataGridTextColumn Header="Remaining Days" Binding="{Binding Days_from_due_date}"/>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Receipt.Receipt_id}"/>
+                            <DataGridTextColumn Header="Creation" Binding="{Binding Receipt.Creation_tsz}"/>
+                            <DataGridTextColumn Header="Buyer" Binding="{Binding Receipt.Name}"/>
+                            <DataGridTextColumn Header="Paid" Binding="{Binding Receipt.Was_paid}"/>
+                            <DataGridTextColumn Header="Shipped" Binding="{Binding Receipt.Was_shipped}"/>
+                            <DataGridTextColumn Header="Overdue" Binding="{Binding Receipt.Is_overdue}"/>
+                            <DataGridTextColumn Header="Remaining Days" Binding="{Binding Receipt.Days_from_due_date}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>

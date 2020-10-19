@@ -29,7 +29,12 @@ namespace ShopManager.Model
         private Address shippingAddress;
         private List<Item> orderedItems;
         private Receipt receipt;
-        private List<Transaction> transactions;
+        private List<Transaction> transactions = new List<Transaction>();
+
+        public Order(Receipt receipt)
+        {
+            Receipt = receipt;
+        }
 
         public Order(int id, Customer customer, Address billingAddress, Address shippingAddress, List<Item> orderedItems)
         {
