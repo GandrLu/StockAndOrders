@@ -1,6 +1,6 @@
 ﻿namespace ShopManager.Model
 {
-    class JsonResult<T>
+    public class JsonResult<T>
     {
         public int count { set; get; }
         public T[] results { set; get; }

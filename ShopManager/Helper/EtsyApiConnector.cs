@@ -1,20 +1,15 @@
 ﻿using OAuth;
 using ShopManager.Model;
 using ShopManager.Properties;
-using ShopManager.View;
 using ShopManager.ViewModel;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Documents;
 using System.Text.Json;
-using System.Windows.Controls;
 
 namespace ShopManager.Helper
 {
-    class EtsyApiConnector
+    public sealed class EtsyApiConnector
     {
         private const string CONSUMER_KEY = "fill in key";
         private const string CONSUMER_SECRET = "fill in secret";
@@ -26,27 +21,36 @@ namespace ShopManager.Helper
         private const string GET_RECEIPTS_URI = "https://openapi.etsy.com/v2/shops/dixKeramikwerkstatt/receipts";
         private const string GET_TRANSACTIONBYRECEIPT_URI = "https://openapi.etsy.com/v2/receipts/:receiptId/transactions";
 
-
-        private static OAuth.Manager oAuth = new OAuth.Manager();
+        private OAuth.Manager oAuth = new Manager();
+        private static OAuth.Manager staticOAuth = new OAuth.Manager();
         private static HttpClient client = new HttpClient();
-        private static JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions();
+        private static JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        };
 
         static EtsyApiConnector()
+        {
+            staticOAuth["consumer_key"] = CONSUMER_KEY;
+            staticOAuth["consumer_secret"] = CONSUMER_SECRET;
+            staticOAuth["token"] = SettingsViewModel.EtsyAccessToken;
+            staticOAuth["token_secret"] = SettingsViewModel.EtsyAccessTokenSecret;
+        }
+
+        public EtsyApiConnector()
         {
             oAuth["consumer_key"] = CONSUMER_KEY;
             oAuth["consumer_secret"] = CONSUMER_SECRET;
             oAuth["token"] = SettingsViewModel.EtsyAccessToken;
             oAuth["token_secret"] = SettingsViewModel.EtsyAccessTokenSecret;
-
-            jsonSerializerOptions.PropertyNameCaseInsensitive = true;
         }
 
         public static bool AcquireRequestToken()
         {
-            oAuth["token"] = "";
-            oAuth["token_secret"] = "";
-            OAuthResponse tokenResponse = oAuth.AcquireRequestToken(REQUEST_TOKEN_URI, "GET");
-            
+            staticOAuth["token"] = "";
+            staticOAuth["token_secret"] = "";
+            OAuthResponse tokenResponse = staticOAuth.AcquireRequestToken(REQUEST_TOKEN_URI, "GET");
+
             if (tokenResponse != null)
             {
                 System.Diagnostics.Process.Start(UnescapeAndExtractUri(tokenResponse.AllText));
@@ -59,7 +63,7 @@ namespace ShopManager.Helper
         public static void AcquireAccessToken()
         {
             string code = (string)Settings.Default["EtsyVerificationCode"];
-            var response = oAuth.AcquireAccessToken(ACCESS_TOKEN_URI, "GET", code);
+            var response = staticOAuth.AcquireAccessToken(ACCESS_TOKEN_URI, "GET", code);
             SettingsViewModel.EtsyAccessToken = response["oauth_token"];
             SettingsViewModel.EtsyAccessTokenSecret = response["oauth_token_secret"];
         }
@@ -89,6 +93,29 @@ namespace ShopManager.Helper
             return receipts;
         }
 
+        public async Task<JsonResult<Transaction>> GetTransactionByReceipt(string receiptId)
+        {
+            try
+            {
+                using (HttpClient localClient = new HttpClient())
+                {
+                    string requestUri = GET_TRANSACTIONBYRECEIPT_URI.Replace(":receiptId", receiptId);
+                    string header = oAuth.GenerateAuthzHeader(requestUri, "GET");
+                    localClient.DefaultRequestHeaders.Add("Authorization", header);
+
+                    var response = await localClient.GetStringAsync(requestUri);
+                    JsonResult<Transaction> transactions = JsonSerializer.Deserialize<JsonResult<Transaction>>(response, jsonSerializerOptions);
+                    return transactions;
+                }
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine(e + " Header: " + client.DefaultRequestHeaders.GetValues("Authorization"));
+                throw;
+            }
+
+        }
+
         public static async Task<JsonResult<Transaction>> GetTransactionsByReceipt(string receiptId)
         {
             try
@@ -99,7 +126,6 @@ namespace ShopManager.Helper
 
                 JsonResult<Transaction> transactions = JsonSerializer.Deserialize<JsonResult<Transaction>>(response, jsonSerializerOptions);
                 return transactions;
-
             }
             catch (HttpRequestException e)
             {
@@ -117,7 +143,7 @@ namespace ShopManager.Helper
 
         private static void SetHeader(string uri, string method = "GET")
         {
-            string header = oAuth.GenerateAuthzHeader(uri, "GET");
+            string header = staticOAuth.GenerateAuthzHeader(uri, "GET");
             client.DefaultRequestHeaders.Remove("Authorization");
             client.DefaultRequestHeaders.Add("Authorization", header);
         }

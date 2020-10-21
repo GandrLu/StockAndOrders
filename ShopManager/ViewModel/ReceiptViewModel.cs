@@ -1,6 +1,7 @@
 ﻿using ShopManager.Helper;
 using ShopManager.Model;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -41,14 +42,15 @@ namespace ShopManager.ViewModel
             var receiptsResponse = await EtsyApiConnector.GetReceipts();
             List<Receipt> receipts = new List<Receipt>(receiptsResponse.results);
             LoadedReceipts = receipts;
-            List<Task> bagAddTasks = new List<Task>();
 
-            foreach (var receipt in receipts)
+            Parallel.ForEach(LoadedReceipts, async receipt =>
             {
                 Order newOrder = new Order(receipt);
-                newOrder.Transactions = await FetchTransactionsOfReceipt(receipt.Receipt_id.ToString());
+                EtsyApiConnector connector = new EtsyApiConnector();
+                var answer = await connector.GetTransactionByReceipt(receipt.Receipt_id.ToString());
+                newOrder.Transactions.AddRange(answer.results);
                 LoadedOrders.Add(newOrder);
-            }
+            });
         }
 
         private async Task<List<Transaction>> FetchTransactionsOfReceipt(string receiptId)
