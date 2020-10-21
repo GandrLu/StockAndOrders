@@ -49,11 +49,12 @@ namespace ShopManager.Helper
         {
             staticOAuth["token"] = "";
             staticOAuth["token_secret"] = "";
-            OAuthResponse tokenResponse = staticOAuth.AcquireRequestToken(REQUEST_TOKEN_URI, "GET");
+            OAuthResponse responseTokenURI = staticOAuth.AcquireRequestToken(REQUEST_TOKEN_URI, "GET");
 
-            if (tokenResponse != null)
+            if (responseTokenURI != null)
             {
-                System.Diagnostics.Process.Start(UnescapeAndExtractUri(tokenResponse.AllText));
+                // Start default webbrowser to open authentification webpage
+                System.Diagnostics.Process.Start(UnescapeAndExtractUri(responseTokenURI.AllText));
                 return true;
             }
             else
