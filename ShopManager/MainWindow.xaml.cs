@@ -108,7 +108,7 @@ namespace ShopManager
             dpListingDetail.DataContext = selectedCells[0].Item;
         }
 
-        private async void updateReceiptsDetails(object sender, SelectedCellsChangedEventArgs e)
+        private void updateReceiptsDetails(object sender, SelectedCellsChangedEventArgs e)
         {
             if (e.AddedCells.Count <= 0)
                 return;

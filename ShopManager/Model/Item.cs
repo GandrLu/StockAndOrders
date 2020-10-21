@@ -54,12 +54,35 @@ namespace ShopManager.Model
 
     public class Listing : ObservableObject
     {
+        private int listing_id;
         private string title;
-        public int Listing_id { get; set; }
-        //public string state { get; set; }
-        //public int user_id { get; set; }
-        ////public object category_id { get; set; }
-        public string Title 
+        private string description;
+        private string price;
+        private string currency_code;
+        private int quantity;
+        private long shipping_template_id;
+        private string who_made;
+        private string is_supply;
+        private string when_made;
+        private bool is_digital;
+        private bool should_auto_renew;
+        private int taxonomy_id;
+        private List<string> taxonomy_path;
+
+        public int Listing_id
+        {
+            get { return listing_id; }
+            set
+            {
+                if (listing_id != value)
+                {
+                    listing_id = value;
+                    OnPropertyChanged("Who_made");
+                }
+            }
+        }
+
+        public string Title
         {
             get { return title; }
             set
@@ -71,55 +94,162 @@ namespace ShopManager.Model
                 }
             }
         }
-        public string Description { get; set; }
-        ////public int creation_tsz { get; set; }
-        ////public int ending_tsz { get; set; }
-        //public int original_creation_tsz { get; set; }
-        //public int last_modified_tsz { get; set; }
-        public string Price { get; set; }
-        public string Currency_code { get; set; }
-        public int Quantity { get; set; }
-        //public List<string> sku { get; set; }
-        //public List<string> tags { get; set; }
-        //public List<string> materials { get; set; }
-        //public object shop_section_id { get; set; }
-        //public object featured_rank { get; set; }
-        //public int state_tsz { get; set; }
-        //public string url { get; set; }
-        //public int views { get; set; }
-        //public int num_favorers { get; set; }
-        public long Shipping_template_id { get; set; }
-        //public int processing_min { get; set; }
-        //public int processing_max { get; set; }
+        public string Description
+        {
+            get { return description; }
+            set
+            {
+                if (description != value)
+                {
+                    description = value;
+                    OnPropertyChanged("Description");
+                }
+            }
+        }
+        public string Price
+        {
+            get { return price; }
+            set
+            {
+                if (price != value)
+                {
+                    price = value;
+                    OnPropertyChanged("Price");
+                }
+            }
+        }
+
+        public string Currency_code
+        {
+            get { return currency_code; }
+            set
+            {
+                if (currency_code != value)
+                {
+                    currency_code = value;
+                    OnPropertyChanged("Currency_code");
+                }
+            }
+        }
+
+        public int Quantity
+        {
+            get { return quantity; }
+            set
+            {
+                if (quantity != value)
+                {
+                    quantity = value;
+                    OnPropertyChanged("Quantity");
+                }
+            }
+        }
+
+        public long Shipping_template_id
+        {
+            get { return shipping_template_id; }
+            set
+            {
+                if (shipping_template_id != value)
+                {
+                    shipping_template_id = value;
+                    OnPropertyChanged("Shipping_template_id");
+                }
+            }
+        }
 
         //enum(i_did, collective, someone_else)
-        public string Who_made { get; set; }
-        public string Is_supply { get; set; }
-        //enum(made_to_order, 2020_2020, 2010_2019, 2001_2009, before_2001, 2000_2000, 1990s, 1980s, 1970s, 1960s, 1950s, 1940s, 1930s, 1920s, 1910s, 1900s, 1800s, 1700s, before_1700)
-        public string When_made { get; set; }
+        public string Who_made
+        {
+            get { return who_made; }
+            set
+            {
+                if (who_made != value)
+                {
+                    who_made = value;
+                    OnPropertyChanged("Who_made");
+                }
+            }
+        }
 
-        //public object item_weight { get; set; }
-        //public string item_weight_unit { get; set; }
-        //public object item_length { get; set; }
-        //public object item_width { get; set; }
-        //public object item_height { get; set; }
-        //public string item_dimensions_unit { get; set; }
-        //public bool is_private { get; set; }
-        //public object recipient { get; set; }
-        //public object occasion { get; set; }
-        //public object style { get; set; }
-        //public bool non_taxable { get; set; }
-        //public bool is_customizable { get; set; }
-        public bool Is_digital { get; set; }
-        //public string file_data { get; set; }
-        //public bool can_write_inventory { get; set; }
-        public bool Should_auto_renew { get; set; }
-        //public string language { get; set; }
-        //public bool has_variations { get; set; }
-        public int Taxonomy_id { get; set; }
-        public List<string> Taxonomy_path { get; set; }
-        //public bool used_manufacturer { get; set; }
-        //public bool is_vintage { get; set; }
+        public string Is_supply
+        {
+            get { return is_supply; }
+            set
+            {
+                if (is_supply != value)
+                {
+                    is_supply = value;
+                    OnPropertyChanged("Is_supply");
+                }
+            }
+        }
+
+        //enum(made_to_order, 2020_2020, 2010_2019, 2001_2009, before_2001, 2000_2000, 1990s, 1980s, 1970s, 1960s, 1950s, 1940s, 1930s, 1920s, 1910s, 1900s, 1800s, 1700s, before_1700)
+        public string When_made
+        {
+            get { return when_made; }
+            set
+            {
+                if (when_made != value)
+                {
+                    when_made = value;
+                    OnPropertyChanged("When_made");
+                }
+            }
+        }
+
+        public bool Is_digital
+        {
+            get { return is_digital; }
+            set
+            {
+                if (is_digital != value)
+                {
+                    is_digital = value;
+                    OnPropertyChanged("Is_digital");
+                }
+            }
+        }
+
+        public bool Should_auto_renew
+        {
+            get { return should_auto_renew; }
+            set
+            {
+                if (should_auto_renew != value)
+                {
+                    should_auto_renew = value;
+                    OnPropertyChanged("Should_auto_renew");
+                }
+            }
+        }
+
+        public int Taxonomy_id
+        {
+            get { return taxonomy_id; }
+            set
+            {
+                if (taxonomy_id != value)
+                {
+                    taxonomy_id = value;
+                    OnPropertyChanged("Taxonomy_id");
+                }
+            }
+        }
+
+        public List<string> Taxonomy_path
+        {
+            get { return taxonomy_path; }
+            set
+            {
+                if (taxonomy_path != value)
+                {
+                    taxonomy_path = value;
+                    OnPropertyChanged("Taxonomy_path");
+                }
+            }
+        }
     }
 
     public enum CurrencyCode

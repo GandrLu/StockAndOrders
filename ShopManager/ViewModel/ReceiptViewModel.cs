@@ -52,11 +52,5 @@ namespace ShopManager.ViewModel
                 LoadedOrders.Add(newOrder);
             });
         }
-
-        private async Task<List<Transaction>> FetchTransactionsOfReceipt(string receiptId)
-        {
-            var result = await EtsyApiConnector.GetTransactionsByReceipt(receiptId);
-            return new List<Transaction>(result.results);
-        }
     }
 }
