@@ -44,13 +44,21 @@
                     </Grid.RowDefinitions>
 
                     <DockPanel x:Name="dpListingDetail" Grid.Row="0" Margin="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Width="Auto">
-                        <xctk:WatermarkTextBox x:Name="description" DockPanel.Dock="Bottom" Margin="0, 2, 2, 0" TextWrapping="Wrap" Text="{Binding Description}" Watermark="Description" Width="Auto" MinWidth="50" Height="56" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/>
-                        <xctk:WatermarkTextBox x:Name="quantity"    DockPanel.Dock="Left" Margin="0, 0, 2, 0" TextWrapping="Wrap"  Text="{Binding Quantity}" Watermark="Quantity" Width="Auto" MinWidth="50"/>
-                        <xctk:WatermarkTextBox x:Name="name"        DockPanel.Dock="Left" Margin="0, 0, 2, 0" TextWrapping="Wrap"      Text="{Binding Title}" Watermark="Name" Width="Auto" MinWidth="200"/>
-                        <xctk:WatermarkTextBox x:Name="category"    DockPanel.Dock="Left" Margin="0, 0, 2, 0" TextWrapping="Wrap"  Text="{Binding Taxonomy_id}" Watermark="Category" Width="Auto" MinWidth="100"/>
-                        <xctk:WatermarkTextBox x:Name="color"       DockPanel.Dock="Left" Margin="0, 0, 2, 0" TextWrapping="Wrap"        Text="" Watermark="Color" Width="Auto" MinWidth="100"/>
-                        <xctk:WatermarkTextBox x:Name="price"       DockPanel.Dock="Left" Margin="0, 0, 2, 0" TextWrapping="Wrap"     Text="{Binding Price}" Watermark="Price" Width="Auto" MinWidth="50"/>
-                        <xctk:WatermarkComboBox x:Name="currency"   DockPanel.Dock="Left" Margin="0, 0, 2, 0" ItemsSource="{Binding Source={StaticResource enumCurrency}}" Text="{Binding Currency_code}" Watermark="Currency"/>
+                        <xctk:WatermarkTextBox x:Name="description" DockPanel.Dock="Bottom" Margin="0, 2, 2, 0" TextWrapping="Wrap" 
+                                               Text="{Binding Description}" Watermark="Description" Width="Auto" MinWidth="50" Height="56" 
+                                               AcceptsReturn="True" VerticalScrollBarVisibility="Auto" ToolTip="{Binding ElementName=description, Path=Watermark}" />
+                        <xctk:WatermarkTextBox x:Name="quantity"    DockPanel.Dock="Left" Margin="0, 0, 2, 0" TextWrapping="Wrap"  
+                                               Text="{Binding Quantity}" Watermark="Quantity" Width="Auto" MinWidth="50" ToolTip="{Binding ElementName=quantity, Path=Watermark}" />
+                        <xctk:WatermarkTextBox x:Name="name"        DockPanel.Dock="Left" Margin="0, 0, 2, 0" TextWrapping="Wrap"      
+                                               Text="{Binding Title}" Watermark="Name" Width="Auto" MinWidth="200" ToolTip="{Binding ElementName=name, Path=Watermark}" />
+                        <xctk:WatermarkTextBox x:Name="category"    DockPanel.Dock="Left" Margin="0, 0, 2, 0" TextWrapping="Wrap"  
+                                               Text="{Binding Taxonomy_id}" Watermark="Category" Width="Auto" MinWidth="100" ToolTip="{Binding ElementName=category, Path=Watermark}" />
+                        <xctk:WatermarkTextBox x:Name="color"       DockPanel.Dock="Left" Margin="0, 0, 2, 0" TextWrapping="Wrap"        
+                                               Text="" Watermark="Color" Width="Auto" MinWidth="100" ToolTip="{Binding ElementName=color, Path=Watermark}" />
+                        <xctk:WatermarkTextBox x:Name="price"       DockPanel.Dock="Left" Margin="0, 0, 2, 0" TextWrapping="Wrap"     
+                                               Text="{Binding Price}" Watermark="Price" Width="Auto" MinWidth="50" ToolTip="{Binding ElementName=price, Path=Watermark}" />
+                        <xctk:WatermarkComboBox x:Name="currency"   DockPanel.Dock="Left" Margin="0, 0, 2, 0" ToolTip="{Binding ElementName=currency, Path=Watermark}" 
+                                                ItemsSource="{Binding Source={StaticResource enumCurrency}}" Text="{Binding Currency_code}" Watermark="Currency"/>
                     </DockPanel>
 
                     <DataGrid x:Name="dgListings" Grid.Row="3" Margin="2" SelectionUnit="FullRow" GridLinesVisibility="Horizontal"
