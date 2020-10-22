@@ -55,6 +55,7 @@ namespace ShopManager.Model
     public class Listing : ObservableObject
     {
         private int listing_id;
+        private string state;
         private string title;
         private string description;
         private string price;
@@ -77,7 +78,20 @@ namespace ShopManager.Model
                 if (listing_id != value)
                 {
                     listing_id = value;
-                    OnPropertyChanged("Who_made");
+                    OnPropertyChanged(nameof(Listing_id));
+                }
+            }
+        }
+
+        public string State
+        {
+            get { return state; }
+            set 
+            {
+                if (state != value)
+                {
+                    state = value;
+                    OnPropertyChanged(nameof(State));
                 }
             }
         }
@@ -90,7 +104,7 @@ namespace ShopManager.Model
                 if (title != value)
                 {
                     title = value;
-                    OnPropertyChanged("Title");
+                    OnPropertyChanged(nameof(Title));
                 }
             }
         }
@@ -102,7 +116,7 @@ namespace ShopManager.Model
                 if (description != value)
                 {
                     description = value;
-                    OnPropertyChanged("Description");
+                    OnPropertyChanged(nameof(Description));
                 }
             }
         }
@@ -114,7 +128,7 @@ namespace ShopManager.Model
                 if (price != value)
                 {
                     price = value;
-                    OnPropertyChanged("Price");
+                    OnPropertyChanged(nameof(Price));
                 }
             }
         }
@@ -127,7 +141,7 @@ namespace ShopManager.Model
                 if (currency_code != value)
                 {
                     currency_code = value;
-                    OnPropertyChanged("Currency_code");
+                    OnPropertyChanged(nameof(Currency_code));
                 }
             }
         }
@@ -140,7 +154,7 @@ namespace ShopManager.Model
                 if (quantity != value)
                 {
                     quantity = value;
-                    OnPropertyChanged("Quantity");
+                    OnPropertyChanged(nameof(Quantity));
                 }
             }
         }
@@ -153,7 +167,7 @@ namespace ShopManager.Model
                 if (shipping_template_id != value)
                 {
                     shipping_template_id = value;
-                    OnPropertyChanged("Shipping_template_id");
+                    OnPropertyChanged(nameof(Shipping_template_id));
                 }
             }
         }
@@ -167,7 +181,7 @@ namespace ShopManager.Model
                 if (who_made != value)
                 {
                     who_made = value;
-                    OnPropertyChanged("Who_made");
+                    OnPropertyChanged(nameof(Who_made));
                 }
             }
         }
@@ -180,7 +194,7 @@ namespace ShopManager.Model
                 if (is_supply != value)
                 {
                     is_supply = value;
-                    OnPropertyChanged("Is_supply");
+                    OnPropertyChanged(nameof(Is_supply));
                 }
             }
         }
@@ -194,7 +208,7 @@ namespace ShopManager.Model
                 if (when_made != value)
                 {
                     when_made = value;
-                    OnPropertyChanged("When_made");
+                    OnPropertyChanged(nameof(When_made));
                 }
             }
         }
@@ -207,7 +221,7 @@ namespace ShopManager.Model
                 if (is_digital != value)
                 {
                     is_digital = value;
-                    OnPropertyChanged("Is_digital");
+                    OnPropertyChanged(nameof(Is_digital));
                 }
             }
         }
@@ -220,7 +234,7 @@ namespace ShopManager.Model
                 if (should_auto_renew != value)
                 {
                     should_auto_renew = value;
-                    OnPropertyChanged("Should_auto_renew");
+                    OnPropertyChanged(nameof(Should_auto_renew));
                 }
             }
         }
@@ -233,7 +247,7 @@ namespace ShopManager.Model
                 if (taxonomy_id != value)
                 {
                     taxonomy_id = value;
-                    OnPropertyChanged("Taxonomy_id");
+                    OnPropertyChanged(nameof(Taxonomy_id));
                 }
             }
         }
@@ -246,7 +260,7 @@ namespace ShopManager.Model
                 if (taxonomy_path != value)
                 {
                     taxonomy_path = value;
-                    OnPropertyChanged("Taxonomy_path");
+                    OnPropertyChanged(nameof(Taxonomy_path));
                 }
             }
         }
