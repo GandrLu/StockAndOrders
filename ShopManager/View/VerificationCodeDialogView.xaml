@@ -17,7 +17,7 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <Label Content="Enter Verification Code:" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
-        <TextBox HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0,0,0" Text="{Binding EtsyVerificationCode}"/>
+        <TextBox HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0,0,0" Text="{Binding EtsyVerificationCode, Mode=OneWayToSource}"/>
         <Button x:Name="btnConfirmCode" Content="Okay" HorizontalAlignment="Center" Margin="0,10,0,0" Grid.Row="2" VerticalAlignment="Top" Width="75" Height="20" Command="{Binding SaveVerificationCodeCommand}" Click="OkButton_Click"/>
         <Button Content="Cancel" IsCancel="True" Grid.Column="1" HorizontalAlignment="Center" Margin="0,10,0,0" Grid.Row="2" VerticalAlignment="Top" Width="75" Height="20"/>
     </Grid>
