@@ -264,6 +264,28 @@ namespace ShopManager.Model
                 }
             }
         }
+
+        public void CopyTo(Listing target)
+        {
+            if (target == null)
+                throw new ArgumentNullException();
+
+            target.Listing_id = Listing_id;
+            target.State = State;
+            target.Title = Title;
+            target.Description = Description;
+            target.Price = Price;
+            target.Currency_code = Currency_code;
+            target.Quantity = Quantity;
+            target.Shipping_template_id = Shipping_template_id;
+            target.Who_made = Who_made;
+            target.Is_supply = Is_supply;
+            target.When_made = When_made;
+            target.Is_digital = Is_digital;
+            target.Should_auto_renew = Should_auto_renew;
+            target.Taxonomy_id = Taxonomy_id;
+            target.Taxonomy_path = Taxonomy_path;
+        }
     }
 
     public enum CurrencyCode

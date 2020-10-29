@@ -28,7 +28,6 @@
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
     </Window.Resources>
-
     <Grid>
         <TabControl>
             <TabItem x:Name="tiListings" Header="Listings">
@@ -42,29 +41,38 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-
-                    <DockPanel x:Name="dpListingDetail" Grid.Row="0" Margin="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Width="Auto">
-                        <xctk:WatermarkTextBox x:Name="description" DockPanel.Dock="Bottom" Margin="0, 2, 2, 0" TextWrapping="Wrap" 
+                    
+                    <DockPanel x:Name="dpListingDetail" Grid.Row="0" Margin="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Width="Auto"
+                               DataContext="{Binding TemporarySelectedListing, Mode=TwoWay}">
+                        <xctk:WatermarkTextBox x:Name="description" DockPanel.Dock="Bottom" Margin="0, 2, 2, 0" TextWrapping="Wrap" IsReadOnly="True" 
                                                Text="{Binding Description}" Watermark="Description" Width="Auto" MinWidth="50" Height="56" 
                                                AcceptsReturn="True" VerticalScrollBarVisibility="Auto" ToolTip="{Binding ElementName=description, Path=Watermark}" />
-                        <xctk:WatermarkTextBox x:Name="quantity"    DockPanel.Dock="Left" Margin="0, 0, 2, 0" TextWrapping="Wrap"  
-                                               Text="{Binding Quantity}" Watermark="Quantity" Width="Auto" MinWidth="50" ToolTip="{Binding ElementName=quantity, Path=Watermark}" />
-                        <xctk:WatermarkTextBox x:Name="name"        DockPanel.Dock="Left" Margin="0, 0, 2, 0" TextWrapping="Wrap"      
+                        <xctk:WatermarkTextBox x:Name="quantity"    DockPanel.Dock="Left" Margin="0, 0, 2, 0" TextWrapping="Wrap"
+                                               Text="{Binding Quantity}" Watermark="Quantity" Width="Auto" MinWidth="60" ToolTip="{Binding ElementName=quantity, Path=Watermark}" />
+                        <xctk:WatermarkTextBox x:Name="name"        DockPanel.Dock="Left" Margin="0, 0, 2, 0" TextWrapping="Wrap" IsReadOnly="True"
                                                Text="{Binding Title}" Watermark="Name" Width="Auto" MinWidth="200" ToolTip="{Binding ElementName=name, Path=Watermark}" />
-                        <xctk:WatermarkTextBox x:Name="category"    DockPanel.Dock="Left" Margin="0, 0, 2, 0" TextWrapping="Wrap"  
+                        <xctk:WatermarkTextBox x:Name="category"    DockPanel.Dock="Left" Margin="0, 0, 2, 0" TextWrapping="Wrap" IsReadOnly="True"
                                                Text="{Binding Taxonomy_id}" Watermark="Category" Width="Auto" MinWidth="100" ToolTip="{Binding ElementName=category, Path=Watermark}" />
-                        <xctk:WatermarkTextBox x:Name="color"       DockPanel.Dock="Left" Margin="0, 0, 2, 0" TextWrapping="Wrap"        
+                        <xctk:WatermarkTextBox x:Name="color"       DockPanel.Dock="Left" Margin="0, 0, 2, 0" TextWrapping="Wrap" IsReadOnly="True"
                                                Text="" Watermark="Color" Width="Auto" MinWidth="100" ToolTip="{Binding ElementName=color, Path=Watermark}" />
-                        <xctk:WatermarkTextBox x:Name="price"       DockPanel.Dock="Left" Margin="0, 0, 2, 0" TextWrapping="Wrap"     
+                        <xctk:WatermarkTextBox x:Name="price"       DockPanel.Dock="Left" Margin="0, 0, 2, 0" TextWrapping="Wrap" IsReadOnly="True"
                                                Text="{Binding Price}" Watermark="Price" Width="Auto" MinWidth="50" ToolTip="{Binding ElementName=price, Path=Watermark}" />
                         <xctk:WatermarkComboBox x:Name="currency"   DockPanel.Dock="Left" Margin="0, 0, 2, 0" ToolTip="{Binding ElementName=currency, Path=Watermark}" 
-                                                ItemsSource="{Binding Source={StaticResource enumCurrency}}" Text="{Binding Currency_code}" Watermark="Currency"/>
+                                                ItemsSource="{Binding Source={StaticResource enumCurrency}}" Text="{Binding Currency_code}" Watermark="Currency"
+                                                IsReadOnly="True"/>
                     </DockPanel>
+
+                    <StackPanel Grid.Row="1" DockPanel.Dock="Bottom" Margin="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <TextBlock x:Name="tbSaveListing" Margin="2, 2, 5, 2" Text="{Binding Path=ErrorMessage}"/>
+                        <Button x:Name="btnSaveListing" Width="100" Command="{Binding SaveListingQuantityCommand}">Save</Button>
+                        <Button Width="100" Command="{Binding CancelSaveListingQuantityCommand}">Cancel</Button>
+                    </StackPanel>
 
                     <DataGrid x:Name="dgListings" Grid.Row="3" Margin="2" SelectionUnit="FullRow" GridLinesVisibility="Horizontal"
                               CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False" HeadersVisibility="Column"
                               ItemsSource="{Binding LoadedListings}" HorizontalGridLinesBrush="{StaticResource GrayGridLine}" 
-                              CellStyle="{StaticResource DataGridStandard}" SelectionMode="Single">
+                              CellStyle="{StaticResource DataGridStandard}" SelectionMode="Single" IsSynchronizedWithCurrentItem="True"
+                              SelectedItem="{Binding SelectedListing, Mode=TwoWay}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="ID"         Width="*"   IsReadOnly="True" Binding="{Binding Listing_id}"/>
                             <DataGridTextColumn Header="Quantity"   Width=".5*" IsReadOnly="True" Binding="{Binding Quantity}"/>

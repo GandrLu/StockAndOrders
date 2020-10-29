@@ -2,8 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using ShopManager.Helper;
 using ShopManager.Model;
 using ShopManager.Properties;
@@ -19,7 +22,6 @@ namespace ShopManager
     public partial class MainWindow : Window
     {
         #region Fields
-        private CustomerViewModel customerViewModel;
         private ListingViewModel listingViewModel;
         private ReceiptViewModel receiptViewModel;
         private SettingsViewModel settingsViewModel;
@@ -42,8 +44,6 @@ namespace ShopManager
         {
             listingViewModel = new ListingViewModel();
             tiListings.DataContext = listingViewModel;
-            listingViewModel.PropertyChanged += updateDGListings;
-            dgListings.SelectedCellsChanged += updateListingDetails;
         }
 
         private void SetupReceiptsViewModel()
@@ -69,7 +69,6 @@ namespace ShopManager
 
         private void FetchEtsyData()
         {
-            listingViewModel.FetchListingsFromEtsy();
             receiptViewModel.FetchReceiptsFromEtsy();
         }
         #endregion
@@ -88,12 +87,6 @@ namespace ShopManager
         #endregion
 
         #region Helper Methods
-        private void updateDGListings(object sender, PropertyChangedEventArgs e)
-        {
-            dgListings.ItemsSource = null;
-            dgListings.ItemsSource = listingViewModel.LoadedListings;
-        }
-
         private void updateDGReceipts(object sender, PropertyChangedEventArgs e)
         {
             dgReceipts.ItemsSource = null;
@@ -102,10 +95,17 @@ namespace ShopManager
 
         private void updateListingDetails(object sender, SelectedCellsChangedEventArgs e)
         {
-            if (e.AddedCells.Count <= 0)
-                return;
-            IList<DataGridCellInfo> selectedCells = e.AddedCells;
-            dpListingDetail.DataContext = selectedCells[0].Item;
+            if (e.AddedCells.Count == 0)
+            {
+                dpListingDetail.DataContext = null;
+                listingViewModel.SelectedListing = null;
+            }
+            else
+            {
+                IList<DataGridCellInfo> selectedCells = e.AddedCells;
+                dpListingDetail.DataContext = selectedCells[0].Item;
+                listingViewModel.SelectedListing = (Listing)selectedCells[0].Item;
+            }
         }
 
         private void updateReceiptsDetails(object sender, SelectedCellsChangedEventArgs e)
@@ -115,6 +115,8 @@ namespace ShopManager
             IList<DataGridCellInfo> selectedCells = e.AddedCells;
             tiOrders.DataContext = (Order)selectedCells[0].Item;
         }
+
+        
 
         private void ShowVerificationCodeDialog()
         {

@@ -14,12 +14,14 @@ namespace ShopManager.Helper
         private const string CONSUMER_KEY = "fill in key";
         private const string CONSUMER_SECRET = "fill in secret";
 
-        private const string REQUEST_TOKEN_URI = "https://openapi.etsy.com/v2/oauth/request_token?scope=transactions_r listings_r";
+        private const string REQUEST_TOKEN_URI = "https://openapi.etsy.com/v2/oauth/request_token?scope=";
+        private const string SCOPES = "transactions_r transactions_w listings_r listings_w";
         private const string ACCESS_TOKEN_URI = "https://openapi.etsy.com/v2/oauth/access_token";
         private const string GET_TRANSACTIONS_URI = "https://openapi.etsy.com/v2/shops/dixKeramikwerkstatt/transactions";
-        private const string GET_ACTIVELISTINGS_URI = "https://openapi.etsy.com/v2/shops/dixKeramikwerkstatt/listings/draft";
+        private const string GET_ACTIVELISTINGS_URI = "https://openapi.etsy.com/v2/shops/dixKeramikwerkstatt/listings/inactive";
         private const string GET_RECEIPTS_URI = "https://openapi.etsy.com/v2/shops/dixKeramikwerkstatt/receipts";
-        private const string GET_TRANSACTIONBYRECEIPT_URI = "https://openapi.etsy.com/v2/receipts/:receiptId/transactions";
+        private const string GET_TRANSACTIONBYRECEIPT_URI = "https://openapi.etsy.com/v2/receipts/receiptId/transactions";
+        private const string PUT_LISTING_URI = "https://openapi.etsy.com/v2/listings/Listing_id";
 
         private OAuth.Manager oAuth = new Manager();
         private static OAuth.Manager staticOAuth = new OAuth.Manager();
@@ -49,7 +51,7 @@ namespace ShopManager.Helper
         {
             staticOAuth["token"] = "";
             staticOAuth["token_secret"] = "";
-            OAuthResponse responseTokenURI = staticOAuth.AcquireRequestToken(REQUEST_TOKEN_URI, "GET");
+            OAuthResponse responseTokenURI = staticOAuth.AcquireRequestToken(REQUEST_TOKEN_URI + SCOPES, "GET");
 
             if (responseTokenURI != null)
             {
@@ -78,20 +80,36 @@ namespace ShopManager.Helper
 
         public static async Task<JsonResult<Listing>> GetListings()
         {
-            SetHeader(GET_ACTIVELISTINGS_URI);
-            var response = await client.GetStringAsync(GET_ACTIVELISTINGS_URI);
+            try
+            {
+                SetHeader(GET_ACTIVELISTINGS_URI);
+                var response = await client.GetStringAsync(GET_ACTIVELISTINGS_URI);
 
-            JsonResult<Listing> items = JsonSerializer.Deserialize<JsonResult<Listing>>(response, jsonSerializerOptions);
-            return items;
+                JsonResult<Listing> items = JsonSerializer.Deserialize<JsonResult<Listing>>(response, jsonSerializerOptions);
+                return items;
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("Etsy connection failed: " + e);
+                throw;
+            }
         }
 
         public static async Task<JsonResult<Receipt>> GetReceipts()
         {
-            SetHeader(GET_RECEIPTS_URI);
-            var response = await client.GetStringAsync(GET_RECEIPTS_URI);
+            try
+            {
+                SetHeader(GET_RECEIPTS_URI);
+                var response = await client.GetStringAsync(GET_RECEIPTS_URI);
 
-            JsonResult<Receipt> receipts = JsonSerializer.Deserialize<JsonResult<Receipt>>(response, jsonSerializerOptions);
-            return receipts;
+                JsonResult<Receipt> receipts = JsonSerializer.Deserialize<JsonResult<Receipt>>(response, jsonSerializerOptions);
+                return receipts;
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("Etsy connection failed: " + e);
+                throw;
+            }
         }
 
         public async Task<JsonResult<Transaction>> GetTransactionByReceipt(string receiptId)
@@ -100,7 +118,7 @@ namespace ShopManager.Helper
             {
                 using (HttpClient localClient = new HttpClient())
                 {
-                    string requestUri = GET_TRANSACTIONBYRECEIPT_URI.Replace(":receiptId", receiptId);
+                    string requestUri = GET_TRANSACTIONBYRECEIPT_URI.Replace(nameof(receiptId), receiptId);
                     string header = oAuth.GenerateAuthzHeader(requestUri, "GET");
                     localClient.DefaultRequestHeaders.Add("Authorization", header);
 
@@ -121,7 +139,7 @@ namespace ShopManager.Helper
         {
             try
             {
-                string requestUri = GET_TRANSACTIONBYRECEIPT_URI.Replace(":receiptId", receiptId);
+                string requestUri = GET_TRANSACTIONBYRECEIPT_URI.Replace(nameof(receiptId), receiptId);
                 SetHeader(requestUri);
                 var response = await client.GetStringAsync(requestUri);
 
@@ -135,6 +153,25 @@ namespace ShopManager.Helper
             }
         }
 
+        public static async Task<bool> PutListingQuantityUpdate(Listing listing)
+        {
+            try
+            {
+                string putUri = PUT_LISTING_URI.Replace(nameof(listing.Listing_id), listing.Listing_id.ToString());
+                string listingState = (listing.State == "edit") ? "inactive" : listing.State;
+                putUri += $"?quantity={listing.Quantity}&state={listingState}";
+                SetHeader(putUri, "PUT");
+
+                var response = await client.PutAsync(putUri, null);
+                return response.IsSuccessStatusCode;
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("Etsy connection failed: " + e);
+                throw;
+            }
+        }
+
         #region Helper
         private static string UnescapeAndExtractUri(string uri)
         {
@@ -144,7 +181,8 @@ namespace ShopManager.Helper
 
         private static void SetHeader(string uri, string method = "GET")
         {
-            string header = staticOAuth.GenerateAuthzHeader(uri, "GET");
+            string header = staticOAuth.GenerateAuthzHeader(uri, method);
+            client.DefaultRequestHeaders.Clear();
             client.DefaultRequestHeaders.Remove("Authorization");
             client.DefaultRequestHeaders.Add("Authorization", header);
         }

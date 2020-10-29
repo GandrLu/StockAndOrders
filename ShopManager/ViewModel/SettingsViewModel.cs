@@ -1,4 +1,4 @@
-﻿using GalaSoft.MvvmLight.Command;
+﻿using GalaSoft.MvvmLight.CommandWpf;
 using ShopManager.Helper;
 using ShopManager.Properties;
 using System;
