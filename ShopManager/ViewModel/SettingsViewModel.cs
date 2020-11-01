@@ -14,10 +14,8 @@ namespace ShopManager.ViewModel
     class SettingsViewModel
     {
         private static bool isAppConfigured;
-        private static string databaseServer;
-        private static string databaseUserId;
-        private static string databaseSecret;
-        private static string databaseName;
+        private static string etsyAppKey;
+        private static string etsyAppSecret;
         private static string etsyVerificationCode;
         private static string etsyAccessToken;
         private static string etsyAccessTokenSecret;
@@ -79,8 +77,8 @@ namespace ShopManager.ViewModel
             }
         }
 
-        public string EtsyAppKey { get => databaseUserId; set => databaseUserId = value; }
-        public string EtsyAppSecret { get => databaseSecret; set => databaseSecret = value; }
+        public string EtsyAppKey { get => etsyAppKey; set => etsyAppKey = value; }
+        public string EtsyAppSecret { get => etsyAppSecret; set => etsyAppSecret = value; }
         public string EtsyVerificationCode { get => etsyVerificationCode; set => etsyVerificationCode = value; }
 
         public ICommand SaveSettingsCommand
