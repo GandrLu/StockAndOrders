@@ -5,16 +5,10 @@
     <Setting Name="IsAppConfigured" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="DatabaseServer" Type="System.String" Scope="User">
+    <Setting Name="EtsyAppKey" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="DatabaseName" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="DatabaseUserId" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="DatabaseSecret" Type="System.String" Scope="User">
+    <Setting Name="EtsyAppSecret" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="EtsyVerificationCode" Type="System.String" Scope="User">

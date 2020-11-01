@@ -29,10 +29,8 @@ namespace ShopManager.ViewModel
             try
             {
                 IsAppConfigured = (bool)Settings.Default["IsAppConfigured"];
-                DatabaseServer = (string)Settings.Default["DatabaseServer"];
-                DatabaseName = (string)Settings.Default["DatabaseName"];
-                DatabaseUserId = (string)Settings.Default["DatabaseUserId"];
-                DatabaseSecret = (string)Settings.Default["DatabaseSecret"];
+                EtsyAppKey = (string)Settings.Default["EtsyAppKey"];
+                EtsyAppSecret = (string)Settings.Default["EtsyAppSecret"];
                 EtsyVerificationCode = (string)Settings.Default["EtsyVerificationCode"];
                 EtsyAccessToken = (string)Settings.Default["EtsyAccessToken"];
                 EtsyAccessTokenSecret = (string)Settings.Default["EtsyAccessTokenSecret"];
@@ -81,10 +79,8 @@ namespace ShopManager.ViewModel
             }
         }
 
-        public string DatabaseServer { get => databaseServer; set => databaseServer = value; }
-        public string DatabaseUserId { get => databaseUserId; set => databaseUserId = value; }
-        public string DatabaseSecret { get => databaseSecret; set => databaseSecret = value; }
-        public string DatabaseName { get => databaseName; set => databaseName = value; }
+        public string EtsyAppKey { get => databaseUserId; set => databaseUserId = value; }
+        public string EtsyAppSecret { get => databaseSecret; set => databaseSecret = value; }
         public string EtsyVerificationCode { get => etsyVerificationCode; set => etsyVerificationCode = value; }
 
         public ICommand SaveSettingsCommand
@@ -95,7 +91,7 @@ namespace ShopManager.ViewModel
                 {
                     saveSettingsCommand = new RelayCommand(
                         () => SaveSettings(),
-                        () => (DatabaseServer != null)
+                        () => (EtsyVerificationCode != null)
                         );
                 }
                 return saveSettingsCommand;
@@ -119,21 +115,16 @@ namespace ShopManager.ViewModel
 
         public void SaveSettings()
         {
-            Settings.Default["DatabaseServer"] = DatabaseServer;
-            Settings.Default["DatabaseName"] = DatabaseName;
-            Settings.Default["DatabaseUserId"] = DatabaseUserId;
-            Settings.Default["DatabaseSecret"] = DatabaseSecret;
+            Settings.Default["EtsyAppKey"] = EtsyAppKey;
+            Settings.Default["EtsyAppSecret"] = EtsyAppSecret;
             Settings.Default["EtsyVerificationCode"] = EtsyVerificationCode;
             Settings.Default.Save();
         }
 
-        public void SaveSettings(string databaseServer, string databaseName, 
-            string databaseUserId, string databaseSecret, string etsyVerificationCode)
+        public void SaveSettings(string etsyAppKey, string etsyAppSecret, string etsyVerificationCode)
         {
-            Settings.Default["DatabaseServer"] = databaseServer;
-            Settings.Default["DatabaseName"] = databaseName;
-            Settings.Default["DatabaseUserId"] = databaseUserId;
-            Settings.Default["DatabaseSecret"] = databaseSecret;
+            Settings.Default["EtsyAppKey"] = etsyAppKey;
+            Settings.Default["EtsyAppSecret"] = etsyAppSecret;
             Settings.Default["EtsyVerificationCode"] = etsyVerificationCode;
             Settings.Default.Save();
         }
@@ -148,10 +139,8 @@ namespace ShopManager.ViewModel
         public override string ToString()
         {
             string settings = "Settings: ";
-            settings += (string)Settings.Default["DatabaseServer"];
-            settings += (string)Settings.Default["DatabaseName"];
-            settings += (string)Settings.Default["DatabaseUserId"];
-            settings += (string)Settings.Default["DatabaseSecret"];
+            settings += (string)Settings.Default["EtsyAppKey"];
+            settings += (string)Settings.Default["EtsyAppSecret"];
             settings += (string)Settings.Default["EtsyVerificationCode"];
             return settings;
         }

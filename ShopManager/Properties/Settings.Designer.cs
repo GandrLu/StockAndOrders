@@ -38,48 +38,24 @@ namespace ShopManager.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string DatabaseServer {
+        public string EtsyAppKey {
             get {
-                return ((string)(this["DatabaseServer"]));
+                return ((string)(this["EtsyAppKey"]));
             }
             set {
-                this["DatabaseServer"] = value;
+                this["EtsyAppKey"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string DatabaseName {
+        public string EtsyAppSecret {
             get {
-                return ((string)(this["DatabaseName"]));
+                return ((string)(this["EtsyAppSecret"]));
             }
             set {
-                this["DatabaseName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string DatabaseUserId {
-            get {
-                return ((string)(this["DatabaseUserId"]));
-            }
-            set {
-                this["DatabaseUserId"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string DatabaseSecret {
-            get {
-                return ((string)(this["DatabaseSecret"]));
-            }
-            set {
-                this["DatabaseSecret"] = value;
+                this["EtsyAppSecret"] = value;
             }
         }
         

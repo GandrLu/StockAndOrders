@@ -172,17 +172,13 @@
                     </Grid.RowDefinitions>
 
                     <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Vertical">
-                        <Label x:Name="lDbServer" HorizontalAlignment="Right" VerticalAlignment="Center">Database Server</Label>
-                        <Label x:Name="lDbName" HorizontalAlignment="Right" VerticalAlignment="Center">Database Name</Label>
-                        <Label x:Name="lDbUser" HorizontalAlignment="Right" VerticalAlignment="Center">Database User</Label>
-                        <Label x:Name="lDbSecret" HorizontalAlignment="Right" VerticalAlignment="Center">Database Secret</Label>
+                        <Label x:Name="lEtsyAppKey" HorizontalAlignment="Right" VerticalAlignment="Center">Etsy App Key</Label>
+                        <Label x:Name="lEtsyAppSecret" HorizontalAlignment="Right" VerticalAlignment="Center">Etsy App Secret</Label>
                         <Label x:Name="lEtsyVCode" HorizontalAlignment="Right" VerticalAlignment="Center">Etsy Verification Code</Label>
                     </StackPanel>
                     <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Vertical">
-                        <TextBox x:Name="tbDatabaseServer" Height="{Binding ElementName=lDbServer, Path=ActualHeight}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"/>
-                        <TextBox x:Name="tbDatabaseName" Height="{Binding ElementName=lDbName, Path=ActualHeight}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"/>
-                        <TextBox x:Name="tbDatabaseUser" Height="{Binding ElementName=lDbUser, Path=ActualHeight}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"/>
-                        <PasswordBox x:Name="pbDatabaseSecret" Height="{Binding ElementName=lDbSecret, Path=ActualHeight}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"/>
+                        <TextBox x:Name="tbEtsyAppKey" Height="{Binding ElementName=lEtsyAppKey, Path=ActualHeight}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"/>
+                        <PasswordBox x:Name="pbEtsyAppSecret" Height="{Binding ElementName=lEtsyAppSecret, Path=ActualHeight}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"/>
                         <TextBox x:Name="tbEtsyVerificationCode" Height="{Binding ElementName=lEtsyVCode, Path=ActualHeight}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"/>
                     </StackPanel>
 

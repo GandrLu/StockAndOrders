@@ -23,7 +23,6 @@ namespace ShopManager
             SetupSettings();
             SetupListingViewModel();
             SetupReceiptsViewModel();
-            SetupDatabase();
         }
         #endregion
 
@@ -40,11 +39,6 @@ namespace ShopManager
             tiOrders.DataContext = receiptViewModel;
         }
 
-        private void SetupDatabase()
-        {
-            DataBaseConnection dbConnection = new DataBaseConnection();
-        }
-
         private void SetupSettings()
         {
             settingsViewModel = new SettingsViewModel();
@@ -57,8 +51,7 @@ namespace ShopManager
         #region Button Click Handler
         private void OnSaveSettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            settingsViewModel.SaveSettings(tbDatabaseServer.Text, tbDatabaseName.Text, 
-                tbDatabaseUser.Text, pbDatabaseSecret.Password, tbEtsyVerificationCode.Text);
+            settingsViewModel.SaveSettings(tbEtsyAppKey.Text, pbEtsyAppSecret.Password, tbEtsyVerificationCode.Text);
         }
 
         private void OnEtsyVerificationButton_Click(object sender, RoutedEventArgs e)
@@ -77,10 +70,8 @@ namespace ShopManager
 
         private void FillInSettings()
         {
-            tbDatabaseServer.Text = settingsViewModel.DatabaseServer;
-            tbDatabaseName.Text = settingsViewModel.DatabaseName;
-            tbDatabaseUser.Text = settingsViewModel.DatabaseUserId;
-            pbDatabaseSecret.Password = settingsViewModel.DatabaseSecret;
+            tbEtsyAppKey.Text = settingsViewModel.EtsyAppKey;
+            pbEtsyAppSecret.Password = settingsViewModel.EtsyAppSecret;
             tbEtsyVerificationCode.Text = settingsViewModel.EtsyVerificationCode;
         }
         #endregion
