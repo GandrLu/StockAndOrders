@@ -140,7 +140,8 @@ namespace ShopManager.ViewModel
         private void UpdateSelectedListingInLoadedListings()
         {
             var oldIndex = LoadedListings.FindIndex(x => x.Listing_id == TemporarySelectedListing.Listing_id);
-            TemporarySelectedListing.CopyTo(LoadedListings[oldIndex]);
+            if (oldIndex != -1)
+                TemporarySelectedListing.CopyTo(LoadedListings[oldIndex]);
         }
 
         private void DisplayEtsySavingError()

@@ -1,16 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
+﻿using System.Windows;
 using ShopManager.Helper;
-using ShopManager.Model;
-using ShopManager.Properties;
-using ShopManager.Validator;
 using ShopManager.View;
 using ShopManager.ViewModel;
 
@@ -35,7 +24,6 @@ namespace ShopManager
             SetupListingViewModel();
             SetupReceiptsViewModel();
             SetupDatabase();
-            FetchEtsyData();
         }
         #endregion
 
@@ -50,8 +38,6 @@ namespace ShopManager
         {
             receiptViewModel = new ReceiptViewModel();
             tiOrders.DataContext = receiptViewModel;
-            receiptViewModel.PropertyChanged += updateDGReceipts;
-            dgReceipts.SelectedCellsChanged += updateReceiptsDetails;
         }
 
         private void SetupDatabase()
@@ -65,11 +51,6 @@ namespace ShopManager
             if (!SettingsViewModel.IsAppConfigured)
                 ShowVerificationCodeDialog();
             FillInSettings();
-        }
-
-        private void FetchEtsyData()
-        {
-            receiptViewModel.FetchReceiptsFromEtsy();
         }
         #endregion
 
@@ -87,37 +68,6 @@ namespace ShopManager
         #endregion
 
         #region Helper Methods
-        private void updateDGReceipts(object sender, PropertyChangedEventArgs e)
-        {
-            dgReceipts.ItemsSource = null;
-            dgReceipts.ItemsSource = receiptViewModel.LoadedOrders;
-        }
-
-        private void updateListingDetails(object sender, SelectedCellsChangedEventArgs e)
-        {
-            if (e.AddedCells.Count == 0)
-            {
-                dpListingDetail.DataContext = null;
-                listingViewModel.SelectedListing = null;
-            }
-            else
-            {
-                IList<DataGridCellInfo> selectedCells = e.AddedCells;
-                dpListingDetail.DataContext = selectedCells[0].Item;
-                listingViewModel.SelectedListing = (Listing)selectedCells[0].Item;
-            }
-        }
-
-        private void updateReceiptsDetails(object sender, SelectedCellsChangedEventArgs e)
-        {
-            if (e.AddedCells.Count <= 0)
-                return;
-            IList<DataGridCellInfo> selectedCells = e.AddedCells;
-            tiOrders.DataContext = (Order)selectedCells[0].Item;
-        }
-
-        
-
         private void ShowVerificationCodeDialog()
         {
             VerificationCodeDialogView verificationCodeDialog = new VerificationCodeDialogView();

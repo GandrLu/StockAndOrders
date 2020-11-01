@@ -1,4 +1,5 @@
-﻿using ShopManager.Helper;
+﻿using GalaSoft.MvvmLight.CommandWpf;
+using ShopManager.Helper;
 using ShopManager.Model;
 using System;
 using System.Collections.Concurrent;
@@ -11,6 +12,16 @@ namespace ShopManager.ViewModel
     {
         private List<Receipt> loadedReceipts = new List<Receipt>();
         private List<Order> loadedOrders = new List<Order>();
+        private Receipt currentReceipt;
+        private Receipt selectedReceipt = new Receipt();
+        private RelayCommand saveReceiptCommand;
+        private RelayCommand cancelSaveReceiptCommand;
+
+        public ReceiptViewModel()
+        {
+            FetchReceiptsFromEtsy();
+        }
+
         public List<Receipt> LoadedReceipts
         {
             get => loadedReceipts;
@@ -19,7 +30,7 @@ namespace ShopManager.ViewModel
                 if (loadedReceipts != value)
                 {
                     loadedReceipts = value;
-                    OnPropertyChanged("LoadedReceipts");
+                    OnPropertyChanged(nameof(LoadedReceipts));
                 }
             }
         }
@@ -32,25 +43,102 @@ namespace ShopManager.ViewModel
                 if (loadedOrders != value)
                 {
                     loadedOrders = value;
-                    OnPropertyChanged("LoadedOrders");
+                    OnPropertyChanged(nameof(LoadedOrders));
                 }
             }
         }
 
-        public async void FetchReceiptsFromEtsy()
+        public Receipt CurrentReceipt
+        {
+            get => currentReceipt;
+            set
+            {
+                if (currentReceipt != value)
+                {
+                    currentReceipt = value;
+                    if (value != null)
+                    {
+                        if (SelectedReceipt == null)
+                            SelectedReceipt = new Receipt();
+                        value.CopyTo(SelectedReceipt);
+                    }
+                    OnPropertyChanged(nameof(CurrentReceipt));
+                }
+            }
+        }
+
+        public Receipt SelectedReceipt
+        {
+            get { return selectedReceipt; }
+            set
+            {
+                selectedReceipt = value;
+                OnPropertyChanged(nameof(SelectedReceipt));
+            }
+        }
+
+        public RelayCommand SaveReceiptCommand
+        {
+            get
+            {
+                if (saveReceiptCommand == null)
+                {
+                    saveReceiptCommand = new RelayCommand(
+                        () => SaveReceiptToEtsy(),
+                        () => SelectedReceipt != null                        
+                        );
+                }
+                return saveReceiptCommand;
+            }
+        }
+        public RelayCommand CancelSaveReceiptCommand
+        {
+            get
+            {
+                if (cancelSaveReceiptCommand == null)
+                {
+                    cancelSaveReceiptCommand = new RelayCommand(
+                        () => UnloadSelectedReceipt(),
+                        () => SelectedReceipt != null
+                        );
+                }
+                return cancelSaveReceiptCommand;
+            }
+        }
+
+        private async void SaveReceiptToEtsy()
+        {
+            if (await EtsyApiConnector.PostTrackingData(SelectedReceipt))
+            {
+                UpdateSelectedReceiptInLoadedReceipts();
+                SelectedReceipt = null;
+            }
+            //TODO: Display error
+        }
+
+        private void UnloadSelectedReceipt()
+        {
+            SelectedReceipt = null;
+            CurrentReceipt = null;
+        }
+
+        private bool CheckValidReceipt()
+        {
+            return false;
+        }
+
+        private void UpdateSelectedReceiptInLoadedReceipts()
+        {
+            var oldIndex = LoadedReceipts.FindIndex(findBy => findBy.Receipt_id == SelectedReceipt.Receipt_id);
+            if (oldIndex != -1)
+                SelectedReceipt.CopyTo(LoadedReceipts[oldIndex]);
+        }
+
+        private async void FetchReceiptsFromEtsy()
         {
             var receiptsResponse = await EtsyApiConnector.GetReceipts();
             List<Receipt> receipts = new List<Receipt>(receiptsResponse.results);
             LoadedReceipts = receipts;
-
-            Parallel.ForEach(LoadedReceipts, async receipt =>
-            {
-                Order newOrder = new Order(receipt);
-                EtsyApiConnector connector = new EtsyApiConnector();
-                var answer = await connector.GetTransactionByReceipt(receipt.Receipt_id.ToString());
-                newOrder.Transactions.AddRange(answer.results);
-                LoadedOrders.Add(newOrder);
-            });
         }
     }
 }

@@ -41,7 +41,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    
+
                     <DockPanel x:Name="dpListingDetail" Grid.Row="0" Margin="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Width="Auto"
                                DataContext="{Binding TemporarySelectedListing, Mode=TwoWay}">
                         <xctk:WatermarkTextBox x:Name="description" DockPanel.Dock="Bottom" Margin="0, 2, 2, 0" TextWrapping="Wrap" IsReadOnly="True" 
@@ -95,7 +95,7 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <Grid Grid.Row="0" Margin="2">
+                    <Grid Grid.Row="0" Margin="2" DataContext="{Binding SelectedReceipt, Mode=TwoWay}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
@@ -108,7 +108,7 @@
                         </Grid.RowDefinitions>
 
                         <Label Grid.Row="0" Grid.Column="0" Content="Address:"/>
-                        <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,0" Text="{Binding Receipt.Formatted_address}" HorizontalAlignment="Center" Height="65"/>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,0" Text="{Binding Formatted_address}" HorizontalAlignment="Center" Height="65"/>
                         <Label Grid.Row="0" Grid.Column="1" Content="Listings:"/>
                         <ListBox Grid.Row="1" Grid.Column="1" x:Name="lbReceiptTransactions" Height="65" ItemsSource="{Binding Transactions}" ScrollViewer.VerticalScrollBarVisibility="Auto" SelectionMode="Single">
                             <ListBox.ItemTemplate>
@@ -126,23 +126,32 @@
                         </ListBox>
                         <Label Grid.Row="2" Content="Message:" />
                         <ScrollViewer Grid.Row="3" Height="45" Margin="10, 0">
-                            <TextBlock Text="{Binding Receipt.Message_from_buyer}" VerticalAlignment="Center" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+                            <TextBlock Text="{Binding Message_from_buyer}" VerticalAlignment="Center" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
                         </ScrollViewer>
+                        <Label Grid.Row="2" Grid.Column="2" Content="Shipping:" />
+                        <StackPanel Grid.Row="3" Grid.Column="2" Orientation="Horizontal">
+                            <CheckBox x:Name="cbShipped" VerticalAlignment="Center" IsChecked="{Binding Was_shipped}"/>
+                            <Label Target="{Binding ElementName=cbShipped}" VerticalAlignment="Center" Content="Was shipped"/>
+                            <xctk:WatermarkTextBox MinWidth="100" VerticalAlignment="Center" Text="{Binding Shipments[0].tracking_code}" Watermark="Trackingnumber"/>
+                            <Button MinWidth="60" DataContext="{Binding ElementName=tiOrders, Path=DataContext}" Command="{Binding SaveReceiptCommand}">Save</Button>
+                            <Button MinWidth="60" DataContext="{Binding ElementName=tiOrders, Path=DataContext}" Command="{Binding CancelSaveReceiptCommand}">Cancel</Button>
+                        </StackPanel>
+
                     </Grid>
 
-                    <DataGrid x:Name="dgReceipts" Grid.Row="2"  CanUserAddRows="False" 
+                    <DataGrid x:Name="dgReceipts" Grid.Row="2"  CanUserAddRows="False" ItemsSource="{Binding LoadedReceipts}"
                               CanUserDeleteRows="False" ColumnWidth="*" SelectionUnit="FullRow" SelectionMode="Single" Margin="2,10,2,2" 
                               GridLinesVisibility="Horizontal" AutoGenerateColumns="False" HeadersVisibility="Column"
                               HorizontalGridLinesBrush="{StaticResource GrayGridLine}" CellStyle="{StaticResource DataGridStandard}"
-                              >
+                              SelectedItem="{Binding CurrentReceipt, Mode=TwoWay}" IsSynchronizedWithCurrentItem="True">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="ID" Binding="{Binding Receipt.Receipt_id}"/>
-                            <DataGridTextColumn Header="Creation" Binding="{Binding Receipt.Creation_tsz}"/>
-                            <DataGridTextColumn Header="Buyer" Binding="{Binding Receipt.Name}"/>
-                            <DataGridTextColumn Header="Paid" Binding="{Binding Receipt.Was_paid}"/>
-                            <DataGridTextColumn Header="Shipped" Binding="{Binding Receipt.Was_shipped}"/>
-                            <DataGridTextColumn Header="Overdue" Binding="{Binding Receipt.Is_overdue}"/>
-                            <DataGridTextColumn Header="Remaining Days" Binding="{Binding Receipt.Days_from_due_date}"/>
+                            <DataGridTextColumn Header="ID"             IsReadOnly="True" Binding="{Binding Receipt_id}"/>
+                            <DataGridTextColumn Header="Creation"       IsReadOnly="True" Binding="{Binding Creation_tsz}"/>
+                            <DataGridTextColumn Header="Buyer"          IsReadOnly="True" Binding="{Binding Name}"/>
+                            <DataGridTextColumn Header="Paid"           IsReadOnly="True" Binding="{Binding Was_paid}"/>
+                            <DataGridTextColumn Header="Shipped"        IsReadOnly="True" Binding="{Binding Was_shipped}"/>
+                            <DataGridTextColumn Header="Overdue"        IsReadOnly="True" Binding="{Binding Is_overdue}"/>
+                            <DataGridTextColumn Header="Remaining Days" IsReadOnly="True" Binding="{Binding Days_from_due_date}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
@@ -152,31 +161,35 @@
                 <Grid Margin="2">
 
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <Label Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center">Database Server</Label>
-                    <TextBox x:Name="tbDatabaseServer" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"/>
-                    <Label Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center">Database Name</Label>
-                    <TextBox x:Name="tbDatabaseName" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"/>
-                    <Label Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center">Database User</Label>
-                    <TextBox x:Name="tbDatabaseUser" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"/>
-                    <Label Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Center">Database Secret</Label>
-                    <PasswordBox x:Name="pbDatabaseSecret" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"/>
-                    <Label Grid.Column="0" Grid.Row="4" HorizontalAlignment="Right" VerticalAlignment="Center">Etsy Verification Code</Label>
-                    <TextBox x:Name="tbEtsyVerificationCode" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"/>
-                    <Button x:Name="btnEtsyVerification" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Left" VerticalAlignment="Center" Click="OnEtsyVerificationButton_Click">Request Verification Code</Button>
 
-                    <Button x:Name="btnSaveSettings" Grid.Column="1" Grid.Row="6" HorizontalAlignment="Right" Width="100" Height="40" Click="OnSaveSettingsButton_Click">Save</Button>
+                    <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Vertical">
+                        <Label x:Name="lDbServer" HorizontalAlignment="Right" VerticalAlignment="Center">Database Server</Label>
+                        <Label x:Name="lDbName" HorizontalAlignment="Right" VerticalAlignment="Center">Database Name</Label>
+                        <Label x:Name="lDbUser" HorizontalAlignment="Right" VerticalAlignment="Center">Database User</Label>
+                        <Label x:Name="lDbSecret" HorizontalAlignment="Right" VerticalAlignment="Center">Database Secret</Label>
+                        <Label x:Name="lEtsyVCode" HorizontalAlignment="Right" VerticalAlignment="Center">Etsy Verification Code</Label>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Vertical">
+                        <TextBox x:Name="tbDatabaseServer" Height="{Binding ElementName=lDbServer, Path=ActualHeight}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"/>
+                        <TextBox x:Name="tbDatabaseName" Height="{Binding ElementName=lDbName, Path=ActualHeight}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"/>
+                        <TextBox x:Name="tbDatabaseUser" Height="{Binding ElementName=lDbUser, Path=ActualHeight}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"/>
+                        <PasswordBox x:Name="pbDatabaseSecret" Height="{Binding ElementName=lDbSecret, Path=ActualHeight}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"/>
+                        <TextBox x:Name="tbEtsyVerificationCode" Height="{Binding ElementName=lEtsyVCode, Path=ActualHeight}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"/>
+                    </StackPanel>
+
+                    <Button x:Name="btnEtsyVerification" Grid.Column="1" Grid.Row="1" Margin="2" Padding="2" Height="30"  Click="OnEtsyVerificationButton_Click">Request Verification Code</Button>
+                    <Button x:Name="btnSaveSettings" Grid.Column="2" Grid.Row="1" Margin="2" Height="30" MinWidth="80" Click="OnSaveSettingsButton_Click">Save Settings</Button>
+
+
                 </Grid>
             </TabItem>
 
