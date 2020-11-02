@@ -43,7 +43,7 @@
                     </Grid.RowDefinitions>
 
                     <DockPanel x:Name="dpListingDetail" Grid.Row="0" Margin="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Width="Auto"
-                               DataContext="{Binding TemporarySelectedListing, Mode=TwoWay}">
+                               DataContext="{Binding SelectedListing, Mode=TwoWay}">
                         <xctk:WatermarkTextBox x:Name="description" DockPanel.Dock="Bottom" Margin="0, 2, 2, 0" TextWrapping="Wrap" IsReadOnly="True" 
                                                Text="{Binding Description}" Watermark="Description" Width="Auto" MinWidth="50" Height="56" 
                                                AcceptsReturn="True" VerticalScrollBarVisibility="Auto" ToolTip="{Binding ElementName=description, Path=Watermark}" />
@@ -72,7 +72,7 @@
                               CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False" HeadersVisibility="Column"
                               ItemsSource="{Binding LoadedListings}" HorizontalGridLinesBrush="{StaticResource GrayGridLine}" 
                               CellStyle="{StaticResource DataGridStandard}" SelectionMode="Single" IsSynchronizedWithCurrentItem="True"
-                              SelectedItem="{Binding SelectedListing, Mode=TwoWay}">
+                              SelectedItem="{Binding CurrentListing, Mode=TwoWay}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="ID"         Width="*"   IsReadOnly="True" Binding="{Binding Listing_id}"/>
                             <DataGridTextColumn Header="Quantity"   Width=".5*" IsReadOnly="True" Binding="{Binding Quantity}"/>
@@ -189,11 +189,11 @@
                         <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Vertical">
                             <CheckBox Height="{Binding ElementName=lEtsyAppKey, Path=ActualHeight}" VerticalContentAlignment="Center" IsChecked="{Binding IsAppInTestMode}"></CheckBox>
                             <TextBox x:Name="tbEtsyAppKey" Height="{Binding ElementName=lEtsyAppKey, Path=ActualHeight}" Text="{Binding EtsyAppKey}"
-                                 HorizontalAlignment="Left" VerticalAlignment="Center" Width="125" TextAlignment="Center"/>
+                                 HorizontalAlignment="Left" VerticalAlignment="Center" Width="150" TextAlignment="Center"/>
                             <TextBox x:Name="tbEtsyAppSecret" Height="{Binding ElementName=lEtsyAppSecret, Path=ActualHeight}" Text="{Binding EtsyAppSecret}"
-                                     HorizontalAlignment="Left" VerticalAlignment="Center" Width="125" TextAlignment="Center"/>
+                                     HorizontalAlignment="Left" VerticalAlignment="Center" Width="150" TextAlignment="Center"/>
                             <TextBox x:Name="tbEtsyVerificationCode" Height="{Binding ElementName=lEtsyVCode, Path=ActualHeight}" Text="{Binding EtsyVerificationCode}"
-                                 HorizontalAlignment="Left" VerticalAlignment="Center" Width="125" TextAlignment="Center"/>
+                                 HorizontalAlignment="Left" VerticalAlignment="Center" Width="150" TextAlignment="Center"/>
                         </StackPanel>
                     </Grid>
 

@@ -16,8 +16,8 @@ namespace ShopManager.ViewModel
         private ICommand saveListingQuantityCommand;
         private ICommand cancelSaveListingQuantityCommand;
         private List<Listing> loadedListings = new List<Listing>();
-        private Listing temporarySelectedListing = new Listing();
-        private Listing selectedListing;
+        private Listing selectedListing = new Listing();
+        private Listing currentListing;
         private string errorMessage;
         #endregion
 
@@ -37,7 +37,7 @@ namespace ShopManager.ViewModel
                 {
                     saveListingQuantityCommand = new RelayCommand(
                         () => SaveListingQuantityToEtsy(),
-                        () => TemporarySelectedListing != null
+                        () => SelectedListing != null
                         );
                 }
                 return saveListingQuantityCommand;
@@ -52,7 +52,7 @@ namespace ShopManager.ViewModel
                 {
                     cancelSaveListingQuantityCommand = new RelayCommand(
                         () => UnloadSelectedListing(),
-                        () => TemporarySelectedListing != null
+                        () => SelectedListing != null
                         );
                 }
                 return cancelSaveListingQuantityCommand;
@@ -72,31 +72,31 @@ namespace ShopManager.ViewModel
             }
         }
 
-        public Listing TemporarySelectedListing
-        {
-            get { return temporarySelectedListing; }
-            set
-            {
-                temporarySelectedListing = value;
-                OnPropertyChanged(nameof(TemporarySelectedListing));
-            }
-        }
-
         public Listing SelectedListing
         {
             get { return selectedListing; }
             set
             {
-                if (selectedListing != value)
+                selectedListing = value;
+                OnPropertyChanged(nameof(SelectedListing));
+            }
+        }
+
+        public Listing CurrentListing
+        {
+            get { return currentListing; }
+            set
+            {
+                if (currentListing != value)
                 {
-                    selectedListing = value;
+                    currentListing = value;
                     if (value != null)
                     {
-                        if (TemporarySelectedListing == null)
-                            TemporarySelectedListing = new Listing();
-                        value.CopyTo(TemporarySelectedListing);
+                        if (SelectedListing == null)
+                            SelectedListing = new Listing();
+                        value.CopyTo(SelectedListing);
                     }
-                    OnPropertyChanged(nameof(SelectedListing));
+                    OnPropertyChanged(nameof(CurrentListing));
                 }
             }
         }
@@ -125,7 +125,7 @@ namespace ShopManager.ViewModel
 
         private async void SaveListingQuantityToEtsy()
         {
-            if (await EtsyApiConnector.PutListingQuantityUpdate(TemporarySelectedListing))
+            if (await EtsyApiConnector.PutListingQuantityUpdate(SelectedListing))
             {
                 UpdateSelectedListingInLoadedListings();
                 UnloadSelectedListing();
@@ -136,15 +136,15 @@ namespace ShopManager.ViewModel
 
         private void UnloadSelectedListing()
         {
-            TemporarySelectedListing = null;
             SelectedListing = null;
+            CurrentListing = null;
         }
 
         private void UpdateSelectedListingInLoadedListings()
         {
-            var oldIndex = LoadedListings.FindIndex(x => x.Listing_id == TemporarySelectedListing.Listing_id);
+            var oldIndex = LoadedListings.FindIndex(x => x.Listing_id == SelectedListing.Listing_id);
             if (oldIndex != -1)
-                TemporarySelectedListing.CopyTo(LoadedListings[oldIndex]);
+                SelectedListing.CopyTo(LoadedListings[oldIndex]);
         }
 
         private void DisplayEtsySavingError()
