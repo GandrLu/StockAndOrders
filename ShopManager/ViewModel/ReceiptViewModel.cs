@@ -111,7 +111,7 @@ namespace ShopManager.ViewModel
             if (await EtsyApiConnector.PostTrackingData(SelectedReceipt))
             {
                 UpdateSelectedReceiptInLoadedReceipts();
-                SelectedReceipt = null;
+                UnloadSelectedReceipt();
             }
             //TODO: Display error
         }

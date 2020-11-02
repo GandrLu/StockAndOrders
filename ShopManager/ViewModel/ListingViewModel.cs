@@ -126,7 +126,10 @@ namespace ShopManager.ViewModel
         private async void SaveListingQuantityToEtsy()
         {
             if (await EtsyApiConnector.PutListingQuantityUpdate(TemporarySelectedListing))
+            {
                 UpdateSelectedListingInLoadedListings();
+                UnloadSelectedListing();
+            }
             else
                 DisplayEtsySavingError();
         }

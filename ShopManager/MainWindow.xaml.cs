@@ -42,21 +42,9 @@ namespace ShopManager
         private void SetupSettings()
         {
             settingsViewModel = new SettingsViewModel();
-            if (!SettingsViewModel.IsAppConfigured)
+            if (!settingsViewModel.IsAppConfigured)
                 ShowVerificationCodeDialog();
-            FillInSettings();
-        }
-        #endregion
-
-        #region Button Click Handler
-        private void OnSaveSettingsButton_Click(object sender, RoutedEventArgs e)
-        {
-            settingsViewModel.SaveSettings(tbEtsyAppKey.Text, pbEtsyAppSecret.Password, tbEtsyVerificationCode.Text);
-        }
-
-        private void OnEtsyVerificationButton_Click(object sender, RoutedEventArgs e)
-        {
-            EtsyApiConnector.AcquireRequestToken();
+            tiSettings.DataContext = settingsViewModel;
         }
         #endregion
 
@@ -64,15 +52,8 @@ namespace ShopManager
         private void ShowVerificationCodeDialog()
         {
             VerificationCodeDialogView verificationCodeDialog = new VerificationCodeDialogView();
-            EtsyApiConnector.AcquireRequestToken();
+            //EtsyApiConnector.AcquireRequestToken();
             verificationCodeDialog.ShowDialog();
-        }
-
-        private void FillInSettings()
-        {
-            tbEtsyAppKey.Text = settingsViewModel.EtsyAppKey;
-            pbEtsyAppSecret.Password = settingsViewModel.EtsyAppSecret;
-            tbEtsyVerificationCode.Text = settingsViewModel.EtsyVerificationCode;
         }
         #endregion
     }

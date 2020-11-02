@@ -64,8 +64,8 @@
 
                     <StackPanel Grid.Row="1" DockPanel.Dock="Bottom" Margin="2" Orientation="Horizontal" HorizontalAlignment="Right">
                         <TextBlock x:Name="tbSaveListing" Margin="2, 2, 5, 2" Text="{Binding Path=ErrorMessage}"/>
-                        <Button x:Name="btnSaveListing" Width="100" Command="{Binding SaveListingQuantityCommand}">Save</Button>
-                        <Button Width="100" Command="{Binding CancelSaveListingQuantityCommand}">Cancel</Button>
+                        <Button x:Name="btnSaveListing" MinWidth="60" Command="{Binding SaveListingQuantityCommand}">Save</Button>
+                        <Button MinWidth="60" Command="{Binding CancelSaveListingQuantityCommand}">Cancel</Button>
                     </StackPanel>
 
                     <DataGrid x:Name="dgListings" Grid.Row="3" Margin="2" SelectionUnit="FullRow" GridLinesVisibility="Horizontal"
@@ -132,9 +132,12 @@
                         <StackPanel Grid.Row="3" Grid.Column="2" Orientation="Horizontal">
                             <CheckBox x:Name="cbShipped" VerticalAlignment="Center" IsChecked="{Binding Was_shipped}"/>
                             <Label Target="{Binding ElementName=cbShipped}" VerticalAlignment="Center" Content="Was shipped"/>
-                            <xctk:WatermarkTextBox MinWidth="100" VerticalAlignment="Center" Text="{Binding Shipments[0].tracking_code}" Watermark="Trackingnumber"/>
-                            <Button MinWidth="60" DataContext="{Binding ElementName=tiOrders, Path=DataContext}" Command="{Binding SaveReceiptCommand}">Save</Button>
-                            <Button MinWidth="60" DataContext="{Binding ElementName=tiOrders, Path=DataContext}" Command="{Binding CancelSaveReceiptCommand}">Cancel</Button>
+                            <xctk:WatermarkTextBox MinWidth="100" VerticalAlignment="Center" Text="{Binding Shipments[0].tracking_code}" 
+                                                   Margin="2, 0, 5, 0" Watermark="Trackingnumber"/>
+                            <Button MinWidth="60" DataContext="{Binding ElementName=tiOrders, Path=DataContext}" MaxHeight="25"
+                                    Command="{Binding SaveReceiptCommand}">Save</Button>
+                            <Button MinWidth="60" DataContext="{Binding ElementName=tiOrders, Path=DataContext}" MaxHeight="25"
+                                    Command="{Binding CancelSaveReceiptCommand}">Cancel</Button>
                         </StackPanel>
 
                     </Grid>
@@ -157,43 +160,53 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Header="Settings">
-                <Grid Margin="2">
-
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+            <TabItem x:Name="tiSettings" Header="Settings">
+                <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" Margin="2">
 
-                    <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Vertical">
-                        <Label x:Name="lEtsyAppKey" HorizontalAlignment="Right" VerticalAlignment="Center">Etsy App Key</Label>
-                        <Label x:Name="lEtsyAppSecret" HorizontalAlignment="Right" VerticalAlignment="Center">Etsy App Secret</Label>
-                        <Label x:Name="lEtsyVCode" HorizontalAlignment="Right" VerticalAlignment="Center">Etsy Verification Code</Label>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Vertical">
+                            <Label x:Name="lIsAppTest" HorizontalAlignment="Right" VerticalAlignment="Center">Testmode</Label>
+                            <Label x:Name="lEtsyAppKey" HorizontalAlignment="Right" VerticalAlignment="Center">Etsy App Key</Label>
+                            <Label x:Name="lEtsyAppSecret" HorizontalAlignment="Right" VerticalAlignment="Center">Etsy App Secret</Label>
+                            <Label x:Name="lEtsyVCode" HorizontalAlignment="Right" VerticalAlignment="Center">Etsy Verification Code</Label>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Vertical">
+                            <CheckBox Height="{Binding ElementName=lEtsyAppKey, Path=ActualHeight}" VerticalContentAlignment="Center" IsChecked="{Binding IsAppInTestMode}"></CheckBox>
+                            <TextBox x:Name="tbEtsyAppKey" Height="{Binding ElementName=lEtsyAppKey, Path=ActualHeight}" Text="{Binding EtsyAppKey}"
+                                 HorizontalAlignment="Left" VerticalAlignment="Center" Width="125" TextAlignment="Center"/>
+                            <TextBox x:Name="tbEtsyAppSecret" Height="{Binding ElementName=lEtsyAppSecret, Path=ActualHeight}" Text="{Binding EtsyAppSecret}"
+                                     HorizontalAlignment="Left" VerticalAlignment="Center" Width="125" TextAlignment="Center"/>
+                            <TextBox x:Name="tbEtsyVerificationCode" Height="{Binding ElementName=lEtsyVCode, Path=ActualHeight}" Text="{Binding EtsyVerificationCode}"
+                                 HorizontalAlignment="Left" VerticalAlignment="Center" Width="125" TextAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <Button x:Name="btnEtsyVerification" Grid.Row="1" Margin="2" Padding="2" Height="30" Width="150" Command="{Binding AquireVerificationCodeCommand}">Request Verification Code</Button>
+
+                    <StackPanel Grid.Row="2">
+                        <TextBlock TextWrapping="Wrap" Margin="10" TextAlignment="Center">
+                            Stock and Orders (c) by Luzius Kölling, 2020</TextBlock>
+                        <TextBlock TextWrapping="Wrap" Margin="10" TextAlignment="Center">
+                            The term 'Etsy' is a trademark of Etsy, Inc. This application uses the Etsy API but is not endorsed or 
+                            certified by Etsy, Inc.</TextBlock>
                     </StackPanel>
-                    <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Vertical">
-                        <TextBox x:Name="tbEtsyAppKey" Height="{Binding ElementName=lEtsyAppKey, Path=ActualHeight}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"/>
-                        <PasswordBox x:Name="pbEtsyAppSecret" Height="{Binding ElementName=lEtsyAppSecret, Path=ActualHeight}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"/>
-                        <TextBox x:Name="tbEtsyVerificationCode" Height="{Binding ElementName=lEtsyVCode, Path=ActualHeight}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"/>
-                    </StackPanel>
-
-                    <Button x:Name="btnEtsyVerification" Grid.Column="1" Grid.Row="1" Margin="2" Padding="2" Height="30"  Click="OnEtsyVerificationButton_Click">Request Verification Code</Button>
-                    <Button x:Name="btnSaveSettings" Grid.Column="2" Grid.Row="1" Margin="2" Height="30" MinWidth="80" Click="OnSaveSettingsButton_Click">Save Settings</Button>
-
-
                 </Grid>
-            </TabItem>
-
-            <TabItem Header="About">
-                <StackPanel>
-                    <TextBlock TextWrapping="Wrap" Text="Stock and Orders (c) by Luzius Kölling, 2020" Margin="10"/>
-                    <TextBlock TextWrapping="Wrap" Text="The term 'Etsy' is a trademark of Etsy, Inc. This application uses the Etsy API but is not endorsed or certified by Etsy, Inc." Margin="10"/>
-                </StackPanel>
             </TabItem>
         </TabControl>
     </Grid>

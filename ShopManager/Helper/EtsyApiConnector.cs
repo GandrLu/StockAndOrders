@@ -11,9 +11,6 @@ namespace ShopManager.Helper
 {
     public sealed class EtsyApiConnector
     {
-        private const string CONSUMER_KEY = "fill in key";
-        private const string CONSUMER_SECRET = "fill in secret";
-
         private const string REQUEST_TOKEN_URI = "https://openapi.etsy.com/v2/oauth/request_token?scope=";
         private const string SCOPES = "transactions_r transactions_w listings_r listings_w";
         private const string ACCESS_TOKEN_URI = "https://openapi.etsy.com/v2/oauth/access_token";
@@ -34,10 +31,15 @@ namespace ShopManager.Helper
 
         static EtsyApiConnector()
         {
-            staticOAuth["consumer_key"] = CONSUMER_KEY;
-            staticOAuth["consumer_secret"] = CONSUMER_SECRET;
-            staticOAuth["token"] = SettingsViewModel.EtsyAccessToken;
-            staticOAuth["token_secret"] = SettingsViewModel.EtsyAccessTokenSecret;
+            staticOAuth["consumer_key"] = (string)Settings.Default["EtsyAppKey"];
+            staticOAuth["consumer_secret"] = (string)Settings.Default["EtsyAppSecret"];
+            staticOAuth["token"] = (string)Settings.Default["EtsyAccessToken"];
+            staticOAuth["token_secret"] = (string)Settings.Default["EtsyAccessTokenSecret"];
+            if (staticOAuth["consumer_key"] == "" || staticOAuth["consumer_secret"] == "" 
+                || staticOAuth["token"] == "" || staticOAuth["token_secret"] == "")
+            {
+                throw new Exception("Not all necessary settings are set!");
+            }
         }
 
         public static bool AcquireRequestToken()
@@ -60,8 +62,8 @@ namespace ShopManager.Helper
         {
             string code = (string)Settings.Default["EtsyVerificationCode"];
             var response = staticOAuth.AcquireAccessToken(ACCESS_TOKEN_URI, "GET", code);
-            SettingsViewModel.EtsyAccessToken = response["oauth_token"];
-            SettingsViewModel.EtsyAccessTokenSecret = response["oauth_token_secret"];
+            Settings.Default["EtsyAccessToken"] = response["oauth_token"];
+            Settings.Default["EtsyAccessTokenSecret"] = response["oauth_token_secret"];
         }
 
         public static async Task GetTransactions()
@@ -107,6 +109,8 @@ namespace ShopManager.Helper
 
         public static async Task<bool> PutListingQuantityUpdate(Listing listing)
         {
+            if ((bool)Settings.Default["IsAppInTestMode"])
+                return true;
             try
             {
                 string putUri = PUT_LISTING_URI.Replace(nameof(listing.Listing_id), listing.Listing_id.ToString());
@@ -126,6 +130,8 @@ namespace ShopManager.Helper
 
         public static async Task<bool> PostTrackingData(Receipt receipt)
         {
+            if ((bool)Settings.Default["IsAppInTestMode"])
+                return true;
             try
             {
                 string postUri = POST_TRACKINGDATA_URI.Replace(nameof(receipt.Receipt_id), receipt.Receipt_id.ToString());

@@ -2,24 +2,22 @@
 using ShopManager.Helper;
 using ShopManager.Properties;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace ShopManager.ViewModel
 {
-    class SettingsViewModel
+    class SettingsViewModel : ObservableObject
     {
-        private static bool isAppConfigured;
-        private static string etsyAppKey;
-        private static string etsyAppSecret;
-        private static string etsyVerificationCode;
-        private static string etsyAccessToken;
-        private static string etsyAccessTokenSecret;
+        private bool isAppConfigured;
+        private bool isAppInTestMode;
+        private string etsyAppKey;
+        private string etsyAppSecret;
+        private string etsyVerificationCode;
+        private string etsyAccessToken;
+        private string etsyAccessTokenSecret;
         private ICommand saveSettingsCommand;
+        private ICommand aquireVerificationCodeCommand;
         private ICommand saveVerificationCodeCommand;
 
         public SettingsViewModel()
@@ -27,6 +25,7 @@ namespace ShopManager.ViewModel
             try
             {
                 IsAppConfigured = (bool)Settings.Default["IsAppConfigured"];
+                IsAppInTestMode = (bool)Settings.Default["IsAppInTestMode"];
                 EtsyAppKey = (string)Settings.Default["EtsyAppKey"];
                 EtsyAppSecret = (string)Settings.Default["EtsyAppSecret"];
                 EtsyVerificationCode = (string)Settings.Default["EtsyVerificationCode"];
@@ -44,42 +43,106 @@ namespace ShopManager.ViewModel
             }
         }
 
-        public static bool IsAppConfigured
+        public bool IsAppConfigured
         {
-            get => isAppConfigured;
+            get => ValidateSettings();
             set
             {
-                isAppConfigured = value;
-                Settings.Default ["IsAppConfigured"] = value;
-                Settings.Default.Save();
+                if (isAppConfigured != value)
+                {
+                    isAppConfigured = value;
+                    Settings.Default[nameof(IsAppConfigured)] = value;
+                    Settings.Default.Save();
+                }
             }
         }
 
-        public static string EtsyAccessToken
+        public bool IsAppInTestMode
+        {
+            get => isAppInTestMode;
+            set
+            {
+                isAppInTestMode = value;
+                Settings.Default[nameof(IsAppInTestMode)] = value;
+                Settings.Default.Save();
+                OnPropertyChanged(nameof(IsAppInTestMode));
+            }
+        }
+
+        public string EtsyAccessToken
         {
             get => etsyAccessToken;
             set
             {
-                etsyAccessToken = value;
-                Settings.Default["EtsyAccessToken"] = value;
-                Settings.Default.Save();
+                if (etsyAccessToken != value)
+                {
+                    etsyAccessToken = value;
+                    Settings.Default[nameof(EtsyAccessToken)] = value;
+                    Settings.Default.Save();
+                    OnPropertyChanged(nameof(EtsyAccessToken));
+                }
             }
         }
 
-        public static string EtsyAccessTokenSecret
+        public string EtsyAccessTokenSecret
         {
             get => etsyAccessTokenSecret;
             set
             {
-                etsyAccessTokenSecret = value;
-                Settings.Default["EtsyAccessTokenSecret"] = value;
-                Settings.Default.Save();
+                if (etsyAccessTokenSecret != value)
+                {
+                    etsyAccessTokenSecret = value;
+                    Settings.Default[nameof(EtsyAccessTokenSecret)] = value;
+                    Settings.Default.Save();
+                    OnPropertyChanged(nameof(EtsyAccessTokenSecret));
+                }
             }
         }
 
-        public string EtsyAppKey { get => etsyAppKey; set => etsyAppKey = value; }
-        public string EtsyAppSecret { get => etsyAppSecret; set => etsyAppSecret = value; }
-        public string EtsyVerificationCode { get => etsyVerificationCode; set => etsyVerificationCode = value; }
+        public string EtsyAppKey
+        {
+            get { return etsyAppKey; }
+            set
+            {
+                if (etsyAppKey != value)
+                {
+                    etsyAppKey = value;
+                    Settings.Default[nameof(EtsyAppKey)] = value;
+                    Settings.Default.Save();
+                    OnPropertyChanged(nameof(EtsyAppKey));
+                }
+            }
+        }
+
+        public string EtsyAppSecret
+        {
+            get { return etsyAppSecret; }
+            set
+            {
+                if (etsyAppSecret != value)
+                {
+                    etsyAppSecret = value;
+                    Settings.Default[nameof(EtsyAppSecret)] = value;
+                    Settings.Default.Save();
+                    OnPropertyChanged(nameof(EtsyAppSecret));
+                }
+            }
+        }
+
+        public string EtsyVerificationCode
+        {
+            get { return etsyVerificationCode; }
+            set
+            {
+                if (etsyVerificationCode != value)
+                {
+                    etsyVerificationCode = value;
+                    Settings.Default[nameof(EtsyVerificationCode)] = value;
+                    Settings.Default.Save();
+                    OnPropertyChanged(nameof(EtsyVerificationCode));
+                }
+            }
+        }
 
         public ICommand SaveSettingsCommand
         {
@@ -93,6 +156,19 @@ namespace ShopManager.ViewModel
                         );
                 }
                 return saveSettingsCommand;
+            }
+        }
+
+        public ICommand AquireVerificationCodeCommand
+        {
+            get
+            {
+                if (aquireVerificationCodeCommand == null)
+                {
+                    aquireVerificationCodeCommand = new RelayCommand(
+                        () => EtsyApiConnector.AcquireRequestToken());
+                }
+                return aquireVerificationCodeCommand;
             }
         }
 
@@ -141,6 +217,21 @@ namespace ShopManager.ViewModel
             settings += (string)Settings.Default["EtsyAppSecret"];
             settings += (string)Settings.Default["EtsyVerificationCode"];
             return settings;
+        }
+
+        private bool ValidateSettings()
+        {
+            if (EtsyAppKey == "")
+                return false;
+            if (EtsyAppSecret == "")
+                return false;
+            if (EtsyVerificationCode == "")
+                return false;
+            if (EtsyAccessToken == "")
+                return false;
+            if (EtsyAccessTokenSecret == "")
+                return false;
+            return true;
         }
     }
 }

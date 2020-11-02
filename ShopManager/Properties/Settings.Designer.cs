@@ -118,5 +118,17 @@ namespace ShopManager.Properties {
                 this["EtsyAccessTokenSecret"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IsAppInTestMode {
+            get {
+                return ((bool)(this["IsAppInTestMode"]));
+            }
+            set {
+                this["IsAppInTestMode"] = value;
+            }
+        }
     }
 }
