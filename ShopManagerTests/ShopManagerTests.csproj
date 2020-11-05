@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ShopManager\ShopManager.csproj" />
+    <ProjectReference Include="..\ShopManager\StockAndOrders.csproj" />
   </ItemGroup>
 
 </Project>
