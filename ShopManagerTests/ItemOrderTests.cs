@@ -24,7 +24,7 @@ namespace ShopManagerTests
         [TestMethod]
         public void CreateOrderAndShippingMethod()
         {
-            Address address = new Address("Main Street", "1", 12345, "Maine");
+            Address address = new Address("Main Street", "1", "12345", "Maine");
             Customer customer = new Customer(123, "John", "Doe", address);
 
             shippingMethod = new ShippingMethod(123, "DHL");
