@@ -185,6 +185,7 @@
                             <Label x:Name="lEtsyAppKey" HorizontalAlignment="Right" VerticalAlignment="Center">Etsy App Key</Label>
                             <Label x:Name="lEtsyAppSecret" HorizontalAlignment="Right" VerticalAlignment="Center">Etsy App Secret</Label>
                             <Label x:Name="lEtsyVCode" HorizontalAlignment="Right" VerticalAlignment="Center">Etsy Verification Code</Label>
+                            <Button x:Name="btnEtsyVerification" Margin="2" Padding="2" Height="30" Width="150" Command="{Binding AquireVerificationCodeCommand}">Request Verification Code</Button>
                         </StackPanel>
                         <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Vertical">
                             <CheckBox Height="{Binding ElementName=lEtsyAppKey, Path=ActualHeight}" VerticalContentAlignment="Center" IsChecked="{Binding IsAppInTestMode}"></CheckBox>
@@ -194,10 +195,9 @@
                                      HorizontalAlignment="Left" VerticalAlignment="Center" Width="150" TextAlignment="Center"/>
                             <TextBox x:Name="tbEtsyVerificationCode" Height="{Binding ElementName=lEtsyVCode, Path=ActualHeight}" Text="{Binding EtsyVerificationCode}"
                                  HorizontalAlignment="Left" VerticalAlignment="Center" Width="150" TextAlignment="Center"/>
+                            <Button Command="{Binding SaveSettingsCommand}" Margin="2" Height="30">Save</Button>
                         </StackPanel>
                     </Grid>
-
-                    <Button x:Name="btnEtsyVerification" Grid.Row="1" Margin="2" Padding="2" Height="30" Width="150" Command="{Binding AquireVerificationCodeCommand}">Request Verification Code</Button>
 
                     <StackPanel Grid.Row="2">
                         <TextBlock TextWrapping="Wrap" Margin="10" TextAlignment="Center">

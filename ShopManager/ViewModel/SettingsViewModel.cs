@@ -92,7 +92,7 @@ namespace StockAndOrders.ViewModel
                 if (etsyAccessTokenSecret != value)
                 {
                     etsyAccessTokenSecret = value;
-                    Settings.Default[nameof(EtsyAccessTokenSecret)] = value;
+                    Settings.Default.EtsyAccessTokenSecret = value;
                     Settings.Default.Save();
                     OnPropertyChanged(nameof(EtsyAccessTokenSecret));
                 }
@@ -107,7 +107,7 @@ namespace StockAndOrders.ViewModel
                 if (etsyAppKey != value)
                 {
                     etsyAppKey = value;
-                    Settings.Default[nameof(EtsyAppKey)] = value;
+                    Settings.Default.EtsyAppKey = value;
                     Settings.Default.Save();
                     OnPropertyChanged(nameof(EtsyAppKey));
                 }
@@ -137,7 +137,7 @@ namespace StockAndOrders.ViewModel
                 if (etsyVerificationCode != value)
                 {
                     etsyVerificationCode = value;
-                    Settings.Default[nameof(EtsyVerificationCode)] = value;
+                    Settings.Default.EtsyVerificationCode = value;
                     Settings.Default.Save();
                     OnPropertyChanged(nameof(EtsyVerificationCode));
                 }
@@ -172,39 +172,10 @@ namespace StockAndOrders.ViewModel
             }
         }
 
-        public ICommand SaveVerificationCodeCommand
-        {
-            get
-            {
-                if (saveVerificationCodeCommand == null)
-                {
-                    saveVerificationCodeCommand = new RelayCommand(
-                        () => SaveVerificationCode(),
-                        () => (EtsyVerificationCode != null)
-                        );
-                }
-                return saveVerificationCodeCommand;
-            }
-        }
-
         public void SaveSettings()
         {
             Settings.Default["EtsyAppKey"] = EtsyAppKey;
             Settings.Default["EtsyAppSecret"] = EtsyAppSecret;
-            Settings.Default["EtsyVerificationCode"] = EtsyVerificationCode;
-            Settings.Default.Save();
-        }
-
-        public void SaveSettings(string etsyAppKey, string etsyAppSecret, string etsyVerificationCode)
-        {
-            Settings.Default["EtsyAppKey"] = etsyAppKey;
-            Settings.Default["EtsyAppSecret"] = etsyAppSecret;
-            Settings.Default["EtsyVerificationCode"] = etsyVerificationCode;
-            Settings.Default.Save();
-        }
-
-        public void SaveVerificationCode()
-        {
             Settings.Default["EtsyVerificationCode"] = EtsyVerificationCode;
             Settings.Default.Save();
             EtsyApiConnector.AcquireAccessToken();
@@ -226,10 +197,6 @@ namespace StockAndOrders.ViewModel
             if (EtsyAppSecret == "")
                 return false;
             if (EtsyVerificationCode == "")
-                return false;
-            if (EtsyAccessToken == "")
-                return false;
-            if (EtsyAccessTokenSecret == "")
                 return false;
             return true;
         }

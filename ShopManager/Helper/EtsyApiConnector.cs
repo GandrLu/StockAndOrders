@@ -14,6 +14,7 @@ namespace StockAndOrders.Helper
         private const string REQUEST_TOKEN_URI = "https://openapi.etsy.com/v2/oauth/request_token?scope=";
         private const string SCOPES = "transactions_r transactions_w listings_r listings_w";
         private const string ACCESS_TOKEN_URI = "https://openapi.etsy.com/v2/oauth/access_token";
+        // TODO: Get name of shop dynamically
         private const string GET_TRANSACTIONS_URI = "https://openapi.etsy.com/v2/shops/dixKeramikwerkstatt/transactions";
         // Fetch inactive listings for tests
         private const string GET_ACTIVELISTINGS_URI = "https://openapi.etsy.com/v2/shops/dixKeramikwerkstatt/listings/inactive";
@@ -36,8 +37,7 @@ namespace StockAndOrders.Helper
             staticOAuth["consumer_secret"] = (string)Settings.Default["EtsyAppSecret"];
             staticOAuth["token"] = (string)Settings.Default["EtsyAccessToken"];
             staticOAuth["token_secret"] = (string)Settings.Default["EtsyAccessTokenSecret"];
-            if (staticOAuth["consumer_key"] == "" || staticOAuth["consumer_secret"] == "" 
-                || staticOAuth["token"] == "" || staticOAuth["token_secret"] == "")
+            if (staticOAuth["consumer_key"] == "" || staticOAuth["consumer_secret"] == "")
             {
                 throw new Exception("Not all necessary settings are set!");
             }
@@ -65,6 +65,8 @@ namespace StockAndOrders.Helper
             var response = staticOAuth.AcquireAccessToken(ACCESS_TOKEN_URI, "GET", code);
             Settings.Default["EtsyAccessToken"] = response["oauth_token"];
             Settings.Default["EtsyAccessTokenSecret"] = response["oauth_token_secret"];
+            staticOAuth["token"] = response["oauth_token"];
+            staticOAuth["token_secret"] = response["oauth_token_secret"];
         }
 
         public static async Task GetTransactions()

@@ -52,7 +52,6 @@ namespace StockAndOrders
         private void ShowVerificationCodeDialog()
         {
             VerificationCodeDialogView verificationCodeDialog = new VerificationCodeDialogView();
-            //EtsyApiConnector.AcquireRequestToken();
             verificationCodeDialog.ShowDialog();
         }
         #endregion

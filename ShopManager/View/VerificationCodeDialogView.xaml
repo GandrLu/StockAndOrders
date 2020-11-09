@@ -31,7 +31,7 @@
         
         <Label x:Name="lEtsyVCode" Grid.Column="0" Grid.Row="1">Etsy Verification Code</Label>
         <TextBox Grid.Column="1" Grid.Row="1" Height="{Binding ElementName=lEtsyVCode, Path=Height}" Margin="2, 0, 2, 0" 
-                 Text="{Binding EtsyVerficationCode}" TextAlignment="Center"/>
+                 Text="{Binding EtsyVerificationCode}" TextAlignment="Center"/>
 
         <Button x:Name="btnConfirmCode" Content="Save Settings" HorizontalAlignment="Center"  Grid.Column="0" Grid.Row="2" Margin="0, 2, 0, 5"
                 VerticalAlignment="Center" Padding="5" Command="{Binding SaveSettingsCommand}" Click="OkButton_Click"/>
