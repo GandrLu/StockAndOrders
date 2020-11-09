@@ -165,7 +165,8 @@ namespace StockAndOrders.ViewModel
                 if (aquireVerificationCodeCommand == null)
                 {
                     aquireVerificationCodeCommand = new RelayCommand(
-                        () => EtsyApiConnector.AcquireRequestToken());
+                        () => EtsyApiConnector.AcquireRequestToken(),
+                        () => etsyAppKey != "" && etsyAppSecret != "");
                 }
                 return aquireVerificationCodeCommand;
             }

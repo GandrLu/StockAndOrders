@@ -33,5 +33,6 @@ namespace StockAndOrders.View
         {
             this.DialogResult = true;
         }
+        //TODO: Handle cancel button
     }
 }

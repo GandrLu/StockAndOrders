@@ -56,7 +56,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ShopManager\StockAndOrders.csproj">
+    <ProjectReference Include="..\StockAndOrders\StockAndOrders.csproj">
       <Project>{5EB1ECF5-9A20-4B6B-B9E6-DA77773D35DB}</Project>
       <Name>StockAndOrders</Name>
     </ProjectReference>
