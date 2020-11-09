@@ -15,6 +15,7 @@ namespace ShopManager.Helper
         private const string SCOPES = "transactions_r transactions_w listings_r listings_w";
         private const string ACCESS_TOKEN_URI = "https://openapi.etsy.com/v2/oauth/access_token";
         private const string GET_TRANSACTIONS_URI = "https://openapi.etsy.com/v2/shops/dixKeramikwerkstatt/transactions";
+        // Fetch inactive listings for tests
         private const string GET_ACTIVELISTINGS_URI = "https://openapi.etsy.com/v2/shops/dixKeramikwerkstatt/listings/inactive";
         private const string GET_RECEIPTS_URI = "https://openapi.etsy.com/v2/shops/dixKeramikwerkstatt/receipts?includes=Transactions";
         private const string PUT_LISTING_URI = "https://openapi.etsy.com/v2/listings/Listing_id";

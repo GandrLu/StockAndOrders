@@ -8,7 +8,7 @@ using System.Windows.Input;
 
 namespace ShopManager.ViewModel
 {
-    class ListingViewModel : ObservableObject
+    public class ListingViewModel : ObservableObject
     {
         #region Fields
         private const int ERROR_MESSAGE_TIMESPAN = 2000;

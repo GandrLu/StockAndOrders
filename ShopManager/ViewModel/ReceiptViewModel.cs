@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ShopManager.ViewModel
 {
-    class ReceiptViewModel : ObservableObject
+    public class ReceiptViewModel : ObservableObject
     {
         private List<Receipt> loadedReceipts = new List<Receipt>();
         private List<Order> loadedOrders = new List<Order>();
