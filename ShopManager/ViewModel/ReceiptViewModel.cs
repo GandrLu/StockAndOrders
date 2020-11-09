@@ -1,12 +1,12 @@
 ﻿using GalaSoft.MvvmLight.CommandWpf;
-using ShopManager.Helper;
-using ShopManager.Model;
+using StockAndOrders.Helper;
+using StockAndOrders.Model;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ShopManager.ViewModel
+namespace StockAndOrders.ViewModel
 {
     public class ReceiptViewModel : ObservableObject
     {

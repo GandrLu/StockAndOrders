@@ -1,11 +1,11 @@
 ﻿using GalaSoft.MvvmLight.CommandWpf;
-using ShopManager.Helper;
-using ShopManager.Properties;
+using StockAndOrders.Helper;
+using StockAndOrders.Properties;
 using System;
 using System.Configuration;
 using System.Windows.Input;
 
-namespace ShopManager.ViewModel
+namespace StockAndOrders.ViewModel
 {
     class SettingsViewModel : ObservableObject
     {

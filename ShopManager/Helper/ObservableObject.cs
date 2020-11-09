@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShopManager.Helper
+namespace StockAndOrders.Helper
 {
     public abstract class ObservableObject : INotifyPropertyChanged
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShopManager.Model
+namespace StockAndOrders.Model
 {
     public class Price
     {

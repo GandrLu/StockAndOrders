@@ -1,12 +1,12 @@
 ﻿using GalaSoft.MvvmLight.CommandWpf;
-using ShopManager.Helper;
-using ShopManager.Model;
+using StockAndOrders.Helper;
+using StockAndOrders.Model;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace ShopManager.ViewModel
+namespace StockAndOrders.ViewModel
 {
     public class ListingViewModel : ObservableObject
     {

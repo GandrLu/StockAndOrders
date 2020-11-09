@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using StockAndOrders.ViewModel;
 
 namespace StockAndOrdersTests
 {
@@ -7,8 +8,10 @@ namespace StockAndOrdersTests
     public class ListingViewModelTests
     {
         [TestMethod]
-        public void TestMethod1()
+        public void TestLoadedListings()
         {
+            ListingViewModel listingViewModel = new ListingViewModel();
+            Assert.IsTrue(listingViewModel.LoadedListings.Count > 0, "No listings loaded: " + listingViewModel.LoadedListings.Count);
         }
     }
 }

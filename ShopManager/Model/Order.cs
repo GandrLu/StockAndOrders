@@ -1,5 +1,5 @@
 ﻿using Org.BouncyCastle.Asn1.X509;
-using ShopManager.Helper;
+using StockAndOrders.Helper;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShopManager.Model
+namespace StockAndOrders.Model
 {
     public class ShippingMethod
     {

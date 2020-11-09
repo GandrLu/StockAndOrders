@@ -1,9 +1,9 @@
-﻿<Window x:Class="ShopManager.View.VerificationCodeDialogView"
+﻿<Window x:Class="StockAndOrders.View.VerificationCodeDialogView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ShopManager.View"
+        xmlns:local="clr-namespace:StockAndOrders.View"
         mc:Ignorable="d"
         Title="Etsy Verification Code" Height="Auto" Width="Auto"
         SizeToContent="WidthAndHeight">

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ShopManager.Helper;
+using StockAndOrders.Helper;
 
-namespace ShopManager.Model
+namespace StockAndOrders.Model
 {
     public class Category
     {

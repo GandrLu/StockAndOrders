@@ -1,7 +1,7 @@
 ﻿using GalaSoft.MvvmLight.Command;
-using ShopManager.Helper;
-using ShopManager.Model;
-using ShopManager.Validator;
+using StockAndOrders.Helper;
+using StockAndOrders.Model;
+using StockAndOrders.Validator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace ShopManager.ViewModel
+namespace StockAndOrders.ViewModel
 {
     class CustomerViewModel : ObservableObject
     {

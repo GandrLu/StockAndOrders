@@ -1,9 +1,9 @@
 ﻿using System.Windows;
-using ShopManager.Helper;
-using ShopManager.View;
-using ShopManager.ViewModel;
+using StockAndOrders.Helper;
+using StockAndOrders.View;
+using StockAndOrders.ViewModel;
 
-namespace ShopManager
+namespace StockAndOrders
 {
     /// <summary>
     /// View for all tabs.

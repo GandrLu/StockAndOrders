@@ -1,4 +1,4 @@
-﻿namespace ShopManager.Model
+﻿namespace StockAndOrders.Model
 {
     public class JsonResult<T>
     {

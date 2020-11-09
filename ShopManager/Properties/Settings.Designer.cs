@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ShopManager.Properties {
+namespace StockAndOrders.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

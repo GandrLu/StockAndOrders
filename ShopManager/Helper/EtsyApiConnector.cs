@@ -1,13 +1,13 @@
 ﻿using OAuth;
-using ShopManager.Model;
-using ShopManager.Properties;
-using ShopManager.ViewModel;
+using StockAndOrders.Model;
+using StockAndOrders.Properties;
+using StockAndOrders.ViewModel;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Text.Json;
 
-namespace ShopManager.Helper
+namespace StockAndOrders.Helper
 {
     public sealed class EtsyApiConnector
     {

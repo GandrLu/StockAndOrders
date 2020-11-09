@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
-using ShopManager.Model;
-using ShopManager.Properties;
+using StockAndOrders.Model;
+using StockAndOrders.Properties;
 
-namespace ShopManager.Helper
+namespace StockAndOrders.Helper
 {
     public class DataBaseConnection
     {
