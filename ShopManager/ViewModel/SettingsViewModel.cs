@@ -18,7 +18,6 @@ namespace StockAndOrders.ViewModel
         private string etsyAccessTokenSecret;
         private ICommand saveSettingsCommand;
         private ICommand aquireVerificationCodeCommand;
-        private ICommand saveVerificationCodeCommand;
 
         public SettingsViewModel()
         {

@@ -63,8 +63,9 @@ namespace StockAndOrders.Helper
         {
             string code = (string)Settings.Default["EtsyVerificationCode"];
             var response = staticOAuth.AcquireAccessToken(ACCESS_TOKEN_URI, "GET", code);
-            Settings.Default["EtsyAccessToken"] = response["oauth_token"];
-            Settings.Default["EtsyAccessTokenSecret"] = response["oauth_token_secret"];
+            Settings.Default.EtsyAccessToken = response["oauth_token"];
+            Settings.Default.EtsyAccessTokenSecret = response["oauth_token_secret"];
+            Settings.Default.Save();
             staticOAuth["token"] = response["oauth_token"];
             staticOAuth["token_secret"] = response["oauth_token_secret"];
         }
