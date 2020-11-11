@@ -20,7 +20,11 @@ namespace StockAndOrders
         public MainWindow()
         {
             InitializeComponent();
-            SetupSettings();
+            if (!SetupSettings())
+            {
+                App.Current.Shutdown();
+                return;
+            }
             SetupListingViewModel();
             SetupReceiptsViewModel();
         }
@@ -39,20 +43,22 @@ namespace StockAndOrders
             tiOrders.DataContext = receiptViewModel;
         }
 
-        private void SetupSettings()
+        private bool SetupSettings()
         {
             settingsViewModel = new SettingsViewModel();
             if (!settingsViewModel.IsAppConfigured)
-                ShowVerificationCodeDialog();
+                if (!(bool)ShowVerificationCodeDialog())
+                    return false;
             tiSettings.DataContext = settingsViewModel;
+            return true;
         }
         #endregion
 
         #region Helper Methods
-        private void ShowVerificationCodeDialog()
+        private bool? ShowVerificationCodeDialog()
         {
             VerificationCodeDialogView verificationCodeDialog = new VerificationCodeDialogView();
-            verificationCodeDialog.ShowDialog();
+            return verificationCodeDialog.ShowDialog();
         }
         #endregion
     }

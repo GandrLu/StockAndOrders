@@ -26,13 +26,17 @@ namespace StockAndOrders.View
         {
             InitializeComponent();
             settingsViewModel = new SettingsViewModel();
-            this.DataContext = settingsViewModel;
+            DataContext = settingsViewModel;
         }
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
-            this.DialogResult = true;
+            DialogResult = true;
         }
-        //TODO: Handle cancel button
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+        }
     }
 }

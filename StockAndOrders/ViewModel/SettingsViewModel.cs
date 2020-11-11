@@ -151,7 +151,7 @@ namespace StockAndOrders.ViewModel
                 {
                     saveSettingsCommand = new RelayCommand(
                         () => SaveSettings(),
-                        () => (EtsyVerificationCode != null)
+                        () => (EtsyVerificationCode != "" && EtsyAppKey != "" && EtsyAppSecret != "")
                         );
                 }
                 return saveSettingsCommand;
@@ -172,7 +172,7 @@ namespace StockAndOrders.ViewModel
             }
         }
 
-        public void SaveSettings()
+        private void SaveSettings()
         {
             Settings.Default["EtsyAppKey"] = EtsyAppKey;
             Settings.Default["EtsyAppSecret"] = EtsyAppSecret;
