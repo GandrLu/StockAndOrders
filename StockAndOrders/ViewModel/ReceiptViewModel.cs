@@ -11,7 +11,6 @@ namespace StockAndOrders.ViewModel
     public class ReceiptViewModel : ObservableObject
     {
         private List<Receipt> loadedReceipts = new List<Receipt>();
-        private List<Order> loadedOrders = new List<Order>();
         private Receipt currentReceipt;
         private Receipt selectedReceipt = new Receipt();
         private RelayCommand saveReceiptCommand;
@@ -31,19 +30,6 @@ namespace StockAndOrders.ViewModel
                 {
                     loadedReceipts = value;
                     OnPropertyChanged(nameof(LoadedReceipts));
-                }
-            }
-        }
-
-        public List<Order> LoadedOrders
-        {
-            get => loadedOrders;
-            set
-            {
-                if (loadedOrders != value)
-                {
-                    loadedOrders = value;
-                    OnPropertyChanged(nameof(LoadedOrders));
                 }
             }
         }

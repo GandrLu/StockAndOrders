@@ -191,7 +191,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Helper\DataBaseConnection.cs" />
     <Compile Include="Helper\EtsyApiConnector.cs" />
     <Compile Include="Helper\OAuth.cs" />
     <Compile Include="Helper\ObservableObject.cs" />
@@ -199,8 +198,6 @@
     <Compile Include="Model\Pagination.cs" />
     <Compile Include="Model\Params.cs" />
     <Compile Include="Model\Transaction.cs" />
-    <Compile Include="Validator\CustomerValidator.cs" />
-    <Compile Include="ViewModel\CustomerViewModel.cs" />
     <Compile Include="ViewModel\ListingViewModel.cs" />
     <Compile Include="ViewModel\ReceiptViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
@@ -211,12 +208,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Model\Address.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Model\Customer.cs" />
     <Compile Include="Model\Item.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -228,7 +223,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\Order.cs" />
+    <Compile Include="Model\Receipt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
