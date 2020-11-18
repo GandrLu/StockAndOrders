@@ -1,0 +1,99 @@
+﻿<UserControl x:Class="StockAndOrders.View.ReceiptView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:StockAndOrders.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="GrayGridLine" Color="Gray" />
+        <Style x:Key="DataGridStandard" TargetType="DataGridCell">
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="BorderThickness" Value="1"></Setter>
+                </Trigger>
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                    <Setter Property="BorderThickness" Value="0"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="2" DataContext="{Binding SelectedReceipt, Mode=TwoWay}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0" Grid.Column="0" Content="Address:"/>
+            <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,0" Text="{Binding Formatted_address}" HorizontalAlignment="Center" Height="65"/>
+            <Label Grid.Row="0" Grid.Column="1" Content="Listings:"/>
+            <ListBox Grid.Row="1" Grid.Column="1" x:Name="lbReceiptTransactions" Height="65" ItemsSource="{Binding Transactions}" ScrollViewer.VerticalScrollBarVisibility="Auto" SelectionMode="Single">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Quantity}"/>
+                            <TextBlock Text=" x "/>
+                            <TextBlock Text="{Binding Title}"/>
+                            <TextBlock Text=" "/>
+                            <TextBlock Text="{Binding Price}"/>
+                            <TextBlock Text="{Binding Currency_code}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <Label Grid.Row="2" Content="Message:" />
+            <ScrollViewer Grid.Row="3" Height="45" Margin="10, 0">
+                <TextBlock Text="{Binding Message_from_buyer}" VerticalAlignment="Center" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+            </ScrollViewer>
+            <Label Grid.Row="2" Grid.Column="2" Content="Shipping:" />
+            <StackPanel Grid.Row="3" Grid.Column="2" Orientation="Horizontal">
+                <CheckBox x:Name="cbShipped" VerticalAlignment="Center" IsChecked="{Binding Was_shipped}"/>
+                <Label Target="{Binding ElementName=cbShipped}" VerticalAlignment="Center" Content="Was shipped"/>
+                <xctk:WatermarkTextBox MinWidth="100" VerticalAlignment="Center" Text="{Binding Shipments[0].tracking_code}" 
+                                                   Margin="2, 0, 5, 0" Watermark="Trackingnumber"/>
+                <Button MinWidth="60" DataContext="{Binding ElementName=tiOrders, Path=DataContext}" MaxHeight="25"
+                                    Command="{Binding SaveReceiptCommand}">Save</Button>
+                <Button MinWidth="60" DataContext="{Binding ElementName=tiOrders, Path=DataContext}" MaxHeight="25"
+                                    Command="{Binding CancelSaveReceiptCommand}">Cancel</Button>
+            </StackPanel>
+
+        </Grid>
+
+        <DataGrid x:Name="dgReceipts" Grid.Row="2"  CanUserAddRows="False" ItemsSource="{Binding LoadedReceipts}"
+                              CanUserDeleteRows="False" ColumnWidth="*" SelectionUnit="FullRow" SelectionMode="Single" Margin="2,10,2,2" 
+                              GridLinesVisibility="Horizontal" AutoGenerateColumns="False" HeadersVisibility="Column"
+                              HorizontalGridLinesBrush="{StaticResource GrayGridLine}" CellStyle="{StaticResource DataGridStandard}"
+                              SelectedItem="{Binding CurrentReceipt, Mode=TwoWay}" IsSynchronizedWithCurrentItem="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID"             IsReadOnly="True" Binding="{Binding Receipt_id}"/>
+                <DataGridTextColumn Header="Creation"       IsReadOnly="True" Binding="{Binding Creation_tsz}"/>
+                <DataGridTextColumn Header="Buyer"          IsReadOnly="True" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Paid"           IsReadOnly="True" Binding="{Binding Was_paid}"/>
+                <DataGridTextColumn Header="Shipped"        IsReadOnly="True" Binding="{Binding Was_shipped}"/>
+                <DataGridTextColumn Header="Overdue"        IsReadOnly="True" Binding="{Binding Is_overdue}"/>
+                <DataGridTextColumn Header="Remaining Days" IsReadOnly="True" Binding="{Binding Days_from_due_date}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

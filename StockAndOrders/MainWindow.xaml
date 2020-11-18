@@ -6,207 +6,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:model="clr-namespace:StockAndOrders.Model"
+        xmlns:view="clr-namespace:StockAndOrders.View"
         mc:Ignorable="d"
         Title="Stock and Orders" Height="600" Width="800">
 
-    <Window.Resources>
-        <SolidColorBrush x:Key="GrayGridLine" Color="Gray" />
-        <Style x:Key="DataGridStandard" TargetType="DataGridCell">
-            <Style.Triggers>
-                <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="BorderThickness" Value="1"></Setter>
-                </Trigger>
-                <Trigger Property="IsFocused" Value="True">
-                    <Setter Property="BorderBrush" Value="Transparent"></Setter>
-                    <Setter Property="BorderThickness" Value="0"></Setter>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        <ObjectDataProvider x:Key="enumCurrency" MethodName="GetValues" ObjectType="{x:Type core:Enum}">
-            <ObjectDataProvider.MethodParameters>
-                <x:Type Type="model:CurrencyCode"/>
-            </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
-    </Window.Resources>
     <Grid>
         <TabControl>
             <TabItem x:Name="tiListings" Header="Listings">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-
-                    <DockPanel x:Name="dpListingDetail" Grid.Row="0" Margin="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Width="Auto"
-                               DataContext="{Binding SelectedListing, Mode=TwoWay}">
-                        <xctk:WatermarkTextBox x:Name="description" DockPanel.Dock="Bottom" Margin="0, 2, 2, 0" TextWrapping="Wrap" IsReadOnly="True" 
-                                               Text="{Binding Description}" Watermark="Description" Width="Auto" MinWidth="50" Height="56" 
-                                               AcceptsReturn="True" VerticalScrollBarVisibility="Auto" ToolTip="{Binding ElementName=description, Path=Watermark}" />
-                        <xctk:WatermarkTextBox x:Name="quantity"    DockPanel.Dock="Left" Margin="0, 0, 2, 0" TextWrapping="Wrap"
-                                               Text="{Binding Quantity}" Watermark="Quantity" Width="Auto" MinWidth="60" ToolTip="{Binding ElementName=quantity, Path=Watermark}" />
-                        <xctk:WatermarkTextBox x:Name="name"        DockPanel.Dock="Left" Margin="0, 0, 2, 0" TextWrapping="Wrap" IsReadOnly="True"
-                                               Text="{Binding Title}" Watermark="Name" Width="Auto" MinWidth="200" ToolTip="{Binding ElementName=name, Path=Watermark}" />
-                        <xctk:WatermarkTextBox x:Name="category"    DockPanel.Dock="Left" Margin="0, 0, 2, 0" TextWrapping="Wrap" IsReadOnly="True"
-                                               Text="{Binding Taxonomy_id}" Watermark="Category" Width="Auto" MinWidth="100" ToolTip="{Binding ElementName=category, Path=Watermark}" />
-                        <xctk:WatermarkTextBox x:Name="color"       DockPanel.Dock="Left" Margin="0, 0, 2, 0" TextWrapping="Wrap" IsReadOnly="True"
-                                               Text="" Watermark="Color" Width="Auto" MinWidth="100" ToolTip="{Binding ElementName=color, Path=Watermark}" />
-                        <xctk:WatermarkTextBox x:Name="price"       DockPanel.Dock="Left" Margin="0, 0, 2, 0" TextWrapping="Wrap" IsReadOnly="True"
-                                               Text="{Binding Price}" Watermark="Price" Width="Auto" MinWidth="50" ToolTip="{Binding ElementName=price, Path=Watermark}" />
-                        <xctk:WatermarkComboBox x:Name="currency"   DockPanel.Dock="Left" Margin="0, 0, 2, 0" ToolTip="{Binding ElementName=currency, Path=Watermark}" 
-                                                ItemsSource="{Binding Source={StaticResource enumCurrency}}" Text="{Binding Currency_code}" Watermark="Currency"
-                                                IsReadOnly="True"/>
-                    </DockPanel>
-
-                    <StackPanel Grid.Row="1" DockPanel.Dock="Bottom" Margin="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                        <TextBlock x:Name="tbSaveListing" Margin="2, 2, 5, 2" Text="{Binding Path=ErrorMessage}"/>
-                        <Button x:Name="btnSaveListing" MinWidth="60" Command="{Binding SaveListingQuantityCommand}">Save</Button>
-                        <Button MinWidth="60" Command="{Binding CancelSaveListingQuantityCommand}">Cancel</Button>
-                    </StackPanel>
-
-                    <DataGrid x:Name="dgListings" Grid.Row="3" Margin="2" SelectionUnit="FullRow" GridLinesVisibility="Horizontal"
-                              CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False" HeadersVisibility="Column"
-                              ItemsSource="{Binding LoadedListings}" HorizontalGridLinesBrush="{StaticResource GrayGridLine}" 
-                              CellStyle="{StaticResource DataGridStandard}" SelectionMode="Single" IsSynchronizedWithCurrentItem="True"
-                              SelectedItem="{Binding CurrentListing, Mode=TwoWay}">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="ID"         Width="*"   IsReadOnly="True" Binding="{Binding Listing_id}"/>
-                            <DataGridTextColumn Header="Quantity"   Width=".5*" IsReadOnly="True" Binding="{Binding Quantity}"/>
-                            <DataGridTextColumn Header="Title"      Width="2*"  IsReadOnly="True" Binding="{Binding Title}"/>
-                            <DataGridTextColumn Header="Price"      Width="*"   IsReadOnly="True" Binding="{Binding Price}"/>
-                            <DataGridTextColumn Header="Currency"   Width="*"   IsReadOnly="True" Binding="{Binding Currency_code}"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </Grid>
+                <view:ListingView/>
             </TabItem>
 
             <TabItem x:Name="tiOrders" Header="Orders">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-
-                    <Grid Grid.Row="0" Margin="2" DataContext="{Binding SelectedReceipt, Mode=TwoWay}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-
-                        <Label Grid.Row="0" Grid.Column="0" Content="Address:"/>
-                        <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,0" Text="{Binding Formatted_address}" HorizontalAlignment="Center" Height="65"/>
-                        <Label Grid.Row="0" Grid.Column="1" Content="Listings:"/>
-                        <ListBox Grid.Row="1" Grid.Column="1" x:Name="lbReceiptTransactions" Height="65" ItemsSource="{Binding Transactions}" ScrollViewer.VerticalScrollBarVisibility="Auto" SelectionMode="Single">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding Quantity}"/>
-                                        <TextBlock Text=" x "/>
-                                        <TextBlock Text="{Binding Title}"/>
-                                        <TextBlock Text=" "/>
-                                        <TextBlock Text="{Binding Price}"/>
-                                        <TextBlock Text="{Binding Currency_code}"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                        <Label Grid.Row="2" Content="Message:" />
-                        <ScrollViewer Grid.Row="3" Height="45" Margin="10, 0">
-                            <TextBlock Text="{Binding Message_from_buyer}" VerticalAlignment="Center" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
-                        </ScrollViewer>
-                        <Label Grid.Row="2" Grid.Column="2" Content="Shipping:" />
-                        <StackPanel Grid.Row="3" Grid.Column="2" Orientation="Horizontal">
-                            <CheckBox x:Name="cbShipped" VerticalAlignment="Center" IsChecked="{Binding Was_shipped}"/>
-                            <Label Target="{Binding ElementName=cbShipped}" VerticalAlignment="Center" Content="Was shipped"/>
-                            <xctk:WatermarkTextBox MinWidth="100" VerticalAlignment="Center" Text="{Binding Shipments[0].tracking_code}" 
-                                                   Margin="2, 0, 5, 0" Watermark="Trackingnumber"/>
-                            <Button MinWidth="60" DataContext="{Binding ElementName=tiOrders, Path=DataContext}" MaxHeight="25"
-                                    Command="{Binding SaveReceiptCommand}">Save</Button>
-                            <Button MinWidth="60" DataContext="{Binding ElementName=tiOrders, Path=DataContext}" MaxHeight="25"
-                                    Command="{Binding CancelSaveReceiptCommand}">Cancel</Button>
-                        </StackPanel>
-
-                    </Grid>
-
-                    <DataGrid x:Name="dgReceipts" Grid.Row="2"  CanUserAddRows="False" ItemsSource="{Binding LoadedReceipts}"
-                              CanUserDeleteRows="False" ColumnWidth="*" SelectionUnit="FullRow" SelectionMode="Single" Margin="2,10,2,2" 
-                              GridLinesVisibility="Horizontal" AutoGenerateColumns="False" HeadersVisibility="Column"
-                              HorizontalGridLinesBrush="{StaticResource GrayGridLine}" CellStyle="{StaticResource DataGridStandard}"
-                              SelectedItem="{Binding CurrentReceipt, Mode=TwoWay}" IsSynchronizedWithCurrentItem="True">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="ID"             IsReadOnly="True" Binding="{Binding Receipt_id}"/>
-                            <DataGridTextColumn Header="Creation"       IsReadOnly="True" Binding="{Binding Creation_tsz}"/>
-                            <DataGridTextColumn Header="Buyer"          IsReadOnly="True" Binding="{Binding Name}"/>
-                            <DataGridTextColumn Header="Paid"           IsReadOnly="True" Binding="{Binding Was_paid}"/>
-                            <DataGridTextColumn Header="Shipped"        IsReadOnly="True" Binding="{Binding Was_shipped}"/>
-                            <DataGridTextColumn Header="Overdue"        IsReadOnly="True" Binding="{Binding Is_overdue}"/>
-                            <DataGridTextColumn Header="Remaining Days" IsReadOnly="True" Binding="{Binding Days_from_due_date}"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </Grid>
+                <view:ReceiptView/>
             </TabItem>
 
             <TabItem x:Name="tiSettings" Header="Settings">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Grid Grid.Row="0" Margin="2">
-
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-
-                        <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Vertical">
-                            <Label x:Name="lIsAppTest" HorizontalAlignment="Right" VerticalAlignment="Center">Testmode</Label>
-                            <Label x:Name="lEtsyAppKey" HorizontalAlignment="Right" VerticalAlignment="Center">Etsy App Key</Label>
-                            <Label x:Name="lEtsyAppSecret" HorizontalAlignment="Right" VerticalAlignment="Center">Etsy App Secret</Label>
-                            <Label x:Name="lEtsyVCode" HorizontalAlignment="Right" VerticalAlignment="Center">Etsy Verification Code</Label>
-                            <Button x:Name="btnEtsyVerification" Margin="2" Padding="2" Height="30" Width="150" Command="{Binding AquireVerificationCodeCommand}">Request Verification Code</Button>
-                        </StackPanel>
-                        <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Vertical">
-                            <CheckBox Height="{Binding ElementName=lEtsyAppKey, Path=ActualHeight}" VerticalContentAlignment="Center" IsChecked="{Binding IsAppInTestMode}"></CheckBox>
-                            <TextBox x:Name="tbEtsyAppKey" Height="{Binding ElementName=lEtsyAppKey, Path=ActualHeight}" Text="{Binding EtsyAppKey}"
-                                 HorizontalAlignment="Left" VerticalAlignment="Center" Width="150" TextAlignment="Center"/>
-                            <TextBox x:Name="tbEtsyAppSecret" Height="{Binding ElementName=lEtsyAppSecret, Path=ActualHeight}" Text="{Binding EtsyAppSecret}"
-                                     HorizontalAlignment="Left" VerticalAlignment="Center" Width="150" TextAlignment="Center"/>
-                            <TextBox x:Name="tbEtsyVerificationCode" Height="{Binding ElementName=lEtsyVCode, Path=ActualHeight}" Text="{Binding EtsyVerificationCode}"
-                                 HorizontalAlignment="Left" VerticalAlignment="Center" Width="150" TextAlignment="Center"/>
-                            <Button Command="{Binding SaveSettingsCommand}" Margin="2" Height="30">Save</Button>
-                        </StackPanel>
-                    </Grid>
-
-                    <StackPanel Grid.Row="2">
-                        <TextBlock TextWrapping="Wrap" Margin="10" TextAlignment="Center">
-                            Stock and Orders (c) by Luzius Kölling, 2020</TextBlock>
-                        <TextBlock TextWrapping="Wrap" Margin="10" TextAlignment="Center">
-                            The term 'Etsy' is a trademark of Etsy, Inc. This application uses the Etsy API but is not endorsed or 
-                            certified by Etsy, Inc.</TextBlock>
-                    </StackPanel>
-                </Grid>
+                <view:SettingsView/>
             </TabItem>
         </TabControl>
     </Grid>

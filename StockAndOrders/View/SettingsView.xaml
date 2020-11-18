@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="StockAndOrders.View.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:StockAndOrders.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Margin="2">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Vertical">
+                <Label x:Name="lIsAppTest" HorizontalAlignment="Right" VerticalAlignment="Center">Testmode</Label>
+                <Label x:Name="lEtsyAppKey" HorizontalAlignment="Right" VerticalAlignment="Center">Etsy App Key</Label>
+                <Label x:Name="lEtsyAppSecret" HorizontalAlignment="Right" VerticalAlignment="Center">Etsy App Secret</Label>
+                <Label x:Name="lEtsyVCode" HorizontalAlignment="Right" VerticalAlignment="Center">Etsy Verification Code</Label>
+                <Button x:Name="btnEtsyVerification" Margin="2" Padding="2" Height="30" Width="150" Command="{Binding AquireVerificationCodeCommand}">Request Verification Code</Button>
+            </StackPanel>
+            <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Vertical">
+                <CheckBox Height="{Binding ElementName=lEtsyAppKey, Path=ActualHeight}" VerticalContentAlignment="Center" IsChecked="{Binding IsAppInTestMode}"></CheckBox>
+                <TextBox x:Name="tbEtsyAppKey" Height="{Binding ElementName=lEtsyAppKey, Path=ActualHeight}" Text="{Binding EtsyAppKey}"
+                                 HorizontalAlignment="Left" VerticalAlignment="Center" Width="150" TextAlignment="Center"/>
+                <TextBox x:Name="tbEtsyAppSecret" Height="{Binding ElementName=lEtsyAppSecret, Path=ActualHeight}" Text="{Binding EtsyAppSecret}"
+                                     HorizontalAlignment="Left" VerticalAlignment="Center" Width="150" TextAlignment="Center"/>
+                <TextBox x:Name="tbEtsyVerificationCode" Height="{Binding ElementName=lEtsyVCode, Path=ActualHeight}" Text="{Binding EtsyVerificationCode}"
+                                 HorizontalAlignment="Left" VerticalAlignment="Center" Width="150" TextAlignment="Center"/>
+                <Button Command="{Binding SaveSettingsCommand}" Margin="2" Height="30">Save</Button>
+            </StackPanel>
+        </Grid>
+
+        <StackPanel Grid.Row="2">
+            <TextBlock TextWrapping="Wrap" Margin="10" TextAlignment="Center">
+                            Stock and Orders (c) by Luzius Kölling, 2020</TextBlock>
+            <TextBlock TextWrapping="Wrap" Margin="10" TextAlignment="Center">
+                            The term 'Etsy' is a trademark of Etsy, Inc. This application uses the Etsy API but is not endorsed or 
+                            certified by Etsy, Inc.</TextBlock>
+        </StackPanel>
+    </Grid>
+</UserControl>
