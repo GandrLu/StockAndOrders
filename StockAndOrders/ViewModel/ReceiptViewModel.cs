@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight.CommandWpf;
 using StockAndOrders.Helper;
+using StockAndOrders.Repositories;
 using StockAndOrders.Model;
 using System;
 using System.Collections.Concurrent;
@@ -16,9 +17,9 @@ namespace StockAndOrders.ViewModel
         private RelayCommand saveReceiptCommand;
         private RelayCommand cancelSaveReceiptCommand;
 
-        public ReceiptViewModel()
+        public ReceiptViewModel(IReceiptRepository receiptRepository)
         {
-            FetchReceiptsFromEtsy();
+            LoadReceipts(receiptRepository);
         }
 
         public List<Receipt> LoadedReceipts
@@ -94,7 +95,7 @@ namespace StockAndOrders.ViewModel
 
         private async void SaveReceiptToEtsy()
         {
-            if (await EtsyApiConnector.PostTrackingData(SelectedReceipt))
+            if (await EtsyApiConnector.Instance.PostTrackingData(SelectedReceipt))
             {
                 UpdateSelectedReceiptInLoadedReceipts();
                 UnloadSelectedReceipt();
@@ -120,11 +121,10 @@ namespace StockAndOrders.ViewModel
                 SelectedReceipt.CopyTo(LoadedReceipts[oldIndex]);
         }
 
-        private async void FetchReceiptsFromEtsy()
+        private async void LoadReceipts(IReceiptRepository receiptRepository)
         {
-            var receiptsResponse = await EtsyApiConnector.GetReceipts();
-            List<Receipt> receipts = new List<Receipt>(receiptsResponse.results);
-            LoadedReceipts = receipts;
+            var receiptsResponse = await receiptRepository.GetReceipts();
+            LoadedReceipts = (List<Receipt>)receiptsResponse;
         }
     }
 }

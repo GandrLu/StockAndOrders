@@ -1,16 +1,20 @@
 ﻿using OAuth;
 using StockAndOrders.Model;
 using StockAndOrders.Properties;
-using StockAndOrders.ViewModel;
+using StockAndOrders.Repositories;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Text.Json;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace StockAndOrders.Helper
 {
-    public sealed class EtsyApiConnector
+    public sealed class EtsyApiConnector : IReceiptRepository, IListingRepository
     {
+        private static readonly EtsyApiConnector instance = new EtsyApiConnector();
+
         private const string REQUEST_TOKEN_URI = "https://openapi.etsy.com/v2/oauth/request_token?scope=";
         private const string SCOPES = "transactions_r transactions_w listings_r listings_w";
         private const string ACCESS_TOKEN_URI = "https://openapi.etsy.com/v2/oauth/access_token";
@@ -24,30 +28,41 @@ namespace StockAndOrders.Helper
         private const string DEFAULT_CARRIER_NAME = "dhl-germany";
         private const bool DEFAULT_SEND_SHIPNOTIFICATION = true;
 
-        private static OAuth.Manager staticOAuth = new OAuth.Manager();
-        private static HttpClient client = new HttpClient();
-        private static JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions
+        private OAuth.Manager oAuth = new OAuth.Manager();
+        private HttpClient client = new HttpClient();
+        private JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true
         };
 
-        static EtsyApiConnector()
+        // Explicit static constructor to tell C# compiler not to mark type as beforefieldinit
+        static EtsyApiConnector() { }
+
+        private EtsyApiConnector()
         {
-            staticOAuth["consumer_key"] = (string)Settings.Default["EtsyAppKey"];
-            staticOAuth["consumer_secret"] = (string)Settings.Default["EtsyAppSecret"];
-            staticOAuth["token"] = (string)Settings.Default["EtsyAccessToken"];
-            staticOAuth["token_secret"] = (string)Settings.Default["EtsyAccessTokenSecret"];
-            if (staticOAuth["consumer_key"] == "" || staticOAuth["consumer_secret"] == "")
+            oAuth["consumer_key"] = (string)Settings.Default["EtsyAppKey"];
+            oAuth["consumer_secret"] = (string)Settings.Default["EtsyAppSecret"];
+            oAuth["token"] = (string)Settings.Default["EtsyAccessToken"];
+            oAuth["token_secret"] = (string)Settings.Default["EtsyAccessTokenSecret"];
+            if (oAuth["consumer_key"] == "" || oAuth["consumer_secret"] == "")
             {
                 throw new Exception("Not all necessary settings are set!");
             }
         }
 
-        public static bool AcquireRequestToken()
+        public static EtsyApiConnector Instance
         {
-            staticOAuth["token"] = "";
-            staticOAuth["token_secret"] = "";
-            OAuthResponse responseTokenURI = staticOAuth.AcquireRequestToken(REQUEST_TOKEN_URI + SCOPES, "GET");
+            get
+            {
+                return instance;
+            }
+        }
+
+        public bool AcquireRequestToken()
+        {
+            oAuth["token"] = "";
+            oAuth["token_secret"] = "";
+            OAuthResponse responseTokenURI = oAuth.AcquireRequestToken(REQUEST_TOKEN_URI + SCOPES, "GET");
 
             if (responseTokenURI != null)
             {
@@ -59,25 +74,18 @@ namespace StockAndOrders.Helper
                 return false;
         }
 
-        public static void AcquireAccessToken()
+        public void AcquireAccessToken()
         {
             string code = (string)Settings.Default["EtsyVerificationCode"];
-            var response = staticOAuth.AcquireAccessToken(ACCESS_TOKEN_URI, "GET", code);
+            var response = oAuth.AcquireAccessToken(ACCESS_TOKEN_URI, "GET", code);
             Settings.Default.EtsyAccessToken = response["oauth_token"];
             Settings.Default.EtsyAccessTokenSecret = response["oauth_token_secret"];
             Settings.Default.Save();
-            staticOAuth["token"] = response["oauth_token"];
-            staticOAuth["token_secret"] = response["oauth_token_secret"];
+            oAuth["token"] = response["oauth_token"];
+            oAuth["token_secret"] = response["oauth_token_secret"];
         }
 
-        public static async Task GetTransactions()
-        {
-            SetHeader(GET_TRANSACTIONS_URI);
-            var response = await client.GetStringAsync(GET_TRANSACTIONS_URI);
-            Console.WriteLine(response);
-        }
-
-        public static async Task<JsonResult<Listing>> GetListings()
+        public async Task<IList> GetListings()
         {
             try
             {
@@ -85,7 +93,7 @@ namespace StockAndOrders.Helper
                 var response = await client.GetStringAsync(GET_ACTIVELISTINGS_URI);
 
                 JsonResult<Listing> items = JsonSerializer.Deserialize<JsonResult<Listing>>(response, jsonSerializerOptions);
-                return items;
+                return new List<Listing>(items.results);
             }
             catch (HttpRequestException e)
             {
@@ -94,7 +102,7 @@ namespace StockAndOrders.Helper
             }
         }
 
-        public static async Task<JsonResult<Receipt>> GetReceipts()
+        public async Task<IList> GetReceipts()
         {
             try
             {
@@ -102,7 +110,8 @@ namespace StockAndOrders.Helper
                 var response = await client.GetStringAsync(GET_RECEIPTS_URI);
 
                 JsonResult<Receipt> receipts = JsonSerializer.Deserialize<JsonResult<Receipt>>(response, jsonSerializerOptions);
-                return receipts;
+                return new List<Receipt>(receipts.results);
+                //return receipts;
             }
             catch (HttpRequestException e)
             {
@@ -111,7 +120,7 @@ namespace StockAndOrders.Helper
             }
         }
 
-        public static async Task<bool> PutListingQuantityUpdate(Listing listing)
+        public async Task<bool> PutListingQuantityUpdate(Listing listing)
         {
             if ((bool)Settings.Default["IsAppInTestMode"])
                 return true;
@@ -132,7 +141,7 @@ namespace StockAndOrders.Helper
             }
         }
 
-        public static async Task<bool> PostTrackingData(Receipt receipt)
+        public async Task<bool> PostTrackingData(Receipt receipt)
         {
             if ((bool)Settings.Default["IsAppInTestMode"])
                 return true;
@@ -156,15 +165,15 @@ namespace StockAndOrders.Helper
         }
 
         #region Helper
-        private static string UnescapeAndExtractUri(string uri)
+        private string UnescapeAndExtractUri(string uri)
         {
             string unescapedUrl = Uri.UnescapeDataString(uri);
             return unescapedUrl.Remove(0, "login_url=".Length);
         }
 
-        private static void SetHeader(string uri, string method = "GET")
+        private void SetHeader(string uri, string method = "GET")
         {
-            string header = staticOAuth.GenerateAuthzHeader(uri, method);
+            string header = oAuth.GenerateAuthzHeader(uri, method);
             client.DefaultRequestHeaders.Remove("Authorization");
             client.DefaultRequestHeaders.Add("Authorization", header);
         }

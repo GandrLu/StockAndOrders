@@ -33,13 +33,13 @@ namespace StockAndOrders
         #region Setup Methods
         private void SetupListingViewModel()
         {
-            listingViewModel = new ListingViewModel();
+            listingViewModel = new ListingViewModel(EtsyApiConnector.Instance);
             tiListings.DataContext = listingViewModel;
         }
 
         private void SetupReceiptsViewModel()
         {
-            receiptViewModel = new ReceiptViewModel();
+            receiptViewModel = new ReceiptViewModel(EtsyApiConnector.Instance);
             tiOrders.DataContext = receiptViewModel;
         }
 

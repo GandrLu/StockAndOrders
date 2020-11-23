@@ -192,12 +192,15 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Helper\EtsyApiConnector.cs" />
+    <Compile Include="Repositories\IReceiptRepository.cs" />
+    <Compile Include="Repositories\IListingRepository.cs" />
     <Compile Include="Helper\OAuth.cs" />
     <Compile Include="Helper\ObservableObject.cs" />
     <Compile Include="Model\JsonResult.cs" />
     <Compile Include="Model\Pagination.cs" />
     <Compile Include="Model\Params.cs" />
     <Compile Include="Model\Transaction.cs" />
+    <Compile Include="Repositories\ListingRepository.cs" />
     <Compile Include="ViewModel\ListingViewModel.cs" />
     <Compile Include="ViewModel\ReceiptViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />

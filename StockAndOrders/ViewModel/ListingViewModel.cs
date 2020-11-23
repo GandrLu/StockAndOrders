@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight.CommandWpf;
 using StockAndOrders.Helper;
+using StockAndOrders.Repositories;
 using StockAndOrders.Model;
 using System.Collections.Generic;
 using System.Threading;
@@ -22,9 +23,9 @@ namespace StockAndOrders.ViewModel
         #endregion
 
         #region Constructor
-        public ListingViewModel()
+        public ListingViewModel(IListingRepository listingRepository)
         {
-            FetchListingsFromEtsy();
+            LoadListings(listingRepository);
         }
         #endregion
 
@@ -116,16 +117,15 @@ namespace StockAndOrders.ViewModel
         #endregion
 
         #region Private Methods
-        private async void FetchListingsFromEtsy()
+        private async void LoadListings(IListingRepository listingRepository)
         {
-            var listingsResponse = await EtsyApiConnector.GetListings();
-            List<Listing> listings = new List<Listing>(listingsResponse.results);
-            LoadedListings = listings;
+            var listingsResponse = await listingRepository.GetListings();
+            LoadedListings = (List<Listing>)listingsResponse;
         }
 
         private async void SaveListingQuantityToEtsy()
         {
-            if (await EtsyApiConnector.PutListingQuantityUpdate(SelectedListing))
+            if (await EtsyApiConnector.Instance.PutListingQuantityUpdate(SelectedListing))
             {
                 UpdateSelectedListingInLoadedListings();
                 UnloadSelectedListing();

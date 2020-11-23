@@ -165,7 +165,7 @@ namespace StockAndOrders.ViewModel
                 if (aquireVerificationCodeCommand == null)
                 {
                     aquireVerificationCodeCommand = new RelayCommand(
-                        () => EtsyApiConnector.AcquireRequestToken(),
+                        () => EtsyApiConnector.Instance.AcquireRequestToken(),
                         () => etsyAppKey != "" && etsyAppSecret != "");
                 }
                 return aquireVerificationCodeCommand;
@@ -178,7 +178,7 @@ namespace StockAndOrders.ViewModel
             Settings.Default["EtsyAppSecret"] = EtsyAppSecret;
             Settings.Default["EtsyVerificationCode"] = EtsyVerificationCode;
             Settings.Default.Save();
-            EtsyApiConnector.AcquireAccessToken();
+            EtsyApiConnector.Instance.AcquireAccessToken();
         }
 
         public override string ToString()
